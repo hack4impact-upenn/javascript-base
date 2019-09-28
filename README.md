@@ -1,6 +1,7 @@
 # Javascript Base
 
 ### Set-up
+
 #### Clone the repository
 ```sh
 git clone https://github.com/hack4impact/javascript-base.git
