@@ -1,1 +1,1 @@
-console.log("Hello world from the terminal console!")
+console.log("Hello world from the terminal!");

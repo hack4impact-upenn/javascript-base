@@ -1,1 +1,1 @@
-console.log("Hello world from the browser console!")
+console.log("Hello world from the browser!");
