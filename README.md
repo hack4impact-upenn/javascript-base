@@ -13,6 +13,17 @@ npm install
 ```
 
 #### Run the application
+To run both the client and server:
 ```
 npm start
+```
+
+To run just the client:
+```
+npm run client
+```
+
+To run just the serveR:
+```
+npm run server
 ```
