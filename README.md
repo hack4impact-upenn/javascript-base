@@ -23,7 +23,7 @@ To run just the client:
 npm run client
 ```
 
-To run just the serveR:
+To run just the server:
 ```
 npm run server
 ```
