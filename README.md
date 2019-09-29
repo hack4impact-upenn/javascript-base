@@ -27,3 +27,9 @@ To run just the server:
 ```
 npm run server
 ```
+
+#### Linting
+This project uses ESLint and Prettier for style and error checking. To run the linter:
+```sh
+npm run lint
+```
