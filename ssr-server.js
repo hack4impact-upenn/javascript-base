@@ -5,6 +5,18 @@ const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+// Connect to mongodb using mongoose
+require("dotenv").config();
+const mongoose = require("mongoose");
+mongoose.connect(process.env.MONGODB_URI);
+const models = require("./backend/models/models");
+
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "Connection error:"));
+db.once("open", async function() {
+  console.log("Connected to database");
+});
+
 app
   .prepare()
   .then(() => {
