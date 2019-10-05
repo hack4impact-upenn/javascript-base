@@ -9,7 +9,7 @@
     "postinstall": "(cd client && npm install) && (cd server && npm install)",
     "lint": "./node_modules/.bin/eslint ./",
     "start": "concurrently --kill-others \"npm run client\" \"npm run server\"",
-    "dev": "next"
+    "dev": "node ssr-server.js"
   },
   "keywords": [],
   "author": "hack4impact",
@@ -41,6 +41,7 @@
     ]
   },
   "dependencies": {
+    "express": "^4.17.1",
     "next": "^9.0.7",
     "react": "^16.10.1",
     "react-dom": "^16.10.1"
