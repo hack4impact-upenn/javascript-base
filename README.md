@@ -12,6 +12,24 @@ cd javascript-base
 npm install
 ```
 
+#### Setup MongoDB
+
+Create a free account with [mLab](https://mlab.com/). Then, [create new Sandbox database subscription](https://mlab.com/create/wizard). 
+
+<img src="https://docs.mlab.com/assets/screenshot-createwizard.png" width="300">
+
+Find your database subscription's MongoDB URI:
+
+https://docs.mlab.com/assets/screenshot-connectinfo.png
+
+and then copy it into a `.env` file in the project's root directory:
+
+```
+MONGODB_URI=mongodb://<dbuser>:<dbpassword>@ds012345.mlab.com:56789/<dbname>
+```
+
+Make sure to replace `<dbuser>`, `<dbpassword>`, and `<dbname>`.
+
 #### Run the application
 To run the application:
 ```sh
