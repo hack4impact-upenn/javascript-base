@@ -13,19 +13,9 @@ npm install
 ```
 
 #### Run the application
-To run both the client and server:
-```
-npm start
-```
-
-To run just the client:
-```
-npm run client
-```
-
-To run just the server:
-```
-npm run server
+To run the application:
+```sh
+npm run dev
 ```
 
 #### Linting
