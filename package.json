@@ -25,7 +25,8 @@
     "lint-staged": "^9.4.0",
     "mongodb": "^3.3.2",
     "mongoose": "^5.7.3",
-    "prettier": "1.18.2"
+    "prettier": "1.18.2",
+    "typescript": "^3.6.3"
   },
   "husky": {
     "hooks": {
@@ -37,5 +38,8 @@
       "eslint --fix",
       "git add"
     ]
+  },
+  "dependencies": {
+    "@types/node": "^12.7.11"
   }
 }
