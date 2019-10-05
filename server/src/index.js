@@ -6,39 +6,56 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODB_URI);
 
-// Extract database models
+// Extract User model
 const models = require("./models/models");
 const User = models.User;
 
+const eraseDatabaseOnSync = true;
 var db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function() {
+db.on("error", console.error.bind(console, "Connection error:"));
+db.once("open", async function() {
   // We're connected!
   console.log("Connected to database");
+
+  // Delete everything from the database
+  if (eraseDatabaseOnSync) {
+    await Promise.all([User.deleteMany({})]);
+  }
 
   // Seed the database
   createFakeUsers();
 });
 
-function createFakeUsers() {
-  let myUser = new User({
+async function createFakeUsers() {
+  let annieUser = new User({
     firstName: "annie",
     lastName: "su",
     email: "annie@gmail.com",
     password: "hello"
   });
-  User.create(myUser, (err, doc) => {
-    if (err) {
-      console.log("error");
-    }
-    console.log(doc._id);
-    console.log(doc.name);
+  await annieUser.save();
+  console.log("Added annie");
+
+  let gautamUser = new User({
+    firstName: "gautam",
+    lastName: "narayan",
+    email: "gautam@gmail.com",
+    password: "goodbye"
   });
+  await gautamUser.save();
+  console.log("Added gautaum");
+
+  let katieUser = new User({
+    firstName: "katie",
+    lastName: "jiang",
+    email: "katie@gmail.com",
+    password: "helloooooo"
+  });
+  await katieUser.save();
+  console.log("Added katie");
 }
+
 const port = 3000;
-// app.get('/', (req, res) => {
-//   res.send('The sedulous hyena ate the antelope!');
-// });
 app.listen(port, err => {
   if (err) {
     return console.error(err);

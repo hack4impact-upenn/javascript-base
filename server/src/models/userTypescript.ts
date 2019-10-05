@@ -1,3 +1,6 @@
+// HELP: this file gave a lot of syntax errors (like the import statement
+// on line 2...so we switched to user.js in javascript)
+
 const mongoose = require("mongoose");
 //import { Schema, Document } from 'mongoose';
 
