@@ -8,7 +8,8 @@
     "server": "cd server && npm start",
     "postinstall": "(cd client && npm install) && (cd server && npm install)",
     "lint": "./node_modules/.bin/eslint ./",
-    "start": "concurrently --kill-others \"npm run client\" \"npm run server\""
+    "start": "concurrently --kill-others \"npm run client\" \"npm run server\"",
+    "dev": "next"
   },
   "keywords": [],
   "author": "hack4impact",
@@ -33,5 +34,10 @@
       "eslint --fix",
       "git add"
     ]
+  },
+  "dependencies": {
+    "next": "^9.0.7",
+    "react": "^16.10.1",
+    "react-dom": "^16.10.1"
   }
 }
