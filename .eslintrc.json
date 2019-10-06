@@ -4,20 +4,27 @@
         "es6": true,
         "node": true
     },
-    "extends": ["plugin:prettier/recommended"],
+    "extends": [
+        "plugin:prettier/recommended",
+        "plugin:react/recommended"
+    ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
-            "jsx": true
+            "jsx": true,
+            "experimentalObjectRestSpread": true
         },
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
     "plugins": ["react"],
     "rules": {
-        "prettier/prettier": ["warn"]
+        "prettier/prettier": "warn",
+        "react/react-in-jsx-scope": "off",
+        "react/prop-types": "warn"
     }
 }
