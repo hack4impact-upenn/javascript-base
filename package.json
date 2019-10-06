@@ -36,6 +36,10 @@
     ]
   },
   "dependencies": {
+    "@material-ui/core": "^4.5.0",
+    "@material-ui/icons": "^4.4.3",
+    "@material-ui/styles": "^4.5.0",
+    "@zeit/next-css": "^1.0.1",
     "express": "^4.17.1",
     "next": "^9.0.7",
     "react": "^16.10.1",
