@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/explicit-function-return-type: 0 */
+
 import React from "react";
 import Document, { Head, Main, NextScript } from "next/document";
 import { ServerStyleSheets } from "@material-ui/styles";

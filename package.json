@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./",
-    "dev": "node ssr-server.js"
+    "dev": "node ssr-server.ts"
   },
   "keywords": [],
   "author": "hack4impact",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^12.7.11",
+    "@types/react": "^16.9.5",
+    "@typescript-eslint/eslint-plugin": "^2.3.2",
+    "@typescript-eslint/parser": "^2.3.2",
     "babel-eslint": "^10.0.3",
     "concurrently": "^4.1.2",
     "dotenv": "^8.1.0",

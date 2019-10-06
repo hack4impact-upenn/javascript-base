@@ -1,8 +1,8 @@
 // Import frameworks
-const mongoose = require("mongoose");
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const UserSchema = new Schema({
+export const UserSchema = new Schema({
   firstName: {
     type: String,
     required: true
@@ -20,5 +20,3 @@ const UserSchema = new Schema({
     required: true
   }
 });
-
-module.exports = UserSchema;

@@ -1,8 +1,8 @@
 // Import frameworks
-const mongoose = require("mongoose");
+import mongoose from 'mongoose'
 
 // Import schemas
-const UserSchema = require("./user");
+import { UserSchema } from './user'
 
 // Create a database model for each schema
 const User = mongoose.model("User", UserSchema);

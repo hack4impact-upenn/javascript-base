@@ -8,8 +8,10 @@ const handle = app.getRequestHandler();
 // Connect to mongodb using mongoose
 require("dotenv").config();
 const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGODB_URI);
-const models = require("./backend/models/models");
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+});
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "Connection error:"));
