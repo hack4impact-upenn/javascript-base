@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-import Home from "./home";
+import React from "react";
 import Link from "next/link";
 
 const PostLink = props => (
@@ -10,7 +9,7 @@ const PostLink = props => (
   </li>
 );
 
-const App = () => (
+const Index = () => (
   <div>
     <ul>
       <PostLink title="hello world"></PostLink>
@@ -20,4 +19,4 @@ const App = () => (
   </div>
 );
 
-export default App;
+export default Index;
