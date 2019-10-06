@@ -18,6 +18,7 @@ class PostLink extends React.Component<PostLinkProps, {}> {
 const Index = () => (
   <div>
     <ul>
+      <li><a href="/api">GraphQL</a></li>
       <PostLink title="hello world"></PostLink>
       <PostLink title="title1"></PostLink>
       <PostLink title="title2"></PostLink>

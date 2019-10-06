@@ -1,6 +1,4 @@
-import { IUser } from "./model";
-
-const users: { [id: string]: IUser } = {
+const users = {
   0: {
     firstName: "Jared",
     lastName: "Asch",
@@ -17,10 +15,10 @@ const users: { [id: string]: IUser } = {
 
 const resolvers = {
   Query: {
-    allUsers: () => {
+    allUsers: parent => {
       return Object.values(users);
     },
-    user: (id: number) => {
+    user: (parent, { id }) => {
       return users[id];
     }
   }
