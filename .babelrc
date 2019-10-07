@@ -1,0 +1,18 @@
+{
+  "presets": ["next/babel"],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["./"],
+        "alias": {
+          "@backend": "./backend",
+          "@components": "./components",
+          "@models": "./backend/models",
+          "@pages": "./pages"
+        },
+        "extensions": [".js", ".ts", ".jsx", ".tsx"]
+      }
+    ]
+  ]
+}
