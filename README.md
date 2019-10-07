@@ -16,11 +16,11 @@ npm install
 
 Create a free account with [mLab](https://mlab.com/). Then, [create new Sandbox database subscription](https://mlab.com/create/wizard). 
 
-<img src="https://docs.mlab.com/assets/screenshot-createwizard.png" width="300">
+<img src="https://docs.mlab.com/assets/screenshot-createwizard.png" width="700" />
 
 Find your database subscription's MongoDB URI:
 
-https://docs.mlab.com/assets/screenshot-connectinfo.png
+<img src="https://docs.mlab.com/assets/screenshot-connectinfo.png" width="500" />
 
 and then copy it into a `.env` file in the project's root directory:
 
