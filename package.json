@@ -4,11 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "client": "cd client && npm start",
-    "server": "cd server && npm start",
-    "postinstall": "(cd client && npm install) && (cd server && npm install)",
     "lint": "./node_modules/.bin/eslint ./",
-    "start": "concurrently --kill-others \"npm run client\" \"npm run server\"",
     "dev": "nodemon --exec babel-node ssr-server.js"
   },
   "keywords": [],

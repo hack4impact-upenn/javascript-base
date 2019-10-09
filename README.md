@@ -1,6 +1,6 @@
 # Javascript Base
 
-### Set-up
+### Setup
 #### Clone the repository
 ```sh
 git clone https://github.com/hack4impact/javascript-base.git
@@ -16,11 +16,15 @@ npm install
 
 Create a free account with [mLab](https://mlab.com/). Then, [create new Sandbox database subscription](https://mlab.com/create/wizard). 
 
-<img src="https://docs.mlab.com/assets/screenshot-createwizard.png" width="300">
+<img src="https://docs.mlab.com/assets/screenshot-createwizard.png" width="700" />
+
+In order to connect to your database, you must first add a new database user:
+
+<img src="https://i.imgur.com/7qUGXaf.png" width="450" />
 
 Find your database subscription's MongoDB URI:
 
-https://docs.mlab.com/assets/screenshot-connectinfo.png
+<img src="https://docs.mlab.com/assets/screenshot-connectinfo.png" width="500" />
 
 and then copy it into a `.env` file in the project's root directory:
 
@@ -28,7 +32,9 @@ and then copy it into a `.env` file in the project's root directory:
 MONGODB_URI=mongodb://<dbuser>:<dbpassword>@ds012345.mlab.com:56789/<dbname>
 ```
 
-Make sure to replace `<dbuser>`, `<dbpassword>`, and `<dbname>`.
+Make sure to replace `<dbuser>`, `<dbpassword>`, and `<dbname>`. The username and password should be from database user you added, not your mLab account.
+
+## Development
 
 #### Run the application
 To run the application:
