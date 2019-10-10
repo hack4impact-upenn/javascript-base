@@ -13,6 +13,9 @@ const users = {
   }
 };
 
+import { User } from "../../models";
+import { UserInputError } from "apollo-server";
+
 const resolvers = {
   Query: {
     allUsers: parent => {
@@ -20,6 +23,39 @@ const resolvers = {
     },
     user: (parent, { id }) => {
       return users[id];
+    },
+    login: async (parent, { email, password }) => {
+      let u = await User.findOne({ email: email });
+      console.log(u);
+      if (u == null) {
+        throw new UserInputError("Username or Password is incorrect");
+      } else {
+        if (u.comparePassword(password)) {
+          return u;
+        } else {
+          throw new UserInputError("Username or Password is incorrect");
+        }
+      }
+    }
+  },
+  Mutation: {
+    createUser: async (
+      parent,
+      { firstName, lastName, email, password },
+      context
+    ) => {
+      let count = await User.countDocuments({ email: email });
+      if (count != 0) {
+        throw new UserInputError("Account already exists");
+      }
+      let newUser = new User({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password
+      });
+      newUser.save();
+      return newUser;
     }
   }
 };

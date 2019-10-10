@@ -26,3 +26,7 @@ export const UserSchema = new Schema({
     required: true
   }
 });
+
+UserSchema.methods.comparePassword = function(password: string) {
+  return this.password == password;
+};
