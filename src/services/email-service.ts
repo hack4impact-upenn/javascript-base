@@ -1,4 +1,4 @@
-// import sendgrid
+// Import sendgrid
 import { MailService } from '@sendgrid/mail'
 
 /**
@@ -7,9 +7,10 @@ import { MailService } from '@sendgrid/mail'
 export class EmailService {
 
   constructor(public subject: string, public body: string, public sender: string) {
-    MailService.setApiKey(process.env.SENDGRID_API_KEY);
+    console.log(process.env.SENDGRID_API_KEY);
+    MailService.setApiKey(process.env.SENDGRID_API_KEY!);
   }
-
+  
   sendTo(recipients: [string]): Promise<any> {
     // validateEmails(); // TODO
     const msg = {
@@ -32,7 +33,7 @@ export class EmailService {
       html: this.body,
       sendAt: timestamp
     };
-    
+
     return this.send(msg);
   }
   

@@ -8,6 +8,11 @@ const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
+// import { EmailService } from "./services/email-service";
+//let mailer = new EmailService("Subject", "Body", "test@example.com");
+
+const EmailService = require("./services/email-service").default;
+
 // Connect to mongodb using mongoose
 require("dotenv").config();
 const mongoose = require("mongoose");
@@ -46,6 +51,12 @@ app
     });
 
     // TODO: delete later (sorry)
+    let mailer = new EmailService("Subject", "Body", "test@example.com");
+    mailer
+      .sendTo()
+      .then(response => console.log(response))
+      .catch(err => console.log(err.message));
+    return;
     // using Twilio SendGrid's v3 Node.js Library
     // https://github.com/sendgrid/sendgrid-nodejs
     const sgMail = require("@sendgrid/mail");

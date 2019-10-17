@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./",
-    "start": "concurrently --kill-others \"npm run client\" \"npm run server\"",
-    "dev": "nodemon --exec babel-node ssr-server.js"
+    "build": "next build",
+    "dev": "ts-node-dev --project tsconfig.server.json --respawn --transpileOnly ./src/ssr-server.js",
+    "prod": "tsc --project tsconfig.server.json --rootDir ./src --outDir ./build && node ./build/ssr-server.js",
+    "tsc": "tsc --project tsconfig.server.json --outDir ./build --rootDir ./src"
   },
   "keywords": [],
   "author": "hack4impact",
@@ -15,6 +17,8 @@
     "@babel/core": "^7.6.2",
     "@babel/node": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
+    "@types/node": "^12.11.1",
+    "@types/react": "^16.9.9",
     "babel-eslint": "^10.0.3",
     "concurrently": "^4.1.2",
     "dotenv": "^8.1.0",
@@ -30,7 +34,8 @@
     "nodemon": "^1.19.2",
     "prettier": "1.18.2",
     "sendgrid": "^5.2.3",
-    "typescript": "^3.6.3"
+    "ts-node-dev": "^1.0.0-pre.43",
+    "typescript": "^3.6.4"
   },
   "husky": {
     "hooks": {
@@ -54,7 +59,7 @@
     "express": "^4.17.1",
     "graphql": "^14.5.8",
     "merge-graphql-schemas": "^1.7.0",
-    "next": "^9.0.7",
+    "next": "^9.1.1",
     "react": "^16.10.1",
     "react-dom": "^16.10.1"
   }

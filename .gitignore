@@ -3,3 +3,5 @@ node_modules/
 .env
 .next
 package-lock.json
+build/
+next-env.d.ts
