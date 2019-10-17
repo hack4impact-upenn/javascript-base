@@ -16,11 +16,11 @@
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/index": [
+    "/admin": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ],
-    "/p/[id]": [
+    "/index": [
       "static/runtime/webpack.js",
       "static/runtime/main.js"
     ]

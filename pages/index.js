@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Home from "./home";
 import Link from "next/link";
 
 const PostLink = props => (
@@ -13,6 +12,9 @@ const PostLink = props => (
 const App = () => (
   <div>
     <ul>
+      <li>
+        <Link href="/admin">Admin</Link>
+      </li>
       <PostLink title="hello world"></PostLink>
       <PostLink title="title1"></PostLink>
       <PostLink title="title2"></PostLink>
