@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import Layout from "../components/Layout";
-import Banner from "../components/Banner";
 import Usertable from "../components/Usertable";
-import { Grid, Paper } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
-class Home extends Component {
+class Admin extends Component {
   render() {
     return (
       <Layout>
-        <Banner />
         <Grid item xs={12}>
           <Usertable />
         </Grid>
@@ -17,4 +15,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default Admin;

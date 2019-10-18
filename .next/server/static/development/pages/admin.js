@@ -93,103 +93,6 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
-/***/ "./components/Banner.js":
-/*!******************************!*\
-  !*** ./components/Banner.js ***!
-  \******************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @material-ui/core */ "@material-ui/core");
-/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__);
-var _jsxFileName = "/Users/danieltian/Desktop/Hack4Impact/javascript-base/components/Banner.js";
-var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
-
-
-const style = {
-  Paper: {
-    padding: 20,
-    margin: 20
-  }
-};
-
-const Banner = props => __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Paper"], {
-  style: style.Paper,
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 7
-  },
-  __self: undefined
-}, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Grid"], {
-  container: true,
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 8
-  },
-  __self: undefined
-}, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Grid"], {
-  item: true,
-  sm: true,
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 9
-  },
-  __self: undefined
-}, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Typography"], {
-  variant: "h4",
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 10
-  },
-  __self: undefined
-}, "User Management")), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Grid"], {
-  item: true,
-  sm: true,
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 12
-  },
-  __self: undefined
-}, __jsx("div", {
-  style: {
-    textAlign: "right"
-  },
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 13
-  },
-  __self: undefined
-}, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Button"], {
-  variant: "contained",
-  color: "primary",
-  size: "medium",
-  style: {
-    marginRight: 20
-  },
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 14
-  },
-  __self: undefined
-}, "Invite User"), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_1__["Button"], {
-  variant: "contained",
-  color: "primary",
-  size: "medium",
-  __source: {
-    fileName: _jsxFileName,
-    lineNumber: 22
-  },
-  __self: undefined
-}, "Add User")))));
-
-/* harmony default export */ __webpack_exports__["default"] = (Banner);
-
-/***/ }),
-
 /***/ "./components/Layout.js":
 /*!******************************!*\
   !*** ./components/Layout.js ***!
@@ -409,7 +312,14 @@ function MenuAppBar() {
       lineNumber: 74
     },
     __self: this
-  }, "My account"))))));
+  }, "My account"), __jsx(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_11___default.a, {
+    onClick: handleClose,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 75
+    },
+    __self: this
+  }, "Logout"))))));
 }
 
 /***/ }),
@@ -423,22 +333,69 @@ function MenuAppBar() {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return MaterialTableDemo; });
-/* harmony import */ var _babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/objectSpread */ "./node_modules/@babel/runtime-corejs2/helpers/esm/objectSpread.js");
-/* harmony import */ var _babel_runtime_corejs2_core_js_promise__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/core-js/promise */ "./node_modules/@babel/runtime-corejs2/core-js/promise.js");
-/* harmony import */ var _babel_runtime_corejs2_core_js_promise__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_core_js_promise__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react */ "react");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var material_table__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! material-table */ "material-table");
-/* harmony import */ var material_table__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(material_table__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Usertable; });
+/* harmony import */ var _babel_runtime_corejs2_core_js_promise__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime-corejs2/core-js/promise */ "./node_modules/@babel/runtime-corejs2/core-js/promise.js");
+/* harmony import */ var _babel_runtime_corejs2_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_core_js_promise__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _babel_runtime_corejs2_core_js_object_assign__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @babel/runtime-corejs2/core-js/object/assign */ "./node_modules/@babel/runtime-corejs2/core-js/object/assign.js");
+/* harmony import */ var _babel_runtime_corejs2_core_js_object_assign__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_corejs2_core_js_object_assign__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @babel/runtime-corejs2/helpers/esm/objectSpread */ "./node_modules/@babel/runtime-corejs2/helpers/esm/objectSpread.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var material_table__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! material-table */ "material-table");
+/* harmony import */ var material_table__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(material_table__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @material-ui/core */ "@material-ui/core");
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var _material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @material-ui/core/TextField */ "@material-ui/core/TextField");
+/* harmony import */ var _material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @material-ui/core/Dialog */ "@material-ui/core/Dialog");
+/* harmony import */ var _material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @material-ui/core/DialogActions */ "@material-ui/core/DialogActions");
+/* harmony import */ var _material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_8__);
+/* harmony import */ var _material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @material-ui/core/DialogContent */ "@material-ui/core/DialogContent");
+/* harmony import */ var _material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_9___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_9__);
+/* harmony import */ var _material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @material-ui/core/DialogContentText */ "@material-ui/core/DialogContentText");
+/* harmony import */ var _material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var _material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @material-ui/core/DialogTitle */ "@material-ui/core/DialogTitle");
+/* harmony import */ var _material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_11___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_11__);
+/* harmony import */ var _material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @material-ui/core/MenuItem */ "@material-ui/core/MenuItem");
+/* harmony import */ var _material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_12___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_12__);
+/* harmony import */ var _material_ui_core_FormHelperText__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! @material-ui/core/FormHelperText */ "@material-ui/core/FormHelperText");
+/* harmony import */ var _material_ui_core_FormHelperText__WEBPACK_IMPORTED_MODULE_13___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_FormHelperText__WEBPACK_IMPORTED_MODULE_13__);
+/* harmony import */ var _material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! @material-ui/core/FormControl */ "@material-ui/core/FormControl");
+/* harmony import */ var _material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_14___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_14__);
+/* harmony import */ var _material_ui_core_Select__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! @material-ui/core/Select */ "@material-ui/core/Select");
+/* harmony import */ var _material_ui_core_Select__WEBPACK_IMPORTED_MODULE_15___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_15__);
+/* harmony import */ var _material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @material-ui/core/InputLabel */ "@material-ui/core/InputLabel");
+/* harmony import */ var _material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_16___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_16__);
+
 
 
 var _jsxFileName = "/Users/danieltian/Desktop/Hack4Impact/javascript-base/components/Usertable.js";
-var __jsx = react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement;
+var __jsx = react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement;
 
 
-function MaterialTableDemo() {
-  const [state, setState] = react__WEBPACK_IMPORTED_MODULE_2___default.a.useState({
+
+
+
+
+
+
+
+
+
+
+
+
+const style = {
+  Paper: {
+    padding: 20,
+    margin: 20
+  }
+};
+function Usertable() {
+  const [state, setState] = react__WEBPACK_IMPORTED_MODULE_3___default.a.useState({
+    inviteUserOpen: false,
+    addUserOpen: false,
     columns: [{
       title: "First Name",
       field: "first_name"
@@ -488,10 +445,56 @@ function MaterialTableDemo() {
       userType: 1
     }]
   });
+  const [values, setValues] = react__WEBPACK_IMPORTED_MODULE_3___default.a.useState({
+    userType: ""
+  });
+
+  const handleChange = event => {
+    setValues(oldValues => Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__["default"])({}, oldValues, {
+      [event.target.name]: event.target.value
+    }));
+  };
+
+  function handleInviteClick() {
+    var tempState = _babel_runtime_corejs2_core_js_object_assign__WEBPACK_IMPORTED_MODULE_1___default()({}, state);
+
+    tempState.inviteUserOpen = true;
+    setState(state => {
+      return tempState;
+    });
+  }
+
+  const handleInviteClose = () => {
+    var tempState = _babel_runtime_corejs2_core_js_object_assign__WEBPACK_IMPORTED_MODULE_1___default()({}, state);
+
+    tempState.inviteUserOpen = false;
+    setState(state => {
+      return tempState;
+    });
+  };
+
+  function handleAddClick() {
+    var tempState = _babel_runtime_corejs2_core_js_object_assign__WEBPACK_IMPORTED_MODULE_1___default()({}, state);
+
+    tempState.addUserOpen = true;
+    setState(state => {
+      return tempState;
+    });
+  }
+
+  const handleAddClose = () => {
+    var tempState = _babel_runtime_corejs2_core_js_object_assign__WEBPACK_IMPORTED_MODULE_1___default()({}, state);
+
+    tempState.addUserOpen = false;
+    setState(state => {
+      return tempState;
+    });
+  };
+
   return __jsx("div", {
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 57
+      lineNumber: 116
     },
     __self: this
   }, __jsx("link", {
@@ -499,10 +502,268 @@ function MaterialTableDemo() {
     href: "https://fonts.googleapis.com/icon?family=Material+Icons",
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 58
+      lineNumber: 117
     },
     __self: this
-  }), __jsx(material_table__WEBPACK_IMPORTED_MODULE_3___default.a, {
+  }), __jsx(_material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_7___default.a, {
+    open: state.inviteUserOpen,
+    onClose: handleInviteClose,
+    "aria-labelledby": "form-dialog-title",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 121
+    },
+    __self: this
+  }, __jsx(_material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_11___default.a, {
+    id: "form-dialog-title",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 126
+    },
+    __self: this
+  }, "Invite User"), __jsx(_material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_9___default.a, {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 127
+    },
+    __self: this
+  }, __jsx(_material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_10___default.a, {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 128
+    },
+    __self: this
+  }, "Type in the email address of this user, and we'll take care of the rest."), __jsx(_material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_6___default.a, {
+    autoFocus: true,
+    margin: "dense",
+    id: "name",
+    label: "Email Address",
+    type: "email",
+    fullWidth: true,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 132
+    },
+    __self: this
+  })), __jsx(_material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_8___default.a, {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 141
+    },
+    __self: this
+  }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Button"], {
+    onClick: handleInviteClose,
+    color: "primary",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 142
+    },
+    __self: this
+  }, "Cancel"), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Button"], {
+    onClick: handleInviteClose,
+    color: "primary",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 145
+    },
+    __self: this
+  }, "Send"))), __jsx(_material_ui_core_Dialog__WEBPACK_IMPORTED_MODULE_7___default.a, {
+    open: state.addUserOpen,
+    onClose: handleAddClose,
+    "aria-labelledby": "form-dialog-title",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 151
+    },
+    __self: this
+  }, __jsx(_material_ui_core_DialogTitle__WEBPACK_IMPORTED_MODULE_11___default.a, {
+    id: "form-dialog-title",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 156
+    },
+    __self: this
+  }, "Add User"), __jsx(_material_ui_core_DialogContent__WEBPACK_IMPORTED_MODULE_9___default.a, {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 157
+    },
+    __self: this
+  }, __jsx(_material_ui_core_DialogContentText__WEBPACK_IMPORTED_MODULE_10___default.a, {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 158
+    },
+    __self: this
+  }, "Type in the email address of this user, and we'll take care of the rest."), __jsx(_material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_6___default.a, {
+    autoFocus: true,
+    margin: "dense",
+    id: "name",
+    label: "Name",
+    fullWidth: true,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 162
+    },
+    __self: this
+  }), __jsx(_material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_6___default.a, {
+    margin: "dense",
+    id: "name",
+    label: "Email Address",
+    type: "email",
+    fullWidth: true,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 169
+    },
+    __self: this
+  }), __jsx(_material_ui_core_TextField__WEBPACK_IMPORTED_MODULE_6___default.a, {
+    margin: "dense",
+    id: "name",
+    label: "Password",
+    type: "password",
+    fullWidth: true,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 176
+    },
+    __self: this
+  }), __jsx(_material_ui_core_FormControl__WEBPACK_IMPORTED_MODULE_14___default.a, {
+    fullWidth: true,
+    style: {
+      marginTop: 10
+    },
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 183
+    },
+    __self: this
+  }, __jsx(_material_ui_core_InputLabel__WEBPACK_IMPORTED_MODULE_16___default.a, {
+    htmlFor: "age-auto-width",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 184
+    },
+    __self: this
+  }, "User Type"), __jsx(_material_ui_core_Select__WEBPACK_IMPORTED_MODULE_15___default.a, {
+    value: values.userType,
+    onChange: handleChange,
+    inputProps: {
+      name: "userType",
+      id: "age-auto-width"
+    },
+    autoWidth: true,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 185
+    },
+    __self: this
+  }, __jsx(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_12___default.a, {
+    value: 10,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 194
+    },
+    __self: this
+  }, "Admin"), __jsx(_material_ui_core_MenuItem__WEBPACK_IMPORTED_MODULE_12___default.a, {
+    value: 20,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 195
+    },
+    __self: this
+  }, "Member")))), __jsx(_material_ui_core_DialogActions__WEBPACK_IMPORTED_MODULE_8___default.a, {
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 199
+    },
+    __self: this
+  }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Button"], {
+    onClick: handleAddClose,
+    color: "primary",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 200
+    },
+    __self: this
+  }, "Cancel"), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Button"], {
+    onClick: handleAddClose,
+    color: "primary",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 203
+    },
+    __self: this
+  }, "Send"))), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Paper"], {
+    style: style.Paper,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 209
+    },
+    __self: this
+  }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Grid"], {
+    container: true,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 210
+    },
+    __self: this
+  }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Grid"], {
+    item: true,
+    sm: true,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 211
+    },
+    __self: this
+  }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Typography"], {
+    variant: "h4",
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 212
+    },
+    __self: this
+  }, "User Management")), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Grid"], {
+    item: true,
+    sm: true,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 214
+    },
+    __self: this
+  }, __jsx("div", {
+    style: {
+      textAlign: "right"
+    },
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 215
+    },
+    __self: this
+  }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Button"], {
+    variant: "contained",
+    color: "primary",
+    size: "medium",
+    style: {
+      marginRight: 20
+    },
+    onClick: handleInviteClick,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 216
+    },
+    __self: this
+  }, "Invite User"), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_5__["Button"], {
+    variant: "contained",
+    color: "primary",
+    size: "medium",
+    onClick: handleAddClick,
+    __source: {
+      fileName: _jsxFileName,
+      lineNumber: 225
+    },
+    __self: this
+  }, "Add User"))))), __jsx(material_table__WEBPACK_IMPORTED_MODULE_4___default.a, {
     title: "Registered Users",
     columns: state.columns,
     style: {
@@ -511,22 +772,22 @@ function MaterialTableDemo() {
     },
     data: state.data,
     editable: {
-      onRowUpdate: (newData, oldData) => new _babel_runtime_corejs2_core_js_promise__WEBPACK_IMPORTED_MODULE_1___default.a(resolve => {
+      onRowUpdate: (newData, oldData) => new _babel_runtime_corejs2_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(resolve => {
         setTimeout(() => {
           resolve();
           const data = [...state.data];
           data[data.indexOf(oldData)] = newData;
-          setState(Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          setState(Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__["default"])({}, state, {
             data
           }));
         }, 600);
       }),
-      onRowDelete: oldData => new _babel_runtime_corejs2_core_js_promise__WEBPACK_IMPORTED_MODULE_1___default.a(resolve => {
+      onRowDelete: oldData => new _babel_runtime_corejs2_core_js_promise__WEBPACK_IMPORTED_MODULE_0___default.a(resolve => {
         setTimeout(() => {
           resolve();
           const data = [...state.data];
           data.splice(data.indexOf(oldData), 1);
-          setState(Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_0__["default"])({}, state, {
+          setState(Object(_babel_runtime_corejs2_helpers_esm_objectSpread__WEBPACK_IMPORTED_MODULE_2__["default"])({}, state, {
             data
           }));
         }, 600);
@@ -534,11 +795,22 @@ function MaterialTableDemo() {
     },
     __source: {
       fileName: _jsxFileName,
-      lineNumber: 62
+      lineNumber: 237
     },
     __self: this
   }));
 }
+
+/***/ }),
+
+/***/ "./node_modules/@babel/runtime-corejs2/core-js/object/assign.js":
+/*!**********************************************************************!*\
+  !*** ./node_modules/@babel/runtime-corejs2/core-js/object/assign.js ***!
+  \**********************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! core-js/library/fn/object/assign */ "core-js/library/fn/object/assign");
 
 /***/ }),
 
@@ -682,10 +954,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _components_Layout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Layout */ "./components/Layout.js");
-/* harmony import */ var _components_Banner__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Banner */ "./components/Banner.js");
-/* harmony import */ var _components_Usertable__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Usertable */ "./components/Usertable.js");
-/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @material-ui/core */ "@material-ui/core");
-/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _components_Usertable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Usertable */ "./components/Usertable.js");
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @material-ui/core */ "@material-ui/core");
+/* harmony import */ var _material_ui_core__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__);
 var _jsxFileName = "/Users/danieltian/Desktop/Hack4Impact/javascript-base/pages/admin.js";
 var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
@@ -693,33 +964,26 @@ var __jsx = react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement;
 
 
 
-
-class Home extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+class Admin extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
   render() {
     return __jsx(_components_Layout__WEBPACK_IMPORTED_MODULE_1__["default"], {
+      __source: {
+        fileName: _jsxFileName,
+        lineNumber: 9
+      },
+      __self: this
+    }, __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_3__["Grid"], {
+      item: true,
+      xs: 12,
       __source: {
         fileName: _jsxFileName,
         lineNumber: 10
       },
       __self: this
-    }, __jsx(_components_Banner__WEBPACK_IMPORTED_MODULE_2__["default"], {
+    }, __jsx(_components_Usertable__WEBPACK_IMPORTED_MODULE_2__["default"], {
       __source: {
         fileName: _jsxFileName,
         lineNumber: 11
-      },
-      __self: this
-    }), __jsx(_material_ui_core__WEBPACK_IMPORTED_MODULE_4__["Grid"], {
-      item: true,
-      xs: 12,
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 12
-      },
-      __self: this
-    }, __jsx(_components_Usertable__WEBPACK_IMPORTED_MODULE_3__["default"], {
-      __source: {
-        fileName: _jsxFileName,
-        lineNumber: 13
       },
       __self: this
     })));
@@ -727,7 +991,7 @@ class Home extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
 
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (Home);
+/* harmony default export */ __webpack_exports__["default"] = (Admin);
 
 /***/ }),
 
@@ -765,6 +1029,72 @@ module.exports = require("@material-ui/core/AppBar");
 
 /***/ }),
 
+/***/ "@material-ui/core/Dialog":
+/*!*******************************************!*\
+  !*** external "@material-ui/core/Dialog" ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Dialog");
+
+/***/ }),
+
+/***/ "@material-ui/core/DialogActions":
+/*!**************************************************!*\
+  !*** external "@material-ui/core/DialogActions" ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/DialogActions");
+
+/***/ }),
+
+/***/ "@material-ui/core/DialogContent":
+/*!**************************************************!*\
+  !*** external "@material-ui/core/DialogContent" ***!
+  \**************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/DialogContent");
+
+/***/ }),
+
+/***/ "@material-ui/core/DialogContentText":
+/*!******************************************************!*\
+  !*** external "@material-ui/core/DialogContentText" ***!
+  \******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/DialogContentText");
+
+/***/ }),
+
+/***/ "@material-ui/core/DialogTitle":
+/*!************************************************!*\
+  !*** external "@material-ui/core/DialogTitle" ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/DialogTitle");
+
+/***/ }),
+
+/***/ "@material-ui/core/FormControl":
+/*!************************************************!*\
+  !*** external "@material-ui/core/FormControl" ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/FormControl");
+
+/***/ }),
+
 /***/ "@material-ui/core/FormControlLabel":
 /*!*****************************************************!*\
   !*** external "@material-ui/core/FormControlLabel" ***!
@@ -787,6 +1117,17 @@ module.exports = require("@material-ui/core/FormGroup");
 
 /***/ }),
 
+/***/ "@material-ui/core/FormHelperText":
+/*!***************************************************!*\
+  !*** external "@material-ui/core/FormHelperText" ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/FormHelperText");
+
+/***/ }),
+
 /***/ "@material-ui/core/IconButton":
 /*!***********************************************!*\
   !*** external "@material-ui/core/IconButton" ***!
@@ -795,6 +1136,17 @@ module.exports = require("@material-ui/core/FormGroup");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/IconButton");
+
+/***/ }),
+
+/***/ "@material-ui/core/InputLabel":
+/*!***********************************************!*\
+  !*** external "@material-ui/core/InputLabel" ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/InputLabel");
 
 /***/ }),
 
@@ -820,6 +1172,17 @@ module.exports = require("@material-ui/core/MenuItem");
 
 /***/ }),
 
+/***/ "@material-ui/core/Select":
+/*!*******************************************!*\
+  !*** external "@material-ui/core/Select" ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/Select");
+
+/***/ }),
+
 /***/ "@material-ui/core/Switch":
 /*!*******************************************!*\
   !*** external "@material-ui/core/Switch" ***!
@@ -828,6 +1191,17 @@ module.exports = require("@material-ui/core/MenuItem");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/core/Switch");
+
+/***/ }),
+
+/***/ "@material-ui/core/TextField":
+/*!**********************************************!*\
+  !*** external "@material-ui/core/TextField" ***!
+  \**********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("@material-ui/core/TextField");
 
 /***/ }),
 
@@ -883,6 +1257,17 @@ module.exports = require("@material-ui/icons/AccountCircle");
 /***/ (function(module, exports) {
 
 module.exports = require("@material-ui/icons/Menu");
+
+/***/ }),
+
+/***/ "core-js/library/fn/object/assign":
+/*!***************************************************!*\
+  !*** external "core-js/library/fn/object/assign" ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("core-js/library/fn/object/assign");
 
 /***/ }),
 
