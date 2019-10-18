@@ -8,7 +8,6 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import MenuItem from "@material-ui/core/MenuItem";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -70,6 +69,10 @@ export default function Usertable() {
   });
 
   const [values, setValues] = React.useState({
+    inputFirstName: "",
+    inputLastName: "",
+    inputEmail: "",
+    inputPassword: "",
     userType: ""
   });
 
@@ -81,35 +84,67 @@ export default function Usertable() {
   };
 
   function handleInviteClick() {
-    var tempState = Object.assign({}, state);
-    tempState.inviteUserOpen = true;
-    setState(state => {
-      return tempState;
-    });
+    setState(oldStates => ({
+      ...oldStates,
+      inviteUserOpen: true
+    }));
   }
 
   const handleInviteClose = () => {
-    var tempState = Object.assign({}, state);
-    tempState.inviteUserOpen = false;
-    setState(state => {
-      return tempState;
-    });
+    setState(oldStates => ({
+      ...oldStates,
+      inviteUserOpen: false
+    }));
   };
 
   function handleAddClick() {
-    var tempState = Object.assign({}, state);
-    tempState.addUserOpen = true;
-    setState(state => {
-      return tempState;
-    });
+    setState(oldStates => ({
+      ...oldStates,
+      addUserOpen: true
+    }));
   }
 
   const handleAddClose = () => {
-    var tempState = Object.assign({}, state);
-    tempState.addUserOpen = false;
-    setState(state => {
-      return tempState;
-    });
+    setState(oldStates => ({
+      ...oldStates,
+      addUserOpen: false
+    }));
+
+    setValues({});
+  };
+
+  const handleAddSubmit = () => {
+    // Check if values are empty
+    // TODO: more sophisticated checking once connected to backend
+    if (
+      values.inputFirstName === "" ||
+      values.inputLastName === "" ||
+      values.inputEmail === "" ||
+      values.inputPassword === "" ||
+      values.userType === ""
+    ) {
+      return;
+    }
+
+    let newData = {
+      first_name: values.inputFirstName,
+      last_name: values.inputLastName,
+      email: values.inputEmail,
+      password: values.inputPassword,
+      userType: values.userType
+    };
+
+    let data = state.data;
+    data.unshift(newData);
+
+    console.log(data);
+    setState(oldStates => ({
+      ...oldStates,
+      addUserOpen: false,
+      data: data
+    }));
+
+    setValues({});
   };
 
   return (
@@ -156,43 +191,67 @@ export default function Usertable() {
         <DialogTitle id="form-dialog-title">Add User</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Type in the email address of this user, and we'll take care of the
-            rest.
+            Fill in the information below to add the user manually.
           </DialogContentText>
           <TextField
-            autoFocus
             margin="dense"
-            id="name"
-            label="Name"
-            fullWidth
+            id="first_name"
+            label="First Name"
+            style={{ width: "47.5%", marginRight: "5%" }}
+            value={values.inputFirstName}
+            onChange={handleChange}
+            inputProps={{
+              name: "inputFirstName"
+            }}
+            autoFocus
           />
           <TextField
             margin="dense"
-            id="name"
+            id="last_name"
+            label="Last Name"
+            style={{ width: "47.5%" }}
+            value={values.inputLastName}
+            onChange={handleChange}
+            inputProps={{
+              name: "inputLastName"
+            }}
+          />
+          <TextField
+            margin="dense"
+            id="email"
             label="Email Address"
             type="email"
             fullWidth
+            value={values.inputEmail}
+            onChange={handleChange}
+            inputProps={{
+              name: "inputEmail"
+            }}
           />
           <TextField
             margin="dense"
-            id="name"
+            id="password"
             label="Password"
             type="password"
             fullWidth
+            value={values.inputPassword}
+            onChange={handleChange}
+            inputProps={{
+              name: "inputPassword"
+            }}
           />
           <FormControl fullWidth style={{ marginTop: 10 }}>
-            <InputLabel htmlFor="age-auto-width">User Type</InputLabel>
+            <InputLabel>User Type</InputLabel>
             <Select
               value={values.userType}
               onChange={handleChange}
               inputProps={{
-                name: "userType",
-                id: "age-auto-width"
+                name: "userType"
               }}
               autoWidth
             >
-              <MenuItem value={10}>Admin</MenuItem>
-              <MenuItem value={20}>Member</MenuItem>
+              <MenuItem value={0}>Admin</MenuItem>
+              <MenuItem value={1}>Member</MenuItem>
             </Select>
           </FormControl>
         </DialogContent>
@@ -200,8 +259,8 @@ export default function Usertable() {
           <Button onClick={handleAddClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleAddClose} color="primary">
-            Send
+          <Button onClick={handleAddSubmit} color="primary">
+            Save
           </Button>
         </DialogActions>
       </Dialog>
