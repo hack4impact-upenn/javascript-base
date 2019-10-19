@@ -50,28 +50,14 @@ app
       console.log("> Ready on http://localhost:3000");
     });
 
-    // TODO: delete later (sorry)
+    // -----TODO: delete later (sorry)
     let mailer = new EmailService("Subject", "Body", "test@example.com");
     mailer
-      .sendTo()
-      .then(response => console.log(response))
+      .sendTo(["hack4impact@gmail.com"])
+      .then(response => console.log(response.statusCode))
       .catch(err => console.log(err.message));
     return;
-    // using Twilio SendGrid's v3 Node.js Library
-    // https://github.com/sendgrid/sendgrid-nodejs
-    const sgMail = require("@sendgrid/mail");
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
-      to: "test@example.com",
-      from: "test@example.com",
-      subject: "Sending with Twilio SendGrid is Fun",
-      text: "and easy to do anywhere, even with Node.js",
-      html: "<strong>and easy to do anywhere, even with Node.js</strong>"
-    };
-    sgMail
-      .send(msg)
-      .then(response => console.log(response))
-      .catch(error => console.log(error.message));
+    // -----End of delete
   })
   .catch(ex => {
     console.error(ex.stack);
