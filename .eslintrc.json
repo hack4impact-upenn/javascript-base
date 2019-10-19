@@ -6,7 +6,8 @@
     },
     "extends": [
         "plugin:prettier/recommended",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -24,7 +25,7 @@
     "parser": "babel-eslint",
     "plugins": ["react"],
     "rules": {
-        "prettier/prettier": "warn",
+        "prettier/prettier": "off",
         "react/react-in-jsx-scope": "off",
         "react/prop-types": "warn"
     }
