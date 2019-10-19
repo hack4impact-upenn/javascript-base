@@ -11,6 +11,9 @@ const PostLink = props => (
 
 const Index = () => (
   <div>
+    <h1>
+      <a href="/api">GraphQL</a>
+    </h1>
     <ul>
       <PostLink title="hello world"></PostLink>
       <PostLink title="title1"></PostLink>
