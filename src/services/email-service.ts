@@ -17,12 +17,6 @@ export default class EmailService {
   }
   
   sendTo(recipients: [string]): Promise<any> {
-    // Validate each email address and remove invalid emails.
-    for (let i: number = 0; i < recipients.length; i++) {
-      if (!this.emailIsValid(recipients[i])) {
-        recipients.splice(i, 1);
-      }
-    }
     const msg = {
       to: recipients,
       from: this.sender,
@@ -47,9 +41,15 @@ export default class EmailService {
   
   private send(msg: any): Promise<any> {
     if (!msg) {
-      console.log("Empty message");
+      throw new Error('Empty message');
     }
+
     let numRecipients: number = msg.to.length;
+    // validate each email address
+    let invalidEmails = msg.to.filter((email: string) => !this.emailIsValid(email));
+    if (invalidEmails.length > 0) {
+      throw new Error(`Attempted to send email to invalid addresses: ${invalidEmails}`);
+    }
     if (numRecipients == 0) {
       throw new Error('Empty list of email recipients');
     }
