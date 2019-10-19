@@ -15,22 +15,23 @@ const users = {
 
 import { User } from "../../models";
 import { UserInputError } from "apollo-server";
+import bcrypt from "bcrypt";
 
 const resolvers = {
   Query: {
     allUsers: parent => {
-      return Object.values(users);
+      return User.find({});
     },
     user: (parent, { id }) => {
-      return users[id];
+      return User.findOne(id);
     },
     login: async (parent, { email, password }) => {
       let u = await User.findOne({ email: email });
-      console.log(u);
       if (u == null) {
         throw new UserInputError("Username or Password is incorrect");
       } else {
-        if (u.comparePassword(password)) {
+        let valid = await u.comparePassword(password);
+        if (valid) {
           return u;
         } else {
           throw new UserInputError("Username or Password is incorrect");
@@ -48,11 +49,15 @@ const resolvers = {
       if (count != 0) {
         throw new UserInputError("Account already exists");
       }
+
+      let salt = await bcrypt.genSalt(10);
+      let hashed_password = await bcrypt.hash(password, salt);
+
       let newUser = new User({
         firstName: firstName,
         lastName: lastName,
         email: email,
-        password: password
+        password: hashed_password
       });
       newUser.save();
       return newUser;
