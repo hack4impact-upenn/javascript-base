@@ -11,6 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import InputLabel from "@material-ui/core/InputLabel";
+import UserData from "./UserData.json";
 
 const style = { Paper: { padding: 20, margin: 20 } };
 
@@ -19,8 +20,8 @@ export default function Usertable() {
     inviteUserOpen: false,
     addUserOpen: false,
     columns: [
-      { title: "First Name", field: "first_name" },
-      { title: "Last Name", field: "last_name" },
+      { title: "First Name", field: "firstName" },
+      { title: "Last Name", field: "lastName" },
       { title: "Email", field: "email" },
       {
         title: "User Type",
@@ -28,44 +29,7 @@ export default function Usertable() {
         lookup: { 0: "Admin", 1: "Member" }
       }
     ],
-    data: [
-      {
-        first_name: "John",
-        last_name: "Smith",
-        email: "jsmith@gmail.com",
-        userType: 1
-      },
-      {
-        first_name: "Sam",
-        last_name: "Smith",
-        email: "jsmith@gmail.com",
-        userType: 0
-      },
-      {
-        first_name: "Bob",
-        last_name: "Smith",
-        email: "jsmith@gmail.com",
-        userType: 1
-      },
-      {
-        first_name: "Ben",
-        last_name: "Franklin",
-        email: "jsmith@gmail.com",
-        userType: 0
-      },
-      {
-        first_name: "Amy",
-        last_name: "Gutmann",
-        email: "jsmith@gmail.com",
-        userType: 0
-      },
-      {
-        first_name: "Rajiv",
-        last_name: "Gandhi",
-        email: "jsmith@gmail.com",
-        userType: 1
-      }
-    ]
+    data: UserData
   });
 
   const [values, setValues] = React.useState({
@@ -126,18 +90,17 @@ export default function Usertable() {
       return;
     }
 
-    let newData = {
-      first_name: values.inputFirstName,
-      last_name: values.inputLastName,
+    const newData = {
+      firstName: values.inputFirstName,
+      lastName: values.inputLastName,
       email: values.inputEmail,
       password: values.inputPassword,
       userType: values.userType
     };
 
-    let data = state.data;
+    const data = state.data;
     data.unshift(newData);
 
-    console.log(data);
     setState(oldStates => ({
       ...oldStates,
       addUserOpen: false,
@@ -149,10 +112,6 @@ export default function Usertable() {
 
   return (
     <div>
-      <link
-        rel="stylesheet"
-        href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      />
       <Dialog
         open={state.inviteUserOpen}
         onClose={handleInviteClose}
@@ -161,7 +120,7 @@ export default function Usertable() {
         <DialogTitle id="form-dialog-title">Invite User</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Type in the email address of this user, and we'll take care of the
+            Type in the email address of this user, and we will take care of the
             rest.
           </DialogContentText>
           <TextField
@@ -195,7 +154,7 @@ export default function Usertable() {
           </DialogContentText>
           <TextField
             margin="dense"
-            id="first_name"
+            id="firstName"
             label="First Name"
             style={{ width: "47.5%", marginRight: "5%" }}
             value={values.inputFirstName}
@@ -207,7 +166,7 @@ export default function Usertable() {
           />
           <TextField
             margin="dense"
-            id="last_name"
+            id="lastName"
             label="Last Name"
             style={{ width: "47.5%" }}
             value={values.inputLastName}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import Layout from "../components/Layout";
-import Usertable from "../components/Usertable";
+import Layout from "../components/admin/Layout";
+import Usertable from "../components/admin/Usertable";
 import { Grid } from "@material-ui/core";
 
 class Admin extends Component {
