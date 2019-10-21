@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./",
     "build": "next build",
-    "dev": "ts-node-dev --project tsconfig.server.json --respawn --transpileOnly ./src/ssr-server.js",
+    "dev": "ts-node-dev --project tsconfig.server.json --respawn --transpileOnly ./src/ssr-server.ts",
     "prod": "tsc --project tsconfig.server.json --rootDir ./src --outDir ./build && node ./build/ssr-server.js",
     "tsc": "tsc --project tsconfig.server.json --outDir ./build --rootDir ./src"
   },
@@ -17,9 +17,12 @@
     "@babel/core": "^7.6.2",
     "@babel/node": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
+    "@types/mongoose": "^5.5.22",
     "@types/next": "^8.0.6",
     "@types/node": "^12.11.1",
     "@types/react": "^16.9.9",
+    "@typescript-eslint/eslint-plugin": "^2.4.0",
+    "@typescript-eslint/parser": "^2.4.0",
     "babel-eslint": "^10.0.3",
     "concurrently": "^4.1.2",
     "dotenv": "^8.1.0",
