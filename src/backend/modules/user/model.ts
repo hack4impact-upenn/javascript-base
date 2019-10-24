@@ -53,6 +53,22 @@ export const UserSchema = new Schema({
     default: false,
     required: true
   }
+});
+
+export function generateFakeUsers(count: number = 10): IUser[] {
+  let users: IUser[] = [];
+
+  // Generate count # of fake users
+  for (var i = 0; i < count; i++) {
+    const user: IUser = {
+      firstName: faker.name.firstName(),
+      lastName: faker.name.lastName(),
+      email: faker.internet.email(),
+      password: 'password',
+      role: randomChoice(ROLES),
+    }
+    users.push(user);
+  }
 
   // Generate a development test user for each role
   for (let role of ROLES) {
