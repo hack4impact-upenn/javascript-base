@@ -2,7 +2,7 @@
 const sgMail = require('@sendgrid/mail');
 
 /**
- * A service for sending an email to one or more recipients.
+ * Send an email to one or more recipients.
  */
 export default class EmailService {
   public subject: string;

@@ -38,6 +38,11 @@ export const UserSchema = new Schema({
     type: String,
     enum: ROLES,
     required: true
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+    required: true
   }
 });
 
