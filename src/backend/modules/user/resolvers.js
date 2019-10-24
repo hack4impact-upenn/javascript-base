@@ -16,7 +16,7 @@ const users = {
 import { User } from "../../models";
 import { UserInputError } from "apollo-server";
 import bcrypt from "bcrypt";
-
+    
 const resolvers = {
   Query: {
     allUsers: parent => {
