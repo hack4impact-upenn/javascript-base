@@ -19,6 +19,7 @@ const Index = () => (
   <div>
     <ul>
       <li><a href="/api">GraphQL</a></li>
+      <li><a href="/login">Login</a></li>
       <PostLink title="hello world"></PostLink>
       <PostLink title="title1"></PostLink>
       <PostLink title="title2"></PostLink>

@@ -18,6 +18,7 @@
     "@babel/node": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@types/bcrypt": "^3.0.0",
+    "@types/material-ui": "^0.21.7",
     "@types/mongoose": "^5.5.22",
     "@types/next": "^8.0.6",
     "@types/node": "^12.11.1",
@@ -26,7 +27,7 @@
     "@typescript-eslint/parser": "^2.4.0",
     "babel-eslint": "^10.0.3",
     "concurrently": "^4.1.2",
-    "dotenv": "^8.1.0",
+    "dotenv": "^8.2.0",
     "eslint": "^6.5.0",
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-prettier": "^3.1.1",
@@ -61,12 +62,15 @@
     "@zeit/next-css": "^1.0.1",
     "apollo-server": "^2.9.5",
     "apollo-server-express": "^2.9.5",
+    "axios": "^0.19.0",
     "bcrypt": "^3.0.6",
     "express": "^4.17.1",
     "graphql": "^14.5.8",
+    "material-ui": "^0.20.2",
     "merge-graphql-schemas": "^1.7.0",
     "next": "^9.1.1",
     "react": "^16.10.1",
-    "react-dom": "^16.10.1"
+    "react-dom": "^16.10.1",
+    "react-tap-event-plugin": "^3.0.3"
   }
 }
