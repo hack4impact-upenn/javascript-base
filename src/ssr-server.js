@@ -1,22 +1,19 @@
+import { schemas, resolvers } from './backend/graphql';
+import { ApolloServer } from 'apollo-server-express';
+
 import express from 'express';
 import next from 'next';
-import mongoose from 'mongoose';
-import { ApolloServer } from 'apollo-server-express';
-import { config } from 'dotenv';
-import path from 'path';
-
-import { schemas, resolvers } from './backend/graphql';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
+import path from 'path';
 
 // Connect to mongodb using mongoose
+import { config } from 'dotenv';
 config({ path: path.resolve(__dirname, '../.env') });
 
-if (!process.env.MONGODB_URI) {
-  console.log('> Warning: add MONGODB_URI to .env file')
-}
+import mongoose from 'mongoose';
 mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true
@@ -26,7 +23,7 @@ const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'Connection error:'));
 db.once('open', async function() {
-  console.log('> Connected to database');
+  console.log('Connected to database');
 });
 
 const apolloServer = new ApolloServer({

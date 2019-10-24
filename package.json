@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./",
     "build": "next build",
-    "dev": "ts-node-dev --project tsconfig.server.json --respawn --transpileOnly ./src/ssr-server.ts",
+    "dev": "ts-node-dev --project tsconfig.server.json --respawn --transpileOnly ./src/ssr-server.js",
     "prod": "tsc --project tsconfig.server.json --rootDir ./src --outDir ./build && node ./build/ssr-server.js",
     "tsc": "tsc --project tsconfig.server.json --outDir ./build --rootDir ./src"
   },
