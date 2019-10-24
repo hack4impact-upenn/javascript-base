@@ -1,7 +1,7 @@
-import express from 'express';
+const express = require('express');
 const app = express();
-import mongoose from 'mongoose';
-import dummy from 'mongoose-dummy';
+const mongoose = require('mongoose');
+const dummy = require('mongoose-dummy'); 
 
 // Connect to mongodb using mongoose
 require("dotenv").config();

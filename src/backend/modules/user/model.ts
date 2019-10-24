@@ -30,5 +30,10 @@ export const UserSchema = new Schema({
     type: String,
     enum: ["User", "Admin"],
     required: true
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+    required: true
   }
 });
