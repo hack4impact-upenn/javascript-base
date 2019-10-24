@@ -5,6 +5,7 @@ export interface IUser {
   lastName: string;
   email: string;
   password: string;
+  role: string;
 }
 
 export const UserSchema = new Schema({
@@ -23,6 +24,11 @@ export const UserSchema = new Schema({
   },
   password: {
     type: String,
+    required: true
+  },
+  role: {
+    type: String,
+    enum: ["User", "Admin"],
     required: true
   }
 });

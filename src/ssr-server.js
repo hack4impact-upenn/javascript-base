@@ -29,6 +29,9 @@ db.once('open', async function() {
 const apolloServer = new ApolloServer({
   typeDefs: schemas,
   resolvers: resolvers,
+  context: {
+    mongoose: mongoose
+  },
   playground: true
 });
 
