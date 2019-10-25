@@ -16,7 +16,8 @@ config({ path: path.resolve(__dirname, '../.env') });
 import mongoose from 'mongoose';
 mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
-  useNewUrlParser: true
+  useNewUrlParser: true,
+  useCreateIndex: true,
 });
 
 const db = mongoose.connection;

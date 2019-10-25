@@ -9,7 +9,7 @@
     "dev": "ts-node-dev --project tsconfig.server.json --respawn --transpileOnly ./src/ssr-server.js",
     "prod": "tsc --project tsconfig.server.json --rootDir ./src --outDir ./build && node ./build/ssr-server.js",
     "tsc": "tsc --project tsconfig.server.json --outDir ./build --rootDir ./src",
-    "fake": "node fakedata.ts"
+    "fake": "ts-node --project tsconfig.server.json ./src/fake-data.ts"
   },
   "keywords": [],
   "author": "hack4impact",
@@ -19,6 +19,7 @@
     "@babel/node": "^7.6.2",
     "@babel/preset-env": "^7.6.2",
     "@types/bcrypt": "^3.0.0",
+    "@types/faker": "^4.1.6",
     "@types/material-ui": "^0.21.7",
     "@types/mongoose": "^5.5.22",
     "@types/next": "^8.0.6",
@@ -34,6 +35,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.14.3",
     "express": "^4.17.1",
+    "faker": "^4.1.0",
     "husky": "^3.0.7",
     "lint-staged": "^9.4.0",
     "mongodb": "^3.3.2",
@@ -41,6 +43,7 @@
     "nodemon": "^1.19.2",
     "prettier": "1.18.2",
     "sendgrid": "^5.2.3",
+    "ts-node": "^8.4.1",
     "ts-node-dev": "^1.0.0-pre.43",
     "typescript": "^3.6.4"
   },
