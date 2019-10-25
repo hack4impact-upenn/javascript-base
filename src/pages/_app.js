@@ -6,6 +6,7 @@ import Head from "next/head";
 import { ThemeProvider } from "@material-ui/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import theme from "../components/theme";
+import axios from "axios";
 
 export default class MyApp extends App {
   componentDidMount() {
