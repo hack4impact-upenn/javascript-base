@@ -1,2 +1,6 @@
 node_modules/
 webpack.config.js
+.DS_Store
+.env
+.next/
+package-lock.json
