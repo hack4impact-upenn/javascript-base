@@ -14,6 +14,17 @@ npm install
 
 #### Setup MongoDB
 
+#### MongoDB Atlas
+1. Create a free account with [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+2. Create a new project.
+3. To connect to your MongoDB cluster, click "CONNECT" and choose "Connect Your Application." Copy your connection string into a `.env` file in the project's root directory. You'll need to add the desired name of your database to the end of the connection string:
+```
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0-r7tx0.mongodb.net/<db-name>
+```
+
+4. Under Network Access in Security, add your computer's IP address to the IP Whitelist.
+
+#### mLab
 Create a free account with [mLab](https://mlab.com/). Then, [create new Sandbox database subscription](https://mlab.com/create/wizard). 
 
 <img src="https://docs.mlab.com/assets/screenshot-createwizard.png" width="700" />
