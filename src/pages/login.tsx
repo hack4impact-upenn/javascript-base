@@ -1,10 +1,6 @@
 import React from "react";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import AppBar from "material-ui/AppBar";
-import RaisedButton from "material-ui/RaisedButton";
-import TextField from "material-ui/TextField";
-import { Grid } from "@material-ui/core";
 import axios from "axios";
+import { AppBar, Button, Grid, TextField } from '@material-ui/core';
 
 
 interface LoginPageState {
@@ -13,7 +9,7 @@ interface LoginPageState {
 }
 
 class LoginPage extends React.Component<{}, LoginPageState> {
-  
+
   state: LoginPageState = {
     username: "",
     password: ""
@@ -47,42 +43,39 @@ class LoginPage extends React.Component<{}, LoginPageState> {
   public render() {
     return (
       <div>
-        <MuiThemeProvider>
-          <div>
-            <AppBar title="Login" />
-            <Grid
-              container
-              spacing={0}
-              direction="column"
-              alignItems="center"
-              justify="center"
-            >
-              <TextField
-                hintText="Enter your Username"
-                floatingLabelText="Username"
-                onChange={(_: React.FormEvent<{}>, newValue: string) =>
-                  this.setState({ username: newValue })
-                }
-              />
-              <br />
-              <TextField
-                type="password"
-                hintText="Enter your Password"
-                floatingLabelText="Password"
-                onChange={(_: React.FormEvent<{}>, newValue: string) =>
-                  this.setState({ password: newValue })
-                }
-              />
-              <br />
-              <RaisedButton
-                label="Submit"
-                primary={true}
-                style={{ margin: 15 }}
-                onClick={() => this.handleClick()}
-              />
-            </Grid>
-          </div>
-        </MuiThemeProvider>
+        <AppBar title="Login" />
+        <Grid
+          container
+          spacing={0}
+          direction="column"
+          alignItems="center"
+          justify="center"
+        >
+          <TextField
+            placeholder="Enter your Username"
+            label="Username"
+            onChange={(event) =>
+              this.setState({ username: event.target.value })
+            }
+          />
+          <br />
+          <TextField
+            type="password"
+            placeholder="Enter your Password"
+            label="Password"
+            onChange={(event) =>
+              this.setState({ password: event.target.value })
+            }
+          />
+          <br />
+          <Button
+            color="primary"
+            style={{ margin: 15 }}
+            onClick={() => this.handleClick()}
+          >
+            Submit
+          </Button>
+        </Grid>
       </div>
     );
   }
