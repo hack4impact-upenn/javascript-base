@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint ./",
-    "build": "next build",
-    "dev": "ts-node-dev --project tsconfig.server.json --respawn --transpileOnly ./src/ssr-server.js",
+    "build": "next build && tsc --project tsconfig.server.json",
+    "dev": "nodemon",
     "prod": "tsc --project tsconfig.server.json --rootDir ./src --outDir ./build && node ./build/ssr-server.js",
     "tsc": "tsc --project tsconfig.server.json --outDir ./build --rootDir ./src",
     "fake": "ts-node --project tsconfig.server.json ./src/fake-data.ts"
@@ -44,7 +44,6 @@
     "prettier": "1.18.2",
     "sendgrid": "^5.2.3",
     "ts-node": "^8.4.1",
-    "ts-node-dev": "^1.0.0-pre.43",
     "typescript": "^3.6.4"
   },
   "husky": {

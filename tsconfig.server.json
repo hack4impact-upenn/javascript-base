@@ -8,9 +8,9 @@
     "noEmit": false
   },
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/*.js",
-    "**/*.jsx"
+    "./src/backend/**/*.ts",
+    "./src/backend/**/*.tsx",
+    "./src/backend/**/*.js",
+    "./src/backend/**/*.jsx"
   ],
 }
