@@ -5,9 +5,9 @@ export default class Authenticate extends React.Component {
   // Call to backend ??? Update db so user is authenticated
 
   // Redirect to home when authenticated
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     return(
