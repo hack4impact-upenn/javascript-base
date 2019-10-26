@@ -43,6 +43,11 @@ export const UserSchema = new Schema({
     type: Boolean,
     default: false,
     required: true
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
+    required: true
   }
 });
 
