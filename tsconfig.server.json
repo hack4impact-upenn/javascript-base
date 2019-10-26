@@ -11,6 +11,7 @@
     "./src/backend/**/*.ts",
     "./src/backend/**/*.tsx",
     "./src/backend/**/*.js",
-    "./src/backend/**/*.jsx"
+    "./src/backend/**/*.jsx",
+    "./src/ssr-server.js"
   ],
 }
