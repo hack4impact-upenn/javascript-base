@@ -23,7 +23,7 @@ const resolvers = {
       return User.find({});
     },
     user: (parent, { id }) => {
-      return User.findOne(id);
+      return User.findById(id);
     },
     login: async (parent, { email, password }) => {
       const u = await User.findOne({ email: email });
