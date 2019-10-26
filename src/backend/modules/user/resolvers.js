@@ -34,7 +34,12 @@ const resolvers = {
       } else {
         const valid = await u.comparePassword(password);
         if (valid) {
-          return u;
+          const payload = {
+            user: {
+              id: u.id
+            }
+          };
+          return jwt.sign(payload, config.jwtSecret, { expiresIn: "1d" });
         } else {
           throw new UserInputError("Username or Password is incorrect");
         }
@@ -64,7 +69,6 @@ const resolvers = {
       newUser.password = await bcrypt.hash(password, salt);
       await newUser.save();
 
-      // Return json web token
       const payload = {
         user: {
           id: newUser.id
