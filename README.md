@@ -36,6 +36,11 @@ Make sure to replace `<dbuser>`, `<dbpassword>`, and `<dbname>`. The username an
 
 ## Development
 
+#### Add fake data
+```sh
+npm run fake
+```
+
 #### Run the application
 To run the application:
 ```sh
