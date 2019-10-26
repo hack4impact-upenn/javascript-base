@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Navbar from "../Navbar";
+import Navbar from "./Navbar";
 
 const Layout = props => (
   <div>
@@ -11,7 +11,9 @@ const Layout = props => (
       <title>Admin Dashboard</title>
     </Head>
     <Navbar />
-    <div className="container">{props.children}</div>
+    <div className="container">
+      {props.children}
+    </div>
   </div>
 );
 
