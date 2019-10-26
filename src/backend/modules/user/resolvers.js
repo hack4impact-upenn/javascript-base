@@ -23,14 +23,14 @@ const resolvers = {
       return User.find({});
     },
     user: (parent, { id }) => {
-      return User.findOne(id);
+      return User.findById(id);
     },
     login: async (parent, { email, password }) => {
-      let u = await User.findOne({ email: email });
+      const u = await User.findOne({ email: email });
       if (u == null) {
         throw new UserInputError("Username or Password is incorrect");
       } else {
-        let valid = await u.comparePassword(password);
+        const valid = await u.comparePassword(password);
         if (valid) {
           return u;
         } else {
@@ -45,19 +45,19 @@ const resolvers = {
       { firstName, lastName, email, password },
       context
     ) => {
-      let count = await User.countDocuments({ email: email });
+      const count = await User.countDocuments({ email: email });
       if (count != 0) {
         throw new UserInputError("Account already exists");
       }
 
-      let salt = await bcrypt.genSalt(10);
-      let hashed_password = await bcrypt.hash(password, salt);
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
 
-      let newUser = new User({
+      const newUser = new User({
         firstName: firstName,
         lastName: lastName,
         email: email,
-        password: hashed_password
+        password: hashedPassword
       });
       newUser.save();
       return newUser;
