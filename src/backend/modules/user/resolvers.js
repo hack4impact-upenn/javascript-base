@@ -14,8 +14,10 @@ const users = {
 };
 
 import { User } from "../../models";
+import config from "../../../../config/default.json";
 import { UserInputError } from "apollo-server";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const resolvers = {
   Query: {
@@ -26,11 +28,11 @@ const resolvers = {
       return User.findOne(id);
     },
     login: async (parent, { email, password }) => {
-      let u = await User.findOne({ email: email });
+      const u = await User.findOne({ email: email });
       if (u == null) {
         throw new UserInputError("Username or Password is incorrect");
       } else {
-        let valid = await u.comparePassword(password);
+        const valid = await u.comparePassword(password);
         if (valid) {
           return u;
         } else {
@@ -42,25 +44,34 @@ const resolvers = {
   Mutation: {
     createUser: async (
       parent,
-      { firstName, lastName, email, password },
+      { firstName, lastName, email, password, role },
       context
     ) => {
-      let count = await User.countDocuments({ email: email });
+      const count = await User.countDocuments({ email: email });
       if (count != 0) {
         throw new UserInputError("Account already exists");
       }
 
-      let salt = await bcrypt.genSalt(10);
-      let hashed_password = await bcrypt.hash(password, salt);
-
-      let newUser = new User({
+      const newUser = new User({
         firstName: firstName,
         lastName: lastName,
         email: email,
-        password: hashed_password
+        password: password,
+        role: role
       });
-      newUser.save();
-      return newUser;
+
+      const salt = await bcrypt.genSalt(10);
+      newUser.password = await bcrypt.hash(password, salt);
+      await newUser.save();
+
+      // Return json web token
+      const payload = {
+        user: {
+          id: newUser.id
+        }
+      };
+
+      return jwt.sign(payload, config.jwtSecret, { expiresIn: "1d" });
     }
   }
 };

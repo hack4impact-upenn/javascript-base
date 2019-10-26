@@ -1,11 +1,13 @@
-import { Schema } from 'mongoose';
-import faker from 'faker';
-import { randomChoice, titleCase } from '../../utils';
+import { Schema } from "mongoose";
+import faker from "faker";
+import { randomChoice, titleCase } from "../../utils";
+import { buildSchemaFromTypeDefinitions } from "@kamilkisiela/graphql-tools";
+import bcrypt from "bcrypt";
 
 export enum Role {
-  ADMIN = 'admin',
-  USER = 'user',
-};
+  ADMIN = "admin",
+  USER = "user"
+}
 const ROLES = [Role.ADMIN, Role.USER];
 
 export interface IUser {
@@ -50,9 +52,9 @@ export function generateFakeUsers(count: number = 10): IUser[] {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
-      password: 'password',
-      role: randomChoice(ROLES),
-    }
+      password: "password",
+      role: randomChoice(ROLES)
+    };
     users.push(user);
   }
 
@@ -60,14 +62,18 @@ export function generateFakeUsers(count: number = 10): IUser[] {
   for (let role of ROLES) {
     const user: IUser = {
       firstName: titleCase(role),
-      lastName: 'Example',
+      lastName: "Example",
       email: `${role}@gmail.com`,
-      password: 'password',
-      role,
-    }
+      password: "password",
+      role
+    };
     users.push(user);
   }
 
   // console.log(users)
   return users;
 }
+
+UserSchema.methods.comparePassword = async function(password: string) {
+  return await bcrypt.compare(password, this.password);
+};
