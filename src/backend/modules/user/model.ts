@@ -25,36 +25,6 @@ export class IUser {
   public role?: string;
 }
 
-export const UserSchema = new Schema({
-  firstName: {
-    type: String,
-    required: true
-  },
-  lastName: {
-    type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  role: {
-    type: String,
-    enum: ["User", "Admin"],
-    required: true
-  },
-  isVerified: {
-    type: Boolean,
-    default: false,
-    required: true
-  }
-});
-
 export function generateFakeUsers(count: number = 10): IUser[] {
   let users: IUser[] = [];
 
