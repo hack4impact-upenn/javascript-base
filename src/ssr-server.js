@@ -14,6 +14,7 @@ import { config } from 'dotenv';
 config({ path: path.resolve(__dirname, '../.env') });
 
 import mongoose from 'mongoose';
+import { request } from 'https';
 mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
@@ -30,9 +31,12 @@ db.once('open', async function() {
 const apolloServer = new ApolloServer({
   typeDefs: schemas,
   resolvers: resolvers,
-  context: {
-    mongoose: mongoose
-  },
+  context: 
+    ({ req }) = ({
+      isAuth: req.isAuth,
+      userRole: req.userRole,
+      userId: req.userId
+    }),
   playground: true
 });
 

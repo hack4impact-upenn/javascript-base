@@ -39,7 +39,8 @@ const resolvers = {
         if (valid) {
           const payload = {
             user: {
-              id: u.id
+              id: u.id,
+              role: u.role
             }
           };
 
@@ -80,7 +81,8 @@ const resolvers = {
 
       const payload = {
         user: {
-          id: newUser.id
+          id: newUser.id,
+          role: newUser.role
         }
       };
 
