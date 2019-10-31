@@ -16,6 +16,7 @@ const users = {
 import { User } from "../../models";
 import { UserInputError } from "apollo-server";
 import bcrypt from "bcrypt";
+import { comparePassword } from "./model"
 
 const resolvers = {
   Query: {
@@ -30,7 +31,7 @@ const resolvers = {
       if (u == null) {
         throw new UserInputError("Username or Password is incorrect");
       } else {
-        const valid = await u.comparePassword(password);
+        const valid = await comparePassword(u, password);
         if (valid) {
           return u;
         } else {
@@ -42,7 +43,7 @@ const resolvers = {
   Mutation: {
     createUser: async (
       parent,
-      { firstName, lastName, email, password },
+      { firstName, lastName, email, password, role },
       context
     ) => {
       const count = await User.countDocuments({ email: email });
@@ -57,7 +58,8 @@ const resolvers = {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        password: hashedPassword
+        password: hashedPassword,
+        role: role
       });
       newUser.save();
       return newUser;

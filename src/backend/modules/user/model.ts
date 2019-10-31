@@ -1,6 +1,7 @@
-import { prop, getModelForClass } from '@typegoose/typegoose';
+import { prop, getModelForClass, DocumentType } from '@typegoose/typegoose';
 import faker from 'faker';
 import { randomChoice, titleCase } from '../../utils';
+import bcrypt from "bcrypt"
 
 export enum Role {
   ADMIN = 'admin',
@@ -54,4 +55,8 @@ export function generateFakeUsers(count: number = 10): IUser[] {
 
   // console.log(users)
   return users;
+}
+
+export async function comparePassword (user: DocumentType<IUser>, password : string){
+  return await bcrypt.compare(password, user.password); 
 }
