@@ -14,6 +14,7 @@ export interface IUser {
   email: string;
   password: string;
   role: Role;
+  isVerified: Boolean
 }
 
 export const UserSchema = new Schema({
@@ -44,11 +45,6 @@ export const UserSchema = new Schema({
     default: false,
     required: true
   },
-  isVerified: {
-    type: Boolean,
-    default: false,
-    required: true
-  }
 });
 
 export function generateFakeUsers(count: number = 10): IUser[] {
