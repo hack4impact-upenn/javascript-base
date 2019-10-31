@@ -1,49 +1,55 @@
+const users = {
+  0: {
+    firstName: "Jared",
+    lastName: "Asch",
+    email: "jasch16",
+    password: "passw0rd"
+  },
+  1: {
+    firstName: "Steph",
+    lastName: "Shi",
+    email: "stephshi",
+    password: "123456"
+  }
+};
+
+import { User } from "../../models";
 import { UserInputError } from "apollo-server";
 import bcrypt from "bcrypt";
-import { config } from "dotenv";
-import path from "path";
-import { createTokens } from "../../middleware/auth";
-import { User } from "../../models";
 import { comparePassword } from "./model";
+import jwt from "jsonwebtoken";
+import path from "path";
+import { config } from "dotenv";
 
 config({ path: path.resolve(__dirname, "../../../.env") });
 const resolvers = {
   Query: {
-    emailTaken: async (_, { email }, context) => {
-      return 0 == (await User.countDocuments({ email: email }));
-    },
-    allUsers: (parent, args, context) => {
+    allUsers: parent => {
       return User.find({});
     },
-    user: (parent, { id }, context) => {
+    user: (parent, { id }) => {
       return User.findById(id);
     },
-    me: (_, __, context) => {
-      if (!context.req.userId) {
-        return;
-      }
-
-      return User.findById(context.req.userId);
-    },
-    login: async (_, { email, password }, context) => {
+    login: async (parent, { email, password }) => {
       const u = await User.findOne({ email: email });
       if (u == null) {
         throw new UserInputError("Username or Password is incorrect");
       } else {
         const valid = await comparePassword(u, password);
         if (valid) {
-          // User is succesfully validated
-          const { refreshToken, accessToken } = createTokens(u);
+          const payload = {
+            user: {
+              id: u.id,
+              role: u.role
+            }
+          };
 
-          context.res.cookie("refresh-token", refreshToken, {
-            maxAge: 1000 * 3600 * 24 * 7,
-            httpOnly: true
-          });
-          context.res.cookie("access-token", accessToken, {
-            maxAge: 1000 * 60 * 15,
-            httpOnly: true
-          });
-          return true;
+          return jwt.sign(
+            payload,
+            process.env.JWT_SECRET_KEY,
+            { expiresIn: "1d" },
+            { algorithm: "HS256" }
+          );
         } else {
           throw new UserInputError("Username or Password is incorrect");
         }
@@ -51,8 +57,6 @@ const resolvers = {
     }
   },
   Mutation: {
-    // TODO : Once cookies working, make sure added user has user role if cookie is not set or user
-    // Only admins should be able to add other admins
     createUser: async (
       parent,
       { firstName, lastName, email, password, role },
@@ -71,29 +75,23 @@ const resolvers = {
         lastName: lastName,
         email: email,
         password: hashedPassword,
-        role: role,
-        count: 0
+        role: role
       });
       newUser.save();
 
-      return true;
-    },
-    invalidateTokens: async (_, __, context) => {
-      if (!context.req.userId) {
-        return false;
-      }
+      const payload = {
+        user: {
+          id: newUser.id,
+          role: newUser.role
+        }
+      };
 
-      const user = await User.findById(context.req.userId);
-      if (!user) {
-        return false;
-      }
-      user.count += 1;
-      await user.save();
-
-      context.res.clearCookie("access-token");
-      context.res.clearCookie("refresh-token");
-
-      return true;
+      return jwt.sign(
+        payload,
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: "1d" },
+        { algorithm: "HS256" }
+      );
     }
   }
 };

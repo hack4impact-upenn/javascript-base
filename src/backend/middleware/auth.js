@@ -1,65 +1,26 @@
+import path from "path";
+import { config } from "dotenv";
 import jwt from "jsonwebtoken";
-import { User } from "../models"
 
-export const createTokens = user => {
-  const accessToken = jwt.sign(
-    { userId: user.id, role: user.role },
-    process.env.JWT_SECRET_KEY,
-    {
-      expiresIn: "15min"
-    }
-  );
-  const refreshToken = jwt.sign(
-    {
-      userId: user.id,
-      count: user.count
-    },
-    process.env.JWT_SECRET_KEY,
-    { expiresIn: "7d" }
-  );
+config({ path: path.resolve(__dirname, "../../../.env") });
 
-  return { refreshToken, accessToken };
+// middleware function
+// next indicate it moves onto next
+module.exports = function(request, response, next) {
+  // Get token from header
+  const token = request.header("x-auth-token");
+
+  // Check if not token
+  if (!token) {
+    return response.status(401).json({ msg: "No token, authorization denied" });
+  }
+
+  // Verify token
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    request.user = decoded.user;
+    next();
+  } catch (error) {
+    response.status(401).json({ msg: "Token is not valid" });
+  }
 };
-
-export const authenticate = async (req, res, next) => {
-  const refreshToken = req.cookies["refresh-token"];
-  const accessToken = req.cookies["access-token"];
-  if (!refreshToken && !accessToken) {
-    return next();
-  }
-
-  try {
-    const data = jwt.verify(accessToken, process.env.JWT_SECRET_KEY);
-    req.userId = data.userId;
-    req.role = data.role
-    return next();
-  } catch {}
-
-  if (!refreshToken) {
-    return next();
-  }
-
-  let data;
-
-  try {
-    data = jwt.verify(refreshToken, process.env.JWT_SECRET_KEY);
-  } catch {
-    return next();
-  }
-
-  const user = await User.findById(data.userId);
-
-  // token has been invalidated
-  if (!user || user.count !== data.count) {
-    return next();
-  }
-
-  const tokens = createTokens(user);
-
-  res.cookie("refresh-token", tokens.refreshToken);
-  res.cookie("access-token", tokens.accessToken);
-  req.userId = user.id;
-  req.role = user.role
-
-  next();
-}
