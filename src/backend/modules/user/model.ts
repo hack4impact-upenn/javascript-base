@@ -1,4 +1,4 @@
-import { Schema } from 'mongoose';
+import { prop, getModelForClass } from '@typegoose/typegoose';
 import faker from 'faker';
 import { randomChoice, titleCase } from '../../utils';
 
@@ -8,38 +8,22 @@ export enum Role {
 };
 const ROLES = [Role.ADMIN, Role.USER];
 
-export interface IUser {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  role: Role;
-}
+export class IUser {
+  @prop({ required: true })
+  public firstName!: string;
 
-export const UserSchema = new Schema({
-  firstName: {
-    type: String,
-    required: true
-  },
-  lastName: {
-    type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  role: {
-    type: String,
-    enum: ROLES,
-    required: true
-  }
-});
+  @prop({ required: true })
+  public lastName!: string;
+
+  @prop({ required: true })
+  public email!: string;
+
+  @prop({ required: true })
+  public password!: string;
+
+  @prop({ enum: ROLES })
+  public role?: string;
+}
 
 export function generateFakeUsers(count: number = 10): IUser[] {
   let users: IUser[] = [];
