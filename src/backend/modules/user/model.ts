@@ -8,7 +8,7 @@ export enum Role {
 };
 const ROLES = [Role.ADMIN, Role.USER];
 
-export class User {
+export class IUser {
   @prop({ required: true })
   public firstName!: string;
 
@@ -25,12 +25,12 @@ export class User {
   public role?: string;
 }
 
-export function generateFakeUsers(count: number = 10): User[] {
-  let users: User[] = [];
+export function generateFakeUsers(count: number = 10): IUser[] {
+  let users: IUser[] = [];
 
   // Generate count # of fake users
   for (var i = 0; i < count; i++) {
-    const user: User = {
+    const user: IUser = {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
@@ -42,7 +42,7 @@ export function generateFakeUsers(count: number = 10): User[] {
 
   // Generate a development test user for each role
   for (let role of ROLES) {
-    const user: User = {
+    const user: IUser = {
       firstName: titleCase(role),
       lastName: 'Example',
       email: `${role}@gmail.com`,
