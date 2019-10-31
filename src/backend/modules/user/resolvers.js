@@ -16,8 +16,12 @@ const users = {
 import { User } from "../../models";
 import { UserInputError } from "apollo-server";
 import bcrypt from "bcrypt";
-import { comparePassword } from "./model"
+import { comparePassword } from "./model";
+import jwt from "jsonwebtoken";
+import path from "path";
+import { config } from "dotenv";
 
+config({ path: path.resolve(__dirname, "../../../.env") });
 const resolvers = {
   Query: {
     allUsers: parent => {
@@ -33,7 +37,18 @@ const resolvers = {
       } else {
         const valid = await comparePassword(u, password);
         if (valid) {
-          return u;
+          const payload = {
+            user: {
+              id: u.id
+            }
+          };
+
+          return jwt.sign(
+            payload,
+            process.env.JWT_SECRET_KEY,
+            { expiresIn: "1d" },
+            { algorithm: "HS256" }
+          );
         } else {
           throw new UserInputError("Username or Password is incorrect");
         }
@@ -62,7 +77,19 @@ const resolvers = {
         role: role
       });
       newUser.save();
-      return newUser;
+
+      const payload = {
+        user: {
+          id: newUser.id
+        }
+      };
+
+      return jwt.sign(
+        payload,
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: "1d" },
+        { algorithm: "HS256" }
+      );
     }
   }
 };
