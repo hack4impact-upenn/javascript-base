@@ -1,7 +1,7 @@
-import { prop, DocumentType } from "@typegoose/typegoose";
-import faker from "faker";
-import { randomChoice, titleCase } from "../../utils";
-import bcrypt from "bcrypt";
+import { prop, getModelForClass, DocumentType } from '@typegoose/typegoose';
+import faker from 'faker';
+import { randomChoice, titleCase } from '../../utils';
+import bcrypt from "bcrypt"
 
 export enum Role {
   ADMIN = "admin",
@@ -62,9 +62,15 @@ export function generateFakeUsers(count=10): IUser[] {
   return users;
 }
 
+<<<<<<< HEAD
 export async function comparePassword(
   user: DocumentType<IUser>,
   password: string
 ) {
   return await bcrypt.compare(password, user.password);
 }
+=======
+export async function comparePassword (user: DocumentType<IUser>, password : string){
+  return await bcrypt.compare(password, user.password); 
+}
+>>>>>>> a67aed6... integrated old auth functions into new models

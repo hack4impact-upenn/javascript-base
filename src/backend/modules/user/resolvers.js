@@ -31,7 +31,6 @@ const resolvers = {
         throw new UserInputError("Username or Password is incorrect");
       } else {
         const valid = await comparePassword(u, password);
-
         if (valid) {
           // User is succesfully validated
           const { refreshToken, accessToken } = createTokens(u);
