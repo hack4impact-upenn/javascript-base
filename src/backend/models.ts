@@ -1,9 +1,7 @@
 // Import frameworks
-import mongoose, { Document } from 'mongoose';
-
+import { getModelForClass } from '@typegoose/typegoose';
 // Import schemas
-import { IUser, UserSchema } from './modules/user/model'
-interface UserDocument extends IUser, Document {};
+import { User } from './modules/user/model'
 
 // Create a database model for each schema
-export const User = mongoose.model<UserDocument>("User", UserSchema);
+export const UserModel = getModelForClass(User);
