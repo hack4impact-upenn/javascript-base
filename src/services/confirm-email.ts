@@ -1,5 +1,5 @@
 import * as jwt from "jsonwebtoken";
-import { User, UserDocument } from "../backend/models";
+import { User } from "../backend/models";
 const sgMail = require("sgMail");
 
 /**
@@ -8,9 +8,6 @@ const sgMail = require("sgMail");
  */
 let sendConfirmationEmail = (recipientName: string, recipientId: string, 
                              recipientEmail: string) => {
-  // TODO: wait on jediah to update to typegoose and change the 
-  // function arg back to "user: User"
-
   let expiration_sec = 60 * 60 * 24 * 24 * 7; // 7 days
   let token = jwt.sign({ id: recipientId, type: 'confirmation' },
     process.env.SECRET_KEY!, { expiresIn: expiration_sec });
