@@ -23,6 +23,7 @@
     "@types/faker": "^4.1.6",
     "@types/jsonwebtoken": "^8.3.5",
     "@types/material-ui": "^0.21.7",
+    "@types/jsonwebtoken": "^8.3.5",
     "@types/mongoose": "^5.5.22",
     "@types/next": "^8.0.6",
     "@types/node": "^12.11.1",
