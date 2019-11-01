@@ -23,6 +23,9 @@ export class IUser {
 
   @prop({ enum: ROLES })
   public role?: string;
+
+  @prop({ required: true })
+  public isVerified?: boolean;
 }
 
 export function generateFakeUsers(count: number = 10): IUser[] {
