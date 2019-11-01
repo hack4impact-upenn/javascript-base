@@ -24,32 +24,34 @@ import { config } from "dotenv";
 config({ path: path.resolve(__dirname, "../../../.env") });
 const resolvers = {
   Query: {
-    allUsers: parent => {
+    allUsers: (parent, args, context) => {
       return User.find({});
     },
     user: (parent, { id }) => {
       return User.findById(id);
     },
-    login: async (parent, { email, password }) => {
+    login: async (_, { email, password }, context) => {
+      console.log(context.response);
+
       const u = await User.findOne({ email: email });
       if (u == null) {
         throw new UserInputError("Username or Password is incorrect");
       } else {
         const valid = await comparePassword(u, password);
         if (valid) {
-          const payload = {
-            user: {
-              id: u.id,
-              role: u.role
-            }
-          };
-
-          return jwt.sign(
-            payload,
+          const accessToken = jwt.sign(
+            { userId: u.id },
             process.env.JWT_SECRET_KEY,
-            { expiresIn: "1d" },
-            { algorithm: "HS256" }
+            { expiresIn: "15min" }
           );
+
+          const refreshToken = jwt.sign(
+            { userId: u.id, count: u.count },
+            process.env.JWT_SECRET_KEY,
+            { expiresIn: "7d" }
+          );
+
+          return u;
         } else {
           throw new UserInputError("Username or Password is incorrect");
         }
@@ -75,23 +77,12 @@ const resolvers = {
         lastName: lastName,
         email: email,
         password: hashedPassword,
-        role: role
+        role: role,
+        count: 0
       });
       newUser.save();
 
-      const payload = {
-        user: {
-          id: newUser.id,
-          role: newUser.role
-        }
-      };
-
-      return jwt.sign(
-        payload,
-        process.env.JWT_SECRET_KEY,
-        { expiresIn: "1d" },
-        { algorithm: "HS256" }
-      );
+      return newUser;
     }
   }
 };
