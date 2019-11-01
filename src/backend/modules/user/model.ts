@@ -1,7 +1,7 @@
-import { prop, getModelForClass, DocumentType } from '@typegoose/typegoose';
-import faker from 'faker';
-import { randomChoice, titleCase } from '../../utils';
-import bcrypt from "bcrypt"
+import { prop, getModelForClass, DocumentType } from "@typegoose/typegoose";
+import faker from "faker";
+import { randomChoice, titleCase } from "../../utils";
+import bcrypt from "bcrypt";
 
 export enum Role {
   ADMIN = "admin",
@@ -29,11 +29,11 @@ export class IUser {
   public count!: number;
 }
 
-export function generateFakeUsers(count=10): IUser[] {
-  const users: IUser[] = [];
+export function generateFakeUsers(count: number = 10): IUser[] {
+  let users: IUser[] = [];
 
   // Generate count # of fake users
-  for (let i = 0; i < count; i++) {
+  for (var i = 0; i < count; i++) {
     const user: IUser = {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -46,7 +46,7 @@ export function generateFakeUsers(count=10): IUser[] {
   }
 
   // Generate a development test user for each role
-  for (const role of ROLES) {
+  for (let role of ROLES) {
     const user: IUser = {
       firstName: titleCase(role),
       lastName: "Example",
@@ -62,15 +62,9 @@ export function generateFakeUsers(count=10): IUser[] {
   return users;
 }
 
-<<<<<<< HEAD
 export async function comparePassword(
   user: DocumentType<IUser>,
   password: string
 ) {
   return await bcrypt.compare(password, user.password);
 }
-=======
-export async function comparePassword (user: DocumentType<IUser>, password : string){
-  return await bcrypt.compare(password, user.password); 
-}
->>>>>>> a67aed6... integrated old auth functions into new models
