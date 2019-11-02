@@ -1,82 +1,76 @@
 import React from "react";
-import axios from "axios";
+
 import { AppBar, Button, Grid, TextField } from '@material-ui/core';
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
+
+import client from "../components/apollo"
+import { ApolloProvider } from 'react-apollo'
+import { gql } from "apollo-boost";
 
 
 interface LoginPageState {
-  username: string
+  email: string
   password: string
 }
 
 class LoginPage extends React.Component<{}, LoginPageState> {
 
   state: LoginPageState = {
-    username: "",
+    email: "",
     password: ""
   }
 
-  private handleClick() {
-    var apiBaseUrl = "http://localhost:4000/api/";
-    var payload = {
-      email: this.state.username,
-      password: this.state.password
-    };
-    axios
-      .post(apiBaseUrl + "login", payload)
-      .then(function(response: any) {
-        console.log(response);
-        if (response.data.code == 200) {
-          console.log("Login successful");
-        } else if (response.data.code == 204) {
-          console.log("Username password do not match");
-          alert("username password do not match");
-        } else {
-          console.log("Username does not exists");
-          alert("Username does not exist");
-        }
-      })
-      .catch(function(error: any) {
-        console.log(error);
-      });
+  private LOGIN_QUERY = gql`
+   query login($email: String!, $password: String!){
+      login(email: $email, password: $password)
+    }
+  `;
+
+  private handleEmailChange = (e : React.ChangeEvent<HTMLInputElement>) : void => {
+    this.setState({...this.state, email: e.target.value})
   }
-  
+
+  private handlePasswordChange = (e : React.ChangeEvent<HTMLInputElement>) : void => {
+    this.setState({...this.state, password: e.target.value})
+  }
+
+  private handleLogin = (e : React.FormEvent<Element>) : void => {
+    client.query({
+      query: this.LOGIN_QUERY,
+      variables: {
+        email: this.state.email,
+        password: this.state.password
+      }
+    }).then((data : any) => {
+      console.log(data)
+    })
+  }
+
   public render() {
     return (
-      <div>
-        <AppBar title="Login" />
-        <Grid
-          container
-          spacing={0}
-          direction="column"
-          alignItems="center"
-          justify="center"
-        >
-          <TextField
-            placeholder="Enter your Username"
-            label="Username"
-            onChange={(event) =>
-              this.setState({ username: event.target.value })
-            }
-          />
-          <br />
-          <TextField
-            type="password"
-            placeholder="Enter your Password"
-            label="Password"
-            onChange={(event) =>
-              this.setState({ password: event.target.value })
-            }
-          />
-          <br />
-          <Button
-            color="primary"
-            style={{ margin: 15 }}
-            onClick={() => this.handleClick()}
-          >
-            Submit
-          </Button>
-        </Grid>
-      </div>
+      <ApolloProvider client={client}>
+        <div>
+          <AppBar title="Login" />
+          <Grid container spacing={0} direction="column" alignItems="center" justify="center">
+            <ValidatorForm onSubmit = {this.handleLogin}>
+              <TextValidator type="text" placeholder="Enter your Email" label="Email" name = "email"
+                             onChange={ this.handleEmailChange }
+                             validators = {['required']}
+                             errorMessages = {['Required']}
+                             value = { this.state.email }
+                             />
+              <br />
+              <TextValidator type="password" placeholder="Enter your Password" label="Password" name="password"
+                             onChange={ this.handlePasswordChange }
+                             validators = {['required']}
+                             errorMessages = {['Required']}
+                             value = { this.state.password }/>
+              <br />
+              <Button type = "submit">Log In</Button>
+            </ValidatorForm>
+          </Grid>
+        </div>
+      </ApolloProvider>
     );
   }
 }
