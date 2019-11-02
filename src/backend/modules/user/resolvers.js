@@ -24,13 +24,13 @@ import { config } from "dotenv";
 config({ path: path.resolve(__dirname, "../../../.env") });
 const resolvers = {
   Query: {
-    allUsers: parent => {
+    allUsers: (parent, args, context) => {
       return User.find({});
     },
     user: (parent, { id }) => {
       return User.findById(id);
     },
-    login: async (parent, { email, password }) => {
+    login: async (parent, { email, password }, context) => {
       const u = await User.findOne({ email: email });
       if (u == null) {
         throw new UserInputError("Username or Password is incorrect");
@@ -43,13 +43,13 @@ const resolvers = {
               role: u.role
             }
           };
-
-          return jwt.sign(
+          const token = jwt.sign(
             payload,
             process.env.JWT_SECRET_KEY,
-            { expiresIn: "1d" },
-            { algorithm: "HS256" }
+            { expiresIn: "1d", algorithm: "HS256" }
           );
+          context.res.cookie("auth", token, {httpOnly: true})
+          return
         } else {
           throw new UserInputError("Username or Password is incorrect");
         }
@@ -85,12 +85,10 @@ const resolvers = {
           role: newUser.role
         }
       };
-
       return jwt.sign(
         payload,
         process.env.JWT_SECRET_KEY,
-        { expiresIn: "1d" },
-        { algorithm: "HS256" }
+        { expiresIn: "1d", algorithm: "HS256" }
       );
     }
   }
