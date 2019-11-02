@@ -3,6 +3,7 @@ import { ApolloServer } from "apollo-server-express";
 
 import express from "express";
 import next from "next";
+import cors from "cors";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -31,14 +32,22 @@ db.once("open", async function() {
 const apolloServer = new ApolloServer({
   typeDefs: schemas,
   resolvers: resolvers,
-  context: ({ request, response }) => ({ request, response })
+  context: ({ req, res }) => {
+    return { req, res };
+  }
 });
 
 app
   .prepare()
   .then(() => {
     const server = express();
-    apolloServer.applyMiddleware({ app: server, path: "/api" });
+    server.use(
+      cors({
+        credentials: true,
+        origin: "http://localhost:3000"
+      })
+    );
+    apolloServer.applyMiddleware({ app: server, path: "/api", cors: false });
 
     server.get("*", (req, res) => {
       return handle(req, res);
