@@ -30,12 +30,13 @@ const resolvers = {
     user: (parent, { id }) => {
       return User.findById(id);
     },
-    login: async (parent, { email, password }, context) => {
+    login: async (_, { email, password }, context) => {
       const u = await User.findOne({ email: email });
       if (u == null) {
         throw new UserInputError("Username or Password is incorrect");
       } else {
         const valid = await comparePassword(u, password);
+
         if (valid) {
           const payload = {
             user: {
@@ -75,7 +76,8 @@ const resolvers = {
         lastName: lastName,
         email: email,
         password: hashedPassword,
-        role: role
+        role: role,
+        count: 0
       });
       newUser.save();
 
