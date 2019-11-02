@@ -31,13 +31,12 @@ const resolvers = {
       return User.findById(id);
     },
     login: async (_, { email, password }, context) => {
-      console.log(context.response);
-
       const u = await User.findOne({ email: email });
       if (u == null) {
         throw new UserInputError("Username or Password is incorrect");
       } else {
         const valid = await comparePassword(u, password);
+
         if (valid) {
           const accessToken = jwt.sign(
             { userId: u.id },
@@ -50,6 +49,9 @@ const resolvers = {
             process.env.JWT_SECRET_KEY,
             { expiresIn: "7d" }
           );
+
+          context.res.cookie("refresh-token", refreshToken);
+          context.res.cookie("access-token", accessToken);
 
           return u;
         } else {
