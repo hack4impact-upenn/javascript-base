@@ -38,21 +38,17 @@ const resolvers = {
         const valid = await comparePassword(u, password);
 
         if (valid) {
-          const accessToken = jwt.sign(
-            { userId: u.id },
-            process.env.JWT_SECRET_KEY,
-            { expiresIn: "15min" }
-          );
-
-          const refreshToken = jwt.sign(
-            { userId: u.id, count: u.count },
-            process.env.JWT_SECRET_KEY,
-            { expiresIn: "7d" }
-          );
-
-          context.res.cookie("refresh-token", refreshToken);
-          context.res.cookie("access-token", accessToken);
-
+          const payload = {
+            user: {
+              id: u.id,
+              role: u.role
+            }
+          };
+          const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+            expiresIn: "1d",
+            algorithm: "HS256"
+          });
+          context.res.cookie("auth", token, { httpOnly: true });
           return u;
         } else {
           throw new UserInputError("Username or Password is incorrect");
@@ -84,7 +80,16 @@ const resolvers = {
       });
       newUser.save();
 
-      return newUser;
+      const payload = {
+        user: {
+          id: newUser.id,
+          role: newUser.role
+        }
+      };
+      return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+        expiresIn: "1d",
+        algorithm: "HS256"
+      });
     }
   }
 };

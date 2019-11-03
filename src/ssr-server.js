@@ -3,7 +3,7 @@ import { ApolloServer } from "apollo-server-express";
 
 import express from "express";
 import next from "next";
-import cors from "cors";
+import cookieParser from "cookie-parser";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -32,22 +32,20 @@ db.once("open", async function() {
 const apolloServer = new ApolloServer({
   typeDefs: schemas,
   resolvers: resolvers,
-  context: ({ req, res }) => {
-    return { req, res };
-  }
+  context: ({ req, res }) => ({
+    req,
+    res
+  }),
+  playground: true
 });
 
 app
   .prepare()
   .then(() => {
     const server = express();
-    server.use(
-      cors({
-        credentials: true,
-        origin: "http://localhost:3000"
-      })
-    );
-    apolloServer.applyMiddleware({ app: server, path: "/api", cors: false });
+
+    server.use(cookieParser());
+    apolloServer.applyMiddleware({ app: server, path: "/api" });
 
     server.get("*", (req, res) => {
       return handle(req, res);
