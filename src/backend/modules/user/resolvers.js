@@ -13,13 +13,13 @@ const users = {
   }
 };
 
-import { User } from "../../models";
 import { UserInputError } from "apollo-server";
 import bcrypt from "bcrypt";
-import { comparePassword } from "./model";
-import jwt from "jsonwebtoken";
-import path from "path";
 import { config } from "dotenv";
+import path from "path";
+import { createTokens } from "../../middleware/auth";
+import { User } from "../../models";
+import { comparePassword } from "./model";
 
 config({ path: path.resolve(__dirname, "../../../.env") });
 const resolvers = {
@@ -30,8 +30,15 @@ const resolvers = {
     allUsers: (parent, args, context) => {
       return User.find({});
     },
-    user: (parent, { id }) => {
+    user: (parent, { id }, context) => {
       return User.findById(id);
+    },
+    me: (_, __, context) => {
+      if (!context.req.userId) {
+        return;
+      }
+
+      return User.findById(context.req.userId);
     },
     login: async (_, { email, password }, context) => {
       const u = await User.findOne({ email: email });
@@ -41,17 +48,18 @@ const resolvers = {
         const valid = await comparePassword(u, password);
 
         if (valid) {
-          const payload = {
-            user: {
-              id: u.id,
-              role: u.role
-            }
-          };
-          const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
-            expiresIn: "1d",
-            algorithm: "HS256"
+          // User is succesfully validated
+          const { refreshToken, accessToken } = createTokens(u);
+
+          context.res.cookie("refresh-token", refreshToken, {
+            maxAge: 1000 * 3600 * 24 * 7,
+            httpOnly: true
           });
-          context.res.cookie("auth", token, { httpOnly: true });
+          context.res.cookie("access-token", accessToken, {
+            maxAge: 1000 * 60 * 15,
+            httpOnly: true
+          });
+
           return u;
         } else {
           throw new UserInputError("Username or Password is incorrect");
@@ -85,18 +93,23 @@ const resolvers = {
       });
       newUser.save();
 
-      const payload = {
-        user: {
-          id: newUser.id,
-          role: newUser.role
-        }
-      };
-      // return jwt.sign(
-      //   payload,
-      //   process.env.JWT_SECRET_KEY,
-      //   { expiresIn: "1d", algorithm: "HS256" }
-      // );
       return newUser;
+    },
+    invalidateTokens: async (_, __, context) => {
+      if (!context.req.userId) {
+        return false;
+      }
+
+      const user = await User.findById(context.req.userId);
+      if (!user) {
+        return false;
+      }
+      user.count += 1;
+      await user.save();
+
+      context.res.clearCookie("access-token");
+
+      return true;
     }
   }
 };
