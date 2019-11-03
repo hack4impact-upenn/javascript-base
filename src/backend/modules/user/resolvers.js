@@ -24,6 +24,9 @@ import { config } from "dotenv";
 config({ path: path.resolve(__dirname, "../../../.env") });
 const resolvers = {
   Query: {
+    emailTaken: async (_, { email }, context) => {
+      return 0 == await User.countDocuments({ email: email });
+    },
     allUsers: (parent, args, context) => {
       return User.find({});
     },
@@ -44,12 +47,13 @@ const resolvers = {
               role: u.role
             }
           };
-          const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
-            expiresIn: "1d",
-            algorithm: "HS256"
-          });
-          context.res.cookie("auth", token, { httpOnly: true });
-          return u;
+          const token = jwt.sign(
+            payload,
+            process.env.JWT_SECRET_KEY,
+            { expiresIn: "1d", algorithm: "HS256" }
+          );
+          context.res.cookie("auth", token, {httpOnly: true})
+          return
         } else {
           throw new UserInputError("Username or Password is incorrect");
         }
@@ -57,6 +61,8 @@ const resolvers = {
     }
   },
   Mutation: {
+    // TODO : Once cookies working, make sure added user has user role if cookie is not set or user
+    // Only admins should be able to add other admins
     createUser: async (
       parent,
       { firstName, lastName, email, password, role },
@@ -86,10 +92,12 @@ const resolvers = {
           role: newUser.role
         }
       };
-      return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
-        expiresIn: "1d",
-        algorithm: "HS256"
-      });
+      // return jwt.sign(
+      //   payload,
+      //   process.env.JWT_SECRET_KEY,
+      //   { expiresIn: "1d", algorithm: "HS256" }
+      // );
+      return newUser
     }
   }
 };
