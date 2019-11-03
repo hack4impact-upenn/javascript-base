@@ -44,13 +44,12 @@ const resolvers = {
               role: u.role
             }
           };
-          const token = jwt.sign(
-            payload,
-            process.env.JWT_SECRET_KEY,
-            { expiresIn: "1d", algorithm: "HS256" }
-          );
-          context.res.cookie("auth", token, {httpOnly: true})
-          return
+          const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+            expiresIn: "1d",
+            algorithm: "HS256"
+          });
+          context.res.cookie("auth", token, { httpOnly: true });
+          return u;
         } else {
           throw new UserInputError("Username or Password is incorrect");
         }
@@ -87,11 +86,10 @@ const resolvers = {
           role: newUser.role
         }
       };
-      return jwt.sign(
-        payload,
-        process.env.JWT_SECRET_KEY,
-        { expiresIn: "1d", algorithm: "HS256" }
-      );
+      return jwt.sign(payload, process.env.JWT_SECRET_KEY, {
+        expiresIn: "1d",
+        algorithm: "HS256"
+      });
     }
   }
 };

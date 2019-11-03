@@ -1,9 +1,9 @@
 import { schemas, resolvers } from "./backend/graphql";
 import { ApolloServer } from "apollo-server-express";
 
-import express from 'express';
-import next from 'next';
-import cookieParser from 'cookie-parser'
+import express from "express";
+import next from "next";
+import cookieParser from "cookie-parser";
 
 const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
@@ -33,7 +33,7 @@ const apolloServer = new ApolloServer({
   typeDefs: schemas,
   resolvers: resolvers,
   context: ({ req, res }) => ({
-    req ,
+    req,
     res
   }),
   playground: true
@@ -44,8 +44,8 @@ app
   .then(() => {
     const server = express();
 
-    server.use(cookieParser())
-    apolloServer.applyMiddleware({ app: server, path: '/api' });
+    server.use(cookieParser());
+    apolloServer.applyMiddleware({ app: server, path: "/api" });
 
     server.get("*", (req, res) => {
       return handle(req, res);
