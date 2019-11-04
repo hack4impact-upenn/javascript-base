@@ -1,18 +1,3 @@
-const users = {
-  0: {
-    firstName: "Jared",
-    lastName: "Asch",
-    email: "jasch16",
-    password: "passw0rd"
-  },
-  1: {
-    firstName: "Steph",
-    lastName: "Shi",
-    email: "stephshi",
-    password: "123456"
-  }
-};
-
 import { UserInputError } from "apollo-server";
 import bcrypt from "bcrypt";
 import { config } from "dotenv";
@@ -59,8 +44,7 @@ const resolvers = {
             maxAge: 1000 * 60 * 15,
             httpOnly: true
           });
-
-          return u;
+          return true;
         } else {
           throw new UserInputError("Username or Password is incorrect");
         }
@@ -93,7 +77,7 @@ const resolvers = {
       });
       newUser.save();
 
-      return newUser;
+      return true;
     },
     invalidateTokens: async (_, __, context) => {
       if (!context.req.userId) {
