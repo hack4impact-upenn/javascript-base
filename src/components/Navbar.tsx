@@ -53,7 +53,7 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
                       {!loading && data.me == null &&
                         <React.Fragment>
                           <Button href = "/login" color="inherit">Login</Button>
-                          <Button href = "/login" color="inherit">Register</Button>
+                          <Button href = "/register" color="inherit">Register</Button>
                         </React.Fragment>
                       }
                       {!loading && data.me != null &&
