@@ -4,7 +4,7 @@ const typeDefs = gql`
   type Query {
     allUsers: [User!]
     user(id: ID!): User
-    login(email: String!, password: String!): User
+    login(email: String!, password: String!): Boolean
     emailTaken(email: String): Boolean!
     me: User
   }
@@ -15,7 +15,7 @@ const typeDefs = gql`
       email: String!
       password: String!
       role: String!
-    ): User
+    ): Boolean
     invalidateTokens: Boolean!
   }
   type User {
