@@ -15,6 +15,7 @@ const users = {
 
 import { User } from "../../models";
 import { UserInputError } from "apollo-server";
+import { sendConfirmationEmail } from "../../../services/confirm-email";
 import bcrypt from "bcrypt";
     
 const resolvers = {
@@ -60,6 +61,8 @@ const resolvers = {
         password: hashedPassword
       });
       newUser.save();
+      sendConfirmationEmail(newUser);
+      console.log('executed sendConfirmationEmail in createUser');
       return newUser;
     }
   }

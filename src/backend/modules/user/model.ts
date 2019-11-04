@@ -1,4 +1,4 @@
-import { prop, getModelForClass } from '@typegoose/typegoose';
+import { prop, modelOptions, getModelForClass } from '@typegoose/typegoose';
 import faker from 'faker';
 import { randomChoice, titleCase } from '../../utils';
 
@@ -8,6 +8,7 @@ export enum Role {
 };
 const ROLES = [Role.ADMIN, Role.USER];
 
+@modelOptions({ options: { customName: 'users' } })
 export class IUser {
   @prop({ required: true })
   public firstName!: string;
@@ -24,7 +25,7 @@ export class IUser {
   @prop({ enum: ROLES })
   public role?: string;
 
-  @prop({ required: true })
+  @prop({ required: true, default: false })
   public isVerified?: boolean;
 }
 

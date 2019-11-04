@@ -2,20 +2,23 @@ import * as jwt from "jsonwebtoken";
 import { DocumentType } from '@typegoose/typegoose'
 import { IUser } from '../backend/modules/user/model'
 import { User } from '../backend/models'
-const sgMail = require("sgMail");
+const sgMail = require("@sendgrid/mail");
+//import * as sgMail from "@sendgrid/mail";
 
 /**
  * Send confirmation email to the user expiring after 
  * a specified number of seconds.
  */
 let sendConfirmationEmail = (user: DocumentType<IUser>) => {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
   let expiration_sec = 60 * 60 * 24 * 24 * 7; // 7 days
   let token = jwt.sign({ id: user.id, type: 'confirmation' },
     process.env.SECRET_KEY!, { expiresIn: expiration_sec });
-  let confirmLink = process.env.HOST + ":" + process.env.PORT + "/" + token;
+  let confirmLink = process.env.HOST + ":" + process.env.PORT + "/authenticate/" + token;
   sgMail.send({
     to: user.email,
-    from: '@hack4impact.org',
+    from: 'anniesumail@gmail.com',
     subject: 'Confirm Your Account',
     html: `<p>
             Welcome, ${user.firstName}!<br/><br/>
@@ -25,7 +28,8 @@ let sendConfirmationEmail = (user: DocumentType<IUser>) => {
             Best,<br/>
             Hack4Impact
           </p>`,
-  });
+  }).then((res: any) => {console.log(res)})
+  .catch((err: any) => {console.log(err)}); // TODO: delete
 }
 
 /**
@@ -44,3 +48,5 @@ let attemptConfirmation = (token: string) => {
     // TODO: confirm this saves (?)
   });
 }
+
+export { sendConfirmationEmail, attemptConfirmation };
