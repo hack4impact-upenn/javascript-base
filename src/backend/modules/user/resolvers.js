@@ -92,6 +92,7 @@ const resolvers = {
       await user.save();
 
       context.res.clearCookie("access-token");
+      context.res.clearCookie("refresh-token");
 
       return true;
     }
