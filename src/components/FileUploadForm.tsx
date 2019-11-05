@@ -71,7 +71,7 @@ class FileUploadForm extends React.Component<{}, FileUploadFormState> {
       }}>
         <Dropzone onDrop={this.handleDrop}>
           {({ getRootProps, getInputProps }) => (
-            <div style={{ padding: "20%", border: "1px dashed lightgray" }} {...getRootProps({ className: 'dropzone' })}>
+            <div style={{ padding: "20%", border: "1px dashed lightgray", textAlign: "center" }} {...getRootProps({ className: 'dropzone' })}>
               <input {...getInputProps()} />
               <CloudUpload color="primary" style={{ width: "100%", fontSize: "5rem" }}></CloudUpload>
               <br></br>
