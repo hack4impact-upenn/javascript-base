@@ -5,6 +5,6 @@ export class IFile {
   @prop({ required: true })
   public name!: string;
 
-  @prop({ ref: IUser, required: true })
+  @prop({ ref: "IUser", required: true })
   public owner!: Ref<IUser>;
 }
