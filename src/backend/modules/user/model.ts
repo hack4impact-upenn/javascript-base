@@ -1,7 +1,9 @@
-import { prop, getModelForClass, DocumentType } from "@typegoose/typegoose";
+import { prop, getModelForClass, DocumentType, Ref, arrayProp } from "@typegoose/typegoose";
 import faker from "faker";
 import { randomChoice, titleCase } from "../../utils";
 import bcrypt from "bcrypt";
+
+import { IFile } from "../file/model"
 
 export enum Role {
   ADMIN = "admin",
@@ -27,6 +29,9 @@ export class IUser {
 
   @prop({ required: true })
   public count!: number;
+
+  @arrayProp({itemsRef: IFile, default : []})
+  public files?: Ref<IFile>[] 
 }
 
 export function generateFakeUsers(count: number = 10): IUser[] {

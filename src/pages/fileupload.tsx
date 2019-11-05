@@ -5,13 +5,14 @@ import client from "../components/config/Apollo"
 import { gql } from "apollo-boost";
 
 import FileUploadForm from '../components/FileUploadForm'
+import Navbar from '../components/Navbar'
 
 class FileUpload extends React.Component<{}, {}> {
 
   public render() {
     return (
       <React.Fragment>
-        <AppBar title="Login" />
+        <Navbar></Navbar>
         <Grid container justify="center">
           <Grid item xs = {10} sm = {6} md = {4} lg = {4}>
             <FileUploadForm></FileUploadForm>

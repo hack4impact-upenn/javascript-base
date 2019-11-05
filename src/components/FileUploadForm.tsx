@@ -22,9 +22,7 @@ class FileUploadForm extends React.Component<{}, FileUploadFormState> {
 
   private UPLOAD_FILE = gql`
     mutation uploadFile($file: Upload!) {
-      uploadFile(file: $file) {
-        filename
-      }
+      uploadFile(file: $file)
     }
   `;
 
@@ -83,6 +81,7 @@ class FileUploadForm extends React.Component<{}, FileUploadFormState> {
         </Dropzone>
         <List>
           {this.state.files.map((file: File) => {
+            // TODO : Add user sharing
             return (
               <ListItem style={{ backgroundColor: "whitesmoke", padding: "10px", margin: "10px auto", boxShadow: "0 2px 1px #bbb" }}>
                 <ListItemIcon>
@@ -91,7 +90,7 @@ class FileUploadForm extends React.Component<{}, FileUploadFormState> {
                 <ListItemText primary={file.name}></ListItemText>
                 <ListItemSecondaryAction>
                   <IconButton edge="end" aria-label="share">
-                    <PersonAdd />
+                    <PersonAdd /> 
                   </IconButton>
                   <IconButton onClick = {(e) => this.removeFile(file)} edge="end" aria-label="delete">
                     <Delete />
