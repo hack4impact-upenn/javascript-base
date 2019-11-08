@@ -6,6 +6,7 @@ import { onError } from 'apollo-link-error'
 import { ApolloLink } from "apollo-boost"
 import fetch from "node-fetch"
 import { createUploadLink } from 'apollo-upload-client'
+import { gql } from "apollo-boost";
 
 const link = createUploadLink({ uri: '/api', fetch: fetch })
 const errorLink = onError(({ graphQLErrors }) => {
@@ -17,5 +18,16 @@ const client = new ApolloClient({
   credentials: 'include',
   cache: new InMemoryCache()
 });
+
+export const CURRENT_USER_QUERY = gql`
+  query me {
+    me {
+      firstName
+      lastName
+      email
+      role
+    }
+  }
+`;
 
 export default client;

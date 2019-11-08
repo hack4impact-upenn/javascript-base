@@ -2,14 +2,28 @@ import React from "react";
 import Dropzone from "react-dropzone"
 import { Button, Typography, List, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListItemSecondaryAction, IconButton } from '@material-ui/core';
 import { CloudUpload, InsertDriveFile, Delete, PersonAdd } from '@material-ui/icons'
-
 import client from "./config/Apollo"
 import { gql } from "apollo-boost";
 
 import { ValidatorForm } from 'react-material-ui-form-validator';
 
-// To be changed once more info added to file upload
-type FileUpload = File;
+export enum PermissionType {
+  USER = "user",
+  ROLE = "role",
+  GROUP = "group"
+}
+
+export type FilePermission = {
+  type: PermissionType,
+  value: string
+}
+
+export type FileUpload = {
+  file: File,
+  name: string,
+  type: string,
+  permissions: FilePermission[]
+}
 
 interface FileUploadFormState {
   files: FileUpload[]
@@ -17,50 +31,58 @@ interface FileUploadFormState {
 
 class FileUploadForm extends React.Component<{}, FileUploadFormState> {
   state = {
-    files: []
+    files: [] as FileUpload[]
   }
 
   private UPLOAD_FILE = gql`
-    mutation uploadFile($file: Upload!) {
-      uploadFile(file: $file)
+    mutation uploadFile($file: Upload!, $name: String!, $type: String!, $permissions: [String]!) {
+      uploadFile(file: $file, name: $name, type: $type, permissions: $permissions)
     }
   `;
 
-  private handleDrop = (files: File[]) => {
+  private handleDrop = (files: File[]) : void => {
     const old_files = this.state.files;
-    const new_files = files.concat(old_files);
-    this.setState({ ...this.state, files: new_files })
+    const new_files = files.map( (f : File) : FileUpload => ({
+      file: f,
+      name: f.name,
+      type: f.type,
+      permissions: [] as FilePermission[]
+    }))
+    this.setState({...this.state, files: old_files.concat(new_files)});
+  }
+
+  private compressPermissions = (perms : FilePermission[]) : String[] => {
+    return perms.map( (p : FilePermission) : String => (
+      `${p.type}|${p.value}`
+    ));
   }
 
   private handleFileUpload = () => {
-    this.state.files.map((file: File) => {
+    this.state.files.map( (upload: FileUpload) => {
       client.mutate({
         mutation: this.UPLOAD_FILE,
         variables: {
-          file: file
+          file: upload.file,
+          name: upload.name,
+          type: upload.type,
+          permissions: this.compressPermissions(upload.permissions)
         }
       }).catch((error: any) => {
-        console.log(error)
+        // console.log(error)
       }).then((data: any) => {
-        console.log(data)
+        window.location.href = "/files";
       })
     })
   }
 
-  private removeFile = (file : File) => {
-    let files = this.state.files.filter( (value) => {
-      return file !== value;
+  private removeFile = (toRemove : FileUpload) => {
+    let files = this.state.files.filter( (f : FileUpload) => {
+      return f.file !== toRemove.file
     });
     this.setState({...this.state, files: files});
   }
 
   public render = () => {
-    const files = this.state.files.map((file: File) => (
-      <li key={file.name}>
-        {file.name} - {file.size} bytes
-      </li>
-    ));
-
     return (
       <ValidatorForm onSubmit={this.handleFileUpload} style={{
         padding: "20px",
@@ -80,7 +102,7 @@ class FileUploadForm extends React.Component<{}, FileUploadFormState> {
           )}
         </Dropzone>
         <List>
-          {this.state.files.map((file: File) => {
+          {this.state.files.map( (file : FileUpload) => {
             // TODO : Add user sharing
             return (
               <ListItem style={{ backgroundColor: "whitesmoke", padding: "10px", margin: "10px auto", boxShadow: "0 2px 1px #bbb" }}>
