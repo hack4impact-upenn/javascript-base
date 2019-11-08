@@ -63,7 +63,6 @@ export function generateFakeUsers(count: number = 10): IUser[] {
     users.push(user);
   }
 
-  // console.log(users)
   return users;
 }
 

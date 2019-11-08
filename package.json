@@ -65,6 +65,7 @@
     "@material-ui/styles": "^4.5.0",
     "@sendgrid/mail": "^6.4.0",
     "@types/react-material-ui-form-validator": "^2.0.4",
+    "@types/react-virtualized": "^9.21.5",
     "@zeit/next-css": "^1.0.1",
     "apollo-boost": "^0.4.4",
     "apollo-server": "^2.9.5",

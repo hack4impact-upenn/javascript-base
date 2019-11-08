@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 
-import client from "./config/Apollo";
+import client, { CURRENT_USER_QUERY } from "./config/Apollo";
 import { gql } from "apollo-boost";
 import { Query, ApolloProvider } from "react-apollo";
 
@@ -25,17 +25,6 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
   state: NavbarState = {
     anchor: null
   };
-
-  private CURRENT_USER_QUERY = gql`
-    query me {
-      me {
-        firstName
-        lastName
-        email
-        role
-      }
-    }
-  `;
 
   private LOGOUT_MUTATION = gql`
     mutation {
@@ -63,7 +52,7 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
     return (
       <div className={classes.root}>
         <ApolloProvider client={client}>
-          <Query query={this.CURRENT_USER_QUERY}>
+          <Query query={CURRENT_USER_QUERY}>
             {({ data, loading }: { data: any; loading: Boolean }) => {
               return (
                 <AppBar position="static">
@@ -84,6 +73,12 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
                       )}
                       {!loading && data.me != null && (
                         <React.Fragment>
+                          <Button href="/files" color="inherit">
+                            My Files
+                          </Button>
+                          <Button href="/upload" color="inherit">
+                            Upload
+                          </Button>
                           <IconButton
                             aria-label="account of current user"
                             aria-controls="menu-appbar"
