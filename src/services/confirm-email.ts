@@ -45,6 +45,7 @@ let attemptConfirmation = (token: string) => {
       return;
     }
     user.isVerified = true;
+    console.log("> user is verified");
     // TODO: confirm this saves (?)
   });
 }
