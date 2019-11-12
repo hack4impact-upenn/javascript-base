@@ -4,7 +4,9 @@ const typeDefs = gql`
   type Query {
     allUsers: [User!]
     user(id: ID!): User
-    login(email: String!, password: String!): User
+    login(email: String!, password: String!): Boolean
+    emailTaken(email: String): Boolean!
+    me: User
   }
   type Mutation {
     createUser(
@@ -12,7 +14,9 @@ const typeDefs = gql`
       lastName: String!
       email: String!
       password: String!
-    ): User
+      role: String!
+    ): Boolean
+    invalidateTokens: Boolean!
   }
   type User {
     id: ID!
@@ -20,6 +24,8 @@ const typeDefs = gql`
     lastName: String!
     email: String!
     password: String!
+    role: String!
+    count: Int!
   }
 `;
 
