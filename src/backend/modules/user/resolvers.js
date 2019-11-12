@@ -1,39 +1,51 @@
-const users = {
-  0: {
-    firstName: "Jared",
-    lastName: "Asch",
-    email: "jasch16",
-    password: "passw0rd"
-  },
-  1: {
-    firstName: "Steph",
-    lastName: "Shi",
-    email: "stephshi",
-    password: "123456"
-  }
-};
-
-import { User } from "../../models";
 import { UserInputError } from "apollo-server";
 import { sendConfirmationEmail } from "../../../services/confirm-email";
 import bcrypt from "bcrypt";
-    
+import { config } from "dotenv";
+import path from "path";
+import { createTokens } from "../../middleware/auth";
+import { User } from "../../models";
+import { comparePassword } from "./model";
+
+config({ path: path.resolve(__dirname, "../../../.env") });
 const resolvers = {
   Query: {
-    allUsers: parent => {
+    emailTaken: async (_, { email }, context) => {
+      return 0 == (await User.countDocuments({ email: email }));
+    },
+    allUsers: (parent, args, context) => {
       return User.find({});
     },
-    user: (parent, { id }) => {
+    user: (parent, { id }, context) => {
       return User.findById(id);
     },
-    login: async (parent, { email, password }) => {
+    me: (_, __, context) => {
+      if (!context.req.userId) {
+        return;
+      }
+
+      return User.findById(context.req.userId);
+    },
+    login: async (_, { email, password }, context) => {
       const u = await User.findOne({ email: email });
       if (u == null) {
         throw new UserInputError("Username or Password is incorrect");
       } else {
-        const valid = await u.comparePassword(password);
+        const valid = await comparePassword(u, password);
+
         if (valid) {
-          return u;
+          // User is succesfully validated
+          const { refreshToken, accessToken } = createTokens(u);
+
+          context.res.cookie("refresh-token", refreshToken, {
+            maxAge: 1000 * 3600 * 24 * 7,
+            httpOnly: true
+          });
+          context.res.cookie("access-token", accessToken, {
+            maxAge: 1000 * 60 * 15,
+            httpOnly: true
+          });
+          return true;
         } else {
           throw new UserInputError("Username or Password is incorrect");
         }
@@ -41,9 +53,11 @@ const resolvers = {
     }
   },
   Mutation: {
+    // TODO : Once cookies working, make sure added user has user role if cookie is not set or user
+    // Only admins should be able to add other admins
     createUser: async (
       parent,
-      { firstName, lastName, email, password },
+      { firstName, lastName, email, password, role },
       context
     ) => {
       const count = await User.countDocuments({ email: email });
@@ -58,12 +72,32 @@ const resolvers = {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        password: hashedPassword
+        password: hashedPassword,
+        role: role,
+        count: 0
       });
       newUser.save();
+
       sendConfirmationEmail(newUser);
       console.log('executed sendConfirmationEmail in createUser');
       return newUser;
+    },
+    invalidateTokens: async (_, __, context) => {
+      if (!context.req.userId) {
+        return false;
+      }
+
+      const user = await User.findById(context.req.userId);
+      if (!user) {
+        return false;
+      }
+      user.count += 1;
+      await user.save();
+
+      context.res.clearCookie("access-token");
+      context.res.clearCookie("refresh-token");
+
+      return true;
     }
   }
 };
