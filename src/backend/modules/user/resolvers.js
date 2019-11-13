@@ -98,6 +98,9 @@ const resolvers = {
       context.res.clearCookie("refresh-token");
 
       return true;
+    },
+    confirmEmail: async (parent, { token }, context) => {
+      attemptConfirmation(token);
     }
   }
 };
