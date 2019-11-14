@@ -73,13 +73,12 @@ const resolvers = {
         lastName: lastName,
         email: email,
         password: hashedPassword,
-        role: role,
-        count: 0
+        role: role
       });
       newUser.save();
 
       sendConfirmationEmail(newUser);
-      console.log('executed sendConfirmationEmail in createUser');
+      console.log('> Sent a confirmation email to new user');
       return newUser;
     },
     invalidateTokens: async (_, __, context) => {

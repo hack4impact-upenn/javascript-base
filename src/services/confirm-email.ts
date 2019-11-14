@@ -15,15 +15,23 @@ let sendConfirmationEmail = (user: DocumentType<IUser>) => {
   let expiration_sec = 60 * 60 * 24 * 24 * 7; // 7 days
   let token = jwt.sign({ id: user.id, type: 'confirmation' },
     process.env.SECRET_KEY!, { expiresIn: expiration_sec });
-  let confirmLink = process.env.HOST + ":" + process.env.PORT + "/authenticate/" + token;
+  // TODO (annie/jediah): use a more robust link generator.
+  var authenticationURL = process.env.HOST + ":" + process.env.PORT + 
+                    "/authenticate/" + token;
   sgMail.send({
     to: user.email,
     from: 'anniesumail@gmail.com',
     subject: 'Confirm Your Account',
     html: `<p>
-            Welcome, ${user.firstName}!<br/><br/>
-            Please confirm your account by clicking on the link below:<br/>
-            ${confirmLink}<br/><br/>
+            Hello, ${user.firstName}!<br/><br/>
+            Thanks for registering for [application]. Before we get started, we
+            just need to confirm that this is you. Click below to verify your
+            email address:<br/>
+            <a href={{authenticationURL}}> VERIFY </a>
+            <a href=\"` + {authenticationURL} + `\">Confirm your email</a>
+            ${authenticationURL}
+            <br/><br/>
+            
             Once confirmed, you'll be able to log in with your new account!<br/><br/>
             Best,<br/>
             Hack4Impact
@@ -45,11 +53,7 @@ let attemptConfirmation = (token: string) => {
       return;
     }
     user.isVerified = true;
-    console.log("user.isVerified = " + user.isVerified);
-    console.log("user.firstName = " + user.firstName);
-    console.log("> user is verified");
     user.save();
-    // TODO: confirm this saves (?)
   });
 }
 

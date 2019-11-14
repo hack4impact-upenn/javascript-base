@@ -15,7 +15,7 @@ const typeDefs = gql`
       email: String!
       password: String!
       role: String!
-    ): Boolean
+    ): User
     invalidateTokens: Boolean!
     confirmEmail(
       token: String!
@@ -28,6 +28,7 @@ const typeDefs = gql`
     email: String!
     password: String!
     role: String!
+    isVerified: Boolean!
     count: Int!
   }
 `;

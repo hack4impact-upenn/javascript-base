@@ -10,38 +10,40 @@ const CONFIRM_EMAIL_MUTATION = gql`
   }
   `;
 
+// React Hook for Authenticate: we must use a hook in order to be compatible
+// with next's useRouter
 const Authenticate = () => {
   const router = useRouter();
 
   useEffect(() => {
-    // Update the document title using the browser API
-    document.title = `You clicked 3 times`;
+    // When the component renders, attempt to authenticate the
+    // user's email.
     attemptAuthentication();
-    console.log("useEffect()")
   });
 
   function attemptAuthentication() {
+    // Extract the token from the route.
     const token: any = router.query.token;
     if (token) {
-      console.log("Attempting to confirm email");
-      // TODO: replace this with a call to graphql stuff
+      // Hand off to Apollo to decode the token and update the user's 
+      // verification status.
       client.mutate({
         mutation: CONFIRM_EMAIL_MUTATION,
         variables: {
           token: token
         }
       }).then((data: any) => {
-        // TODO: redirect maybe?
         console.log("> User is authenticated");
+        // TODO: Redirect to home page
+
       }).catch((error: any) => {
         console.log(error);
       })
     }
   }
-
   return(
       <div>
-        hello ?
+        User authentication pending
       </div>
   );
 }
