@@ -1,5 +1,5 @@
 import { UserInputError } from "apollo-server";
-import { sendConfirmationEmail } from "../../../services/confirm-email";
+import { sendConfirmationEmail, attemptConfirmation } from "../../../services/confirm-email";
 import bcrypt from "bcrypt";
 import { config } from "dotenv";
 import path from "path";
@@ -101,6 +101,7 @@ const resolvers = {
     },
     confirmEmail: async (parent, { token }, context) => {
       attemptConfirmation(token);
+      return true; // TODO: more sensible return
     }
   }
 };

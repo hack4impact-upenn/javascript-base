@@ -1,45 +1,49 @@
-import React from "react";
-import * as emailService from "../../services/confirm-email";
-import { matchPath } from "react-router";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 
 import client from "../../components/config/Apollo"
 import { gql } from "apollo-boost";
 
-export default class Authenticate extends React.Component {
+const CONFIRM_EMAIL_MUTATION = gql`
+  mutation confirmEmail($token: String!){
+    confirmEmail(token: $token)
+  }
+  `;
 
-  public componentDidMount = (): void => {
-    const router = useRouter();
+const Authenticate = () => {
+  const router = useRouter();
 
+  useEffect(() => {
+    // Update the document title using the browser API
+    document.title = `You clicked 3 times`;
+    attemptAuthentication();
+    console.log("useEffect()")
+  });
+
+  function attemptAuthentication() {
     const token: any = router.query.token;
     if (token) {
       console.log("Attempting to confirm email");
       // TODO: replace this with a call to graphql stuff
-      emailService.attemptConfirmation(token);
+      client.mutate({
+        mutation: CONFIRM_EMAIL_MUTATION,
+        variables: {
+          token: token
+        }
+      }).then((data: any) => {
+        // TODO: redirect maybe?
+        console.log("> User is authenticated");
+      }).catch((error: any) => {
+        console.log(error);
+      })
     }
-
-    return client.query({
-      query: this.CONFIRM_EMAIL,
-      variables: {
-        token: token
-      }
-    }).then((data: any) => {
-      return data.data.emailTaken
-    })
   }
 
-  render() {
-    return(
+  return(
       <div>
         hello ?
       </div>
-    );
-  }
-
-  CONFIRM_EMAIL = gql`
-  mutation confirmEmail($token: String!){
-    confirmEmail(token: $token)
-  }/
-  `;
-  
+  );
 }
+
+export default Authenticate;

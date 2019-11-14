@@ -1,6 +1,7 @@
 import { prop, modelOptions, DocumentType } from '@typegoose/typegoose';
 import faker from 'faker';
 import { randomChoice, titleCase } from '../../utils';
+import bcrypt from "bcrypt";
 
 export enum Role {
   ADMIN = "admin",
