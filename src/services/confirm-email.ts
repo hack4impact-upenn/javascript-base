@@ -39,7 +39,7 @@ let sendConfirmationEmail = (user: DocumentType<IUser>) => {
 let attemptConfirmation = (token: string) => {
   let decoded: any = jwt.verify(token, process.env.SECRET_KEY!);
 
-  User.findById(decoded.id, function (err: Error, user: IUser) {
+  User.findById(decoded.id, function (err: Error, user: DocumentType<IUser>) {
     if (err) {
       console.log(err);
       return;
@@ -48,6 +48,7 @@ let attemptConfirmation = (token: string) => {
     console.log("user.isVerified = " + user.isVerified);
     console.log("user.firstName = " + user.firstName);
     console.log("> user is verified");
+    user.save();
     // TODO: confirm this saves (?)
   });
 }

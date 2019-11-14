@@ -1,4 +1,4 @@
-import { prop, modelOptions, DocumentType } from '@typegoose/typegoose';
+import { prop, modelOptions, DocumentType, Typegoose } from '@typegoose/typegoose';
 import faker from 'faker';
 import { randomChoice, titleCase } from '../../utils';
 import bcrypt from "bcrypt";
@@ -29,7 +29,7 @@ export class IUser {
   @prop({ required: true, default: false })
   public isVerified?: boolean;
 
-  @prop({ required: true })
+  @prop({ required: true, default: 0 })
   public count!: number;
 }
 
