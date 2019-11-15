@@ -16,7 +16,7 @@ let sendConfirmationEmail = (user: DocumentType<IUser>) => {
   let token = jwt.sign({ id: user.id, type: 'confirmation' },
     process.env.SECRET_KEY!, { expiresIn: expiration_sec });
   // TODO (annie/jediah): use a more robust link generator.
-  var authenticationURL = process.env.HOST + ":" + process.env.PORT + 
+  var authenticationURL = "http://" + process.env.HOST + ":" + process.env.PORT + 
                     "/authenticate/" + token;
   sgMail.send({
     to: user.email,
@@ -27,9 +27,7 @@ let sendConfirmationEmail = (user: DocumentType<IUser>) => {
             Thanks for registering for [application]. Before we get started, we
             just need to confirm that this is you. Click below to verify your
             email address:<br/>
-            <a href={{authenticationURL}}> VERIFY </a>
-            <a href=\"` + {authenticationURL} + `\">Confirm your email</a>
-            ${authenticationURL}
+            <a href="${authenticationURL}">Confirm your email</a><br/>
             <br/><br/>
             
             Once confirmed, you'll be able to log in with your new account!<br/><br/>
