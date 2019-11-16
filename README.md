@@ -12,6 +12,13 @@ cd javascript-base
 npm install
 ```
 
+#### Configure environment variables
+In the root directory, create a `.env` file. For the application to work, you will need the following environment variables:
+```
+JWT_SECRET_KEY=<enter-your-secret-key-here-it-can-be-anything>
+MONGODB_URI=<see-setup-below>
+```
+
 #### Setup MongoDB
 
 #### MongoDB Atlas
