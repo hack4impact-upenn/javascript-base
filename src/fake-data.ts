@@ -25,7 +25,7 @@ db.once("open", async function() {
     await db.dropDatabase();
 
     // Generate fake users
-    let promises = generateFakeUsers().map((user: IUser) => {
+    const promises = generateFakeUsers().map((user: IUser) => {
       return new User(user).save();
     });
     Promise.all(promises).then(() => {

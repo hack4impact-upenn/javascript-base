@@ -1,5 +1,5 @@
 import React from "react";
-import { makeStyles, WithStyles, withStyles } from "@material-ui/core/styles";
+import { WithStyles, withStyles, Theme } from "@material-ui/core/styles";
 
 import {
   AppBar,
@@ -8,7 +8,6 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Theme,
   Button
 } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
@@ -16,6 +15,18 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import client from "./config/Apollo";
 import { gql } from "apollo-boost";
 import { Query, ApolloProvider } from "react-apollo";
+
+const styles = (theme: Theme) => ({
+  root: {
+    flexGrow: 1
+  },
+  menuButton: {
+    marginRight: theme.spacing(2)
+  },
+  title: {
+    flexGrow: 1
+  }
+});
 
 interface NavbarState {
   anchor: HTMLElement | null;
@@ -64,7 +75,7 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
       <div className={classes.root}>
         <ApolloProvider client={client}>
           <Query query={this.CURRENT_USER_QUERY}>
-            {({ data, loading }: { data: any; loading: Boolean }) => {
+            {({ data, loading }: { data: any; loading: boolean }) => {
               return (
                 <AppBar position="static">
                   <Toolbar>
@@ -128,17 +139,5 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
     );
   };
 }
-
-const styles = (theme: Theme) => ({
-  root: {
-    flexGrow: 1
-  },
-  menuButton: {
-    marginRight: theme.spacing(2)
-  },
-  title: {
-    flexGrow: 1
-  }
-});
 
 export default withStyles(styles)(Navbar);

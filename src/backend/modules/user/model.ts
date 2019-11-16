@@ -1,4 +1,4 @@
-import { prop, getModelForClass, DocumentType } from "@typegoose/typegoose";
+import { prop, DocumentType } from "@typegoose/typegoose";
 import faker from "faker";
 import { randomChoice, titleCase } from "../../utils";
 import bcrypt from "bcrypt";
@@ -29,11 +29,11 @@ export class IUser {
   public count!: number;
 }
 
-export function generateFakeUsers(count: number = 10): IUser[] {
-  let users: IUser[] = [];
+export function generateFakeUsers(count=10): IUser[] {
+  const users: IUser[] = [];
 
   // Generate count # of fake users
-  for (var i = 0; i < count; i++) {
+  for (let i = 0; i < count; i++) {
     const user: IUser = {
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
@@ -46,7 +46,7 @@ export function generateFakeUsers(count: number = 10): IUser[] {
   }
 
   // Generate a development test user for each role
-  for (let role of ROLES) {
+  for (const role of ROLES) {
     const user: IUser = {
       firstName: titleCase(role),
       lastName: "Example",

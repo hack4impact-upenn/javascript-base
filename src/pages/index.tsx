@@ -4,7 +4,7 @@ import Link from "next/link";
 import Navbar from "../components/Navbar";
 
 interface PostLinkProps {
-  title: string
+  title: string;
 }
 
 class PostLink extends React.Component<PostLinkProps, {}> {
