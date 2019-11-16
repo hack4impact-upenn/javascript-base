@@ -6,7 +6,8 @@ const typeDefs = gql`
     getFile(fileId: String!): String
   }
   type Mutation {
-    uploadFile(file: Upload!, name: String!, type: String!, permissions: [String]! ) : Boolean
+    uploadFile(file: Upload!, name: String!, type: String! ) : Boolean
+    deleteFile(fileId: String!) : Boolean
   }
 
   type File {
@@ -21,7 +22,6 @@ const typeDefs = gql`
     name: String!
     type: String!
     uploadDate: Date!
-    permissions: [String]!
   }
 
   scalar Date

@@ -10,7 +10,6 @@ interface FileWrapper {
   id: string,
   name: string,
   type: string,
-  permissions: string,
   uploadDate: Date
 }
 
@@ -36,7 +35,6 @@ class FileTable extends React.Component<{}, FileTableState> {
         id
         name
         type
-        permissions
         uploadDate
       }
     }
@@ -45,6 +43,12 @@ class FileTable extends React.Component<{}, FileTableState> {
   private GET_FILE = gql`
     query getFile($fileId: String!){
       getFile(fileId: $fileId)
+    }
+  `
+
+  private DELETE_FILE = gql`
+    mutation deleteFile($fileId: String!){
+      deleteFile(fileId: $fileId)
     }
   `
 
@@ -66,7 +70,20 @@ class FileTable extends React.Component<{}, FileTableState> {
     })
   }
 
-  private download = (file : FileWrapper): void => {
+  private delete = (file : FileWrapper) : void => {
+    client.mutate({
+      mutation: this.DELETE_FILE,
+      variables: {
+        fileId: file.id
+      }
+    })
+    const newFiles : FileWrapper[] = this.state.files.filter( (f : FileWrapper) => {
+      return f.id != file.id
+    })
+    this.setState({ ...this.state, files: newFiles});
+  }
+
+  private download = (file : FileWrapper) : void => {
     client.query({
       query: this.GET_FILE,
       variables: {
@@ -78,7 +95,7 @@ class FileTable extends React.Component<{}, FileTableState> {
   }
 
   private dateString = (d : Date) : string => {
-    return `${this.MONTHS[d.getMonth()]} ${d.getDay()} ${d.getFullYear()}`
+    return `${this.MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`
   }
 
   public componentDidMount = () => {
@@ -100,7 +117,7 @@ class FileTable extends React.Component<{}, FileTableState> {
               <TableCell padding="checkbox"></TableCell>
               <TableCell>File</TableCell>
               <TableCell>Upload Date</TableCell>
-              <TableCell padding="checkbox"></TableCell>
+              {/* <TableCell padding="checkbox"></TableCell> */}
               <TableCell padding="checkbox"></TableCell>
             </TableRow>
           </TableHead>
@@ -114,13 +131,13 @@ class FileTable extends React.Component<{}, FileTableState> {
                 </TableCell>
                 <TableCell>{file.name}</TableCell>
                 <TableCell>{ this.dateString(new Date(file.uploadDate)) }</TableCell>
-                <TableCell padding="checkbox">
+                {/* <TableCell padding="checkbox">
                   <IconButton onClick={(e) => { alert("Not implemented yet") }}>
                     <PersonAdd></PersonAdd>
                   </IconButton>
-                </TableCell>
+                </TableCell> */}
                 <TableCell padding="checkbox">
-                  <IconButton onClick={(e) => { alert("Not implemented yet") }}>
+                  <IconButton onClick={(e) => { this.delete(file) }}>
                     <Delete color="error" ></Delete>
                   </IconButton>
                 </TableCell>
