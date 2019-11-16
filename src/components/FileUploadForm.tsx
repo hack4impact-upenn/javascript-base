@@ -7,22 +7,10 @@ import { gql } from "apollo-boost";
 
 import { ValidatorForm } from 'react-material-ui-form-validator';
 
-export enum PermissionType {
-  USER = "user",
-  ROLE = "role",
-  GROUP = "group"
-}
-
-export type FilePermission = {
-  type: PermissionType,
-  value: string
-}
-
 export type FileUpload = {
   file: File,
   name: string,
   type: string,
-  permissions: FilePermission[]
 }
 
 interface FileUploadFormState {
@@ -35,8 +23,8 @@ class FileUploadForm extends React.Component<{}, FileUploadFormState> {
   }
 
   private UPLOAD_FILE = gql`
-    mutation uploadFile($file: Upload!, $name: String!, $type: String!, $permissions: [String]!) {
-      uploadFile(file: $file, name: $name, type: $type, permissions: $permissions)
+    mutation uploadFile($file: Upload!, $name: String!, $type: String!) {
+      uploadFile(file: $file, name: $name, type: $type)
     }
   `;
 
@@ -45,16 +33,9 @@ class FileUploadForm extends React.Component<{}, FileUploadFormState> {
     const new_files = files.map( (f : File) : FileUpload => ({
       file: f,
       name: f.name,
-      type: f.type,
-      permissions: [] as FilePermission[]
+      type: f.type
     }))
     this.setState({...this.state, files: old_files.concat(new_files)});
-  }
-
-  private compressPermissions = (perms : FilePermission[]) : String[] => {
-    return perms.map( (p : FilePermission) : String => (
-      `${p.type}|${p.value}`
-    ));
   }
 
   private handleFileUpload = () => {
@@ -64,8 +45,7 @@ class FileUploadForm extends React.Component<{}, FileUploadFormState> {
         variables: {
           file: upload.file,
           name: upload.name,
-          type: upload.type,
-          permissions: this.compressPermissions(upload.permissions)
+          type: upload.type
         }
       }).catch((error: any) => {
         // console.log(error)
@@ -111,9 +91,9 @@ class FileUploadForm extends React.Component<{}, FileUploadFormState> {
                 </ListItemIcon>
                 <ListItemText primary={file.name}></ListItemText>
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" aria-label="share">
+                  {/* <IconButton edge="end" aria-label="share">
                     <PersonAdd /> 
-                  </IconButton>
+                  </IconButton> */}
                   <IconButton onClick = {(e) => this.removeFile(file)} edge="end" aria-label="delete">
                     <Delete />
                   </IconButton>

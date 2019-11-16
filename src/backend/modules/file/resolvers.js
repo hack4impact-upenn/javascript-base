@@ -2,7 +2,7 @@ import AWS from "aws-sdk"
 import { File, User } from "../../models"
 import { AuthenticationError } from "apollo-server";
 
-import { validateUserPermission } from "./model"
+import { fileValidateUserAccess } from "./model"
 
 import * as dotenv from 'dotenv';
 dotenv.config();
@@ -32,7 +32,6 @@ const resolvers = {
         id: file._id.toString(),
         name: file.name,
         type: file.type,
-        permissions: file.permissions,
         uploadDate: file.uploadDate
       }))
 
@@ -43,40 +42,76 @@ const resolvers = {
       const currentUser = await User.findById(context.req.userId);
       const file = await File.findById(fileId);
 
-      if(validateUserPermission(file, currentUser)){
-        const url = s3.getSignedUrl('getObject', {
-          Bucket: process.env.AWS_S3_BUCKET,
-          Key: fileId,
-          Expires: 15,
-          ResponseContentDisposition: `attachment;filename=${file.name}`
-        })
-        return url
-      } else {
-        return null
+      if( !fileValidateUserAccess(file, currentUser) ){
+        return null;
       }
+
+      const params = {
+        Bucket: process.env.AWS_S3_FILE_BUCKET,
+        Key: fileId,
+        Expires: 15,
+        ResponseContentDisposition: `attachment;filename="${file.name}"`
+      }
+      const url = s3.getSignedUrl('getObject', params)
+      return url
     }
   },
   Mutation : {
-    uploadFile : async (parent, { file, name, type, permissions }, context) => {
+    deleteFile : async (parent, { fileId }, context) => {
+      if(!context.req.userId){
+        throw new AuthenticationError("You must be logged in to upload files")
+      } 
+
+      const currentUser = await User.findById(context.req.userId);
+      const file = await File.findById(fileId)
+      if( !fileValidateUserAccess(file, currentUser) ){
+        console.log("User not valid")
+        return false;
+      }
+
+      const params = {
+        Bucket: process.env.AWS_S3_FILE_BUCKET,
+        Key: fileId
+      }
+
+      const owner = await User.findById(file.owner)
+      owner.files = owner.files.filter( (id) => id != fileId);
+      owner.save()
+
+      s3.deleteObject(params, (err, data) => {
+        if(err) {
+          console.log(err);
+        }
+      });
+      await File.remove( {_id: fileId} );
+      return true;
+    }, 
+    uploadFile : async (parent, { file, name, type }, context) => {
       if(!context.req.userId){
         throw new AuthenticationError("You must be logged in to upload files")
       } 
 
       const currentUser = await User.findById(context.req.userId);
       const { stream, filename, mimetype, encoding } = await file;
+      const today = new Date()
+
       const newFile = new File({
         name: name,
-        permissions: permissions,
         type:  type,
         owner: currentUser,
-        uploadDate: new Date()
+        uploadDate: today
       });
       currentUser.files.push(newFile);
 
       newFile.save();
       currentUser.save();
       
-      const params = {Bucket: process.env.AWS_S3_BUCKET, Key: newFile.id, Body: stream}
+      const params = {
+        Bucket: process.env.AWS_S3_FILE_BUCKET, 
+        Key: newFile.id, 
+        Body: stream
+      }
+
       s3.upload(params, (error, data) => {
         console.log(error)
       })
