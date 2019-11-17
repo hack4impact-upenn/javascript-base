@@ -57,7 +57,7 @@ class RegisterForm extends React.Component<{}, RegisterPageState> {
         role: "user"
       }
     }).then((data: any) => {
-      // TODO : Redirect to different page
+      window.location.href = "/"
     }).catch((error: any) => {
       console.log(error)
     })

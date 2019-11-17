@@ -4,34 +4,59 @@ import { config } from "dotenv";
 import path from "path";
 import { createTokens } from "../../middleware/auth";
 import { User } from "../../models";
-import { comparePassword } from "./model";
+import { comparePassword, Role } from "./model";
+
+import { AuthenticationError } from "apollo-server";
 
 config({ path: path.resolve(__dirname, "../../../.env") });
 const resolvers = {
   Query: {
+    userCount: async (parent, {}, context) => {
+      return await User.countDocuments({})
+    },
+
     emailTaken: async (_, { email }, context) => {
       return 0 == (await User.countDocuments({ email: email }));
     },
+
     allUsers: (parent, args, context) => {
       return User.find({});
     },
+
+    getUsers: async (parent, { page, pageSize, search, orderBy, orderDirection }, context) => {
+      if(!context.req.userId){
+        throw new AuthenticationError("You must be logged in to view users");
+      }
+      if(context.req.role != Role.ADMIN){
+        console.log(context.req.role)
+        throw new AuthenticationError("You must be an admin to view users");
+      }
+      return (await User.find({ $or: [
+        { firstName: {$regex: new RegExp(search), $options: 'i'}},
+        { lastName: {$regex: new RegExp(search), $options: 'i'}},
+        { email: {$regex: new RegExp(search), $options: 'i'}},
+      ]}).collation({locale: "en" }).sort({
+        [orderBy]: orderDirection == "asc" ? 1 : -1
+      })).slice(page * pageSize, (page + 1) * pageSize);
+    },
+
     user: (parent, { id }, context) => {
       return User.findById(id);
     },
+
     me: (_, __, context) => {
       if (!context.req.userId) {
         return;
       }
-
       return User.findById(context.req.userId);
     },
+
     login: async (_, { email, password }, context) => {
       const u = await User.findOne({ email: email });
       if (u == null) {
         throw new UserInputError("Username or Password is incorrect");
       } else {
         const valid = await comparePassword(u, password);
-
         if (valid) {
           // User is succesfully validated
           const { refreshToken, accessToken } = createTokens(u);
@@ -51,6 +76,7 @@ const resolvers = {
       }
     }
   },
+  
   Mutation: {
     // TODO : Once cookies working, make sure added user has user role if cookie is not set or user
     // Only admins should be able to add other admins
