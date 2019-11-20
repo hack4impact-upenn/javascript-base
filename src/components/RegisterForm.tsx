@@ -1,6 +1,6 @@
 import React from "react";
 
-import { AppBar, Button, Grid, TextField, FormControlLabel, Checkbox, Typography } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import client from "./config/Apollo"
@@ -9,12 +9,12 @@ import { gql } from "apollo-boost";
 type FormUpdate = React.ChangeEvent<HTMLInputElement>;
 
 interface RegisterPageState {
-  firstName: string,
-  lastName: string,
-  email: string,
-  password: string,
-  confirmPassword: string,
-  error: string,
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  error: string;
 }
 
 class RegisterForm extends React.Component<{}, RegisterPageState> {
@@ -56,7 +56,7 @@ class RegisterForm extends React.Component<{}, RegisterPageState> {
         lastName: this.state.lastName,
         role: "user"
       }
-    }).then((data: any) => {
+    }).then(() => {
       // TODO : Redirect to different page
     }).catch((error: any) => {
       console.log(error)

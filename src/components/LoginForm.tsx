@@ -32,7 +32,7 @@ class LoginForm extends React.Component<{}, LoginFormState> {
     };
   };
 
-  private handleLogin = (e: React.FormEvent<Element>): void => {
+  private handleLogin = (): void => {
     client
       .query({
         query: this.LOGIN_QUERY,
@@ -41,7 +41,7 @@ class LoginForm extends React.Component<{}, LoginFormState> {
           password: this.state.password
         }
       })
-      .then((data: any) => {
+      .then(() => {
         window.location.href = "/";
       })
       .catch((error: any) => {

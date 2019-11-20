@@ -1,8 +1,5 @@
 import React from "react";
-import { AppBar, Button, Grid, TextField, FormControlLabel, Checkbox, Typography } from '@material-ui/core';
-
-import client from "../components/config/Apollo"
-import { gql } from "apollo-boost";
+import { AppBar, Grid } from '@material-ui/core';
 
 import LoginForm from '../components/LoginForm'
 
