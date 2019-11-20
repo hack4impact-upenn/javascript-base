@@ -3,7 +3,6 @@ import { DocumentType } from '@typegoose/typegoose'
 import { IUser } from '../backend/modules/user/model'
 import { User } from '../backend/models'
 const sgMail = require("@sendgrid/mail");
-//import * as sgMail from "@sendgrid/mail";
 
 /**
  * Send confirmation email to the user expiring after 
@@ -29,7 +28,6 @@ let sendConfirmationEmail = (user: DocumentType<IUser>) => {
             email address:<br/>
             <a href="${authenticationURL}">Confirm your email</a><br/>
             <br/><br/>
-            
             Once confirmed, you'll be able to log in with your new account!<br/><br/>
             Best,<br/>
             Hack4Impact

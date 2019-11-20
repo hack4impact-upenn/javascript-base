@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-
 import client from "../../components/config/Apollo"
 import { gql } from "apollo-boost";
 
@@ -13,6 +12,7 @@ const CONFIRM_EMAIL_MUTATION = gql`
 // React Hook for Authenticate: we must use a hook in order to be compatible
 // with next's useRouter
 const Authenticate = () => {
+  const [authenticated, setAuthenticated] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -34,16 +34,24 @@ const Authenticate = () => {
         }
       }).then((data: any) => {
         console.log("> User is authenticated");
-        // TODO: Redirect to home page
-
+        setAuthenticated(true);
       }).catch((error: any) => {
         console.log(error);
       })
     }
   }
   return(
-      <div>
-        User authentication pending
+      <div
+        style={{display: 'flex',
+                justifyContent:'center',
+                alignItems:'center', 
+                height: '100vh'}}
+      >
+        <div>
+          {authenticated && <p>Success! Your email was verified! 
+                               You can log in now!</p>
+          || <p>Email verification pending...</p>}
+        </div>
       </div>
   );
 }
