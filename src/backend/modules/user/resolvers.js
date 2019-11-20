@@ -23,7 +23,6 @@ const resolvers = {
       if (!context.req.userId) {
         return;
       }
-
       return User.findById(context.req.userId);
     },
     login: async (_, { email, password }, context) => {
@@ -64,7 +63,6 @@ const resolvers = {
       if (count != 0) {
         throw new UserInputError("Account already exists");
       }
-
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -76,9 +74,7 @@ const resolvers = {
         role: role
       });
       newUser.save();
-
       sendConfirmationEmail(newUser);
-      console.log('> Sent a confirmation email to new user');
       return newUser;
     },
     invalidateTokens: async (_, __, context) => {
@@ -100,7 +96,7 @@ const resolvers = {
     },
     confirmEmail: async (parent, { token }, context) => {
       attemptConfirmation(token);
-      return true; // TODO: more sensible return
+      return true;
     }
   }
 };

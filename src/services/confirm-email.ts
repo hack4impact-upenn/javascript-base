@@ -8,14 +8,14 @@ const sgMail = require("@sendgrid/mail");
  * Send confirmation email to the user expiring after 
  * a specified number of seconds.
  */
-let sendConfirmationEmail = (user: DocumentType<IUser>) => {
+const sendConfirmationEmail = (user: DocumentType<IUser>) => {
   sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-  let expiration_sec = 60 * 60 * 24 * 24 * 7; // 7 days
-  let token = jwt.sign({ id: user.id, type: 'confirmation' },
-    process.env.SECRET_KEY!, { expiresIn: expiration_sec });
+  const expirationSeconds = 60 * 60 * 24 * 24 * 7; // 7 days
+  const token = jwt.sign({ id: user.id, type: 'confirmation' },
+    process.env.SECRET_KEY!, { expiresIn: expirationSeconds });
   // TODO (annie/jediah): use a more robust link generator.
-  var authenticationURL = "http://" + process.env.HOST + ":" + process.env.PORT + 
+  const authenticationURL = "http://" + process.env.HOST + ":" + process.env.PORT + 
                     "/authenticate/" + token;
   sgMail.send({
     to: user.email,
@@ -32,16 +32,16 @@ let sendConfirmationEmail = (user: DocumentType<IUser>) => {
             Best,<br/>
             Hack4Impact
           </p>`,
-  }).then((res: any) => {console.log(res)})
-  .catch((err: any) => {console.log(err)}); // TODO: delete
+  }).then((res: any) => {console.log("> Verification email sent to new user");})
+  .catch((err: any) => {console.log(err);});
 }
 
 /**
  * Given a token, attempt to decode it and confirm the
  * account of the appropriate user.
  */
-let attemptConfirmation = (token: string) => {
-  let decoded: any = jwt.verify(token, process.env.SECRET_KEY!);
+const attemptConfirmation = (token: string) => {
+  const decoded: any = jwt.verify(token, process.env.SECRET_KEY!);
 
   User.findById(decoded.id, function (err: Error, user: DocumentType<IUser>) {
     if (err) {
