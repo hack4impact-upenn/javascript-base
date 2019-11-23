@@ -1,8 +1,10 @@
 import React from "react";
 import Link from "next/link";
 
+import Navbar from "../components/Navbar";
+
 interface PostLinkProps {
-  title: string
+  title: string;
 }
 
 class PostLink extends React.Component<PostLinkProps, {}> {
@@ -17,6 +19,7 @@ class PostLink extends React.Component<PostLinkProps, {}> {
 
 const Index = () => (
   <div>
+    <Navbar></Navbar>
     <ul>
       <li><a href="/api">GraphQL</a></li>
       <li><a href="/login">Login</a></li>
