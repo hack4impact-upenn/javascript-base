@@ -2,8 +2,9 @@ import { gql } from "apollo-server";
 
 const typeDefs = gql`
   type Query {
-    getFiles(first: Int!, cursor: Int!, sort: String!, desc: Boolean!): [FileInformation]
+    getFiles(page: Int!, pageSize: Int!, search: String!, orderBy: String!, orderDirection: String!): [FileInformation]
     getFile(fileId: String!): String
+    getFileCount: Int!
   }
   type Mutation {
     uploadFile(file: Upload!, name: String!, type: String! ) : Boolean
@@ -20,7 +21,7 @@ const typeDefs = gql`
     id: String!
     owner: User
     name: String!
-    type: String!
+    type: String
     uploadDate: Date!
   }
 

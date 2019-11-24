@@ -1,9 +1,10 @@
 import React from 'react'
+
+import MaterialTable, { Query, QueryResult, Column, Action } from "material-table";
+import icons from "./TableIcons"
+import { GetApp, Delete } from '@material-ui/icons';
+
 import { gql } from 'apollo-boost'
-
-import { Table, TableRow, TableHead, TableCell, IconButton, TableBody, Paper, CircularProgress, Typography } from "@material-ui/core"
-import { GetApp, PersonAdd, Delete } from '@material-ui/icons'
-
 import client from "./config/Apollo"
 
 interface FileWrapper {
@@ -14,24 +15,42 @@ interface FileWrapper {
 }
 
 interface FileTableState {
-  files: FileWrapper[],
-  loading: Boolean
-  // The field to order the table by
-  order_field: string,
-  order_desc: Boolean,
+  fileCount: number
 }
 
 class FileTable extends React.Component<{}, FileTableState> {
-  state = {
-    files: [] as FileWrapper[],
-    loading: true,
-    order_field: "name",
-    order_desc: false
-  }
+
+  private columnns : Column<FileWrapper>[] = [
+    {title: "Filename", field: "name"},
+    {title: "File Type", field: "type"},
+    {title: "Upload Date", field: "uploadDate", render: (file) => this.dateString(new Date(file.uploadDate)) }
+  ]
+
+  private actions : Action<FileWrapper>[] = [
+    { 
+      icon: ( () => <GetApp color = "primary"></GetApp>), 
+      tooltip: "Download file",
+      onClick : ( (e : any, files : FileWrapper | FileWrapper[]) : void => {
+        let selected = null;
+        if(! Array.isArray(files) ){
+          selected = [files];
+        } else {
+          selected = files;
+        }
+        selected!.map( (f : FileWrapper) => {
+          this.download(f);
+        })
+      })
+    },
+  ]
+
+  private MONTHS = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
 
   private GET_FILES = gql`
-    query getFiles($first: Int!, $cursor: Int!, $sort: String!, $desc: Boolean!){
-      getFiles(first: $first, cursor: $cursor, sort: $sort, desc: $desc){
+    query getFiles($page: Int!, $pageSize: Int!, $search: String!, $orderBy: String!, $orderDirection: String!){
+      getFiles(page: $page, pageSize: $pageSize, search: $search, orderBy: $orderBy, orderDirection: $orderDirection){
         id
         name
         type
@@ -40,7 +59,7 @@ class FileTable extends React.Component<{}, FileTableState> {
     }
   `
 
-  private GET_FILE = gql`
+  private GET_FILE_URL = gql`
     query getFile($fileId: String!){
       getFile(fileId: $fileId)
     }
@@ -52,40 +71,55 @@ class FileTable extends React.Component<{}, FileTableState> {
     }
   `
 
-  private MONTHS = ["January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
+  private GET_FILE_COUNT = gql`
+    query getFileCount {
+      getFileCount
+    }
+  `
 
-  private getFiles = (first: number, cursor: number, sort: string, desc: boolean): Promise<Array<FileWrapper>> => {
+  private getData = ( query : Query<FileWrapper> ) : Promise<QueryResult<FileWrapper>> => {
+    const vars = {
+      page: query.page,
+      pageSize: query.pageSize,
+      search: query.search == null ? "" : query.search,
+      orderBy: query.orderBy == null ? "id" : query.orderBy.field,
+      orderDirection: query.orderDirection
+    }
+
     return client.query({
       query: this.GET_FILES,
-      variables: {
-        first: first,
-        cursor: cursor,
-        sort: sort,
-        desc: desc
+      variables: vars
+    }).then( (data : any, loading : boolean) => {
+      if(data.loading){
+        return {
+          data: [],
+          page: query.page,
+          totalCount: 0
+        }
+      } else {
+        return {
+          data: data.data.getFiles,
+          page: query.page,
+          totalCount: this.state.fileCount
+        }
       }
-    }).then((data: any) => {
-      this.setState({ ...this.state, files: data.data.getFiles, loading: false })
     })
   }
 
-  private delete = (file : FileWrapper) : void => {
-    client.mutate({
+  private delete = (file : FileWrapper) : Promise<void> => {
+    return client.mutate({
       mutation: this.DELETE_FILE,
       variables: {
         fileId: file.id
       }
+    }).then( () => {
+      return;
     })
-    const newFiles : FileWrapper[] = this.state.files.filter( (f : FileWrapper) => {
-      return f.id != file.id
-    })
-    this.setState({ ...this.state, files: newFiles});
   }
 
   private download = (file : FileWrapper) : void => {
     client.query({
-      query: this.GET_FILE,
+      query: this.GET_FILE_URL,
       variables: {
         fileId: file.id
       }
@@ -99,59 +133,33 @@ class FileTable extends React.Component<{}, FileTableState> {
   }
 
   public componentDidMount = () => {
-    this.getFiles(100, 0, "name", false);
+    client.query({
+      query: this.GET_FILE_COUNT
+    }).then( (data : any, loading: boolean) => {
+      this.setState({...this.state, fileCount: data.data.getFileCount})
+    })  
   }
 
   public render = () => {
     return (
-      <Paper>
-        { this.state.loading &&
-          <div style = {{ textAlign: "center", padding: "100px" }}>
-            <CircularProgress size = {80}/>
-          </div>
-        }
-        { !this.state.loading &&
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell padding="checkbox"></TableCell>
-              <TableCell>File</TableCell>
-              <TableCell>Upload Date</TableCell>
-              {/* <TableCell padding="checkbox"></TableCell> */}
-              <TableCell padding="checkbox"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {this.state.files.length != 0 && this.state.files.map((file: FileWrapper) => (
-              <TableRow key={file.id}>
-                <TableCell padding="checkbox">
-                  <IconButton onClick={(e) => { this.download(file) }}>
-                    <GetApp color="primary" ></GetApp>
-                  </IconButton>
-                </TableCell>
-                <TableCell>{file.name}</TableCell>
-                <TableCell>{ this.dateString(new Date(file.uploadDate)) }</TableCell>
-                {/* <TableCell padding="checkbox">
-                  <IconButton onClick={(e) => { alert("Not implemented yet") }}>
-                    <PersonAdd></PersonAdd>
-                  </IconButton>
-                </TableCell> */}
-                <TableCell padding="checkbox">
-                  <IconButton onClick={(e) => { this.delete(file) }}>
-                    <Delete color="error" ></Delete>
-                  </IconButton>
-                </TableCell>
-              </TableRow>
-            ))} 
-          </TableBody>
-        </Table>
-        }
-        { !this.state.loading && this.state.files.length == 0 &&
-          <div style = {{ textAlign: "center", padding: "100px" }}>
-            <Typography variant = "h5"> No Files Uploaded Yet</Typography>
-          </div>
-        }
-      </Paper>
+      <MaterialTable<FileWrapper> 
+        icons = {icons} 
+        data = {this.getData} 
+        columns={this.columnns} 
+        actions = {this.actions} 
+        editable = {{
+          isDeletable: ( (f: FileWrapper) => true ),
+          onRowDelete: this.delete
+        }}
+        localization={{
+          header : {
+            actions: ''
+          }
+        }}
+        options={{
+          emptyRowsWhenPaging: false,
+        }}>
+      </MaterialTable>
     )
   }
 }

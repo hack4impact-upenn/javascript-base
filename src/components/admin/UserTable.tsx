@@ -4,7 +4,6 @@ import MaterialTable, { Query, QueryResult, Column } from "material-table";
 import { gql } from "apollo-boost";
 import client from "../config/Apollo";
 import icons from "../TableIcons"
-import { int } from 'aws-sdk/clients/datapipeline';
 
 interface UserTableState {
   userCount: number

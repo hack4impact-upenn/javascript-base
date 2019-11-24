@@ -14,33 +14,25 @@ const s3 = new AWS.S3({
 
 const resolvers = {
   Query : {
-    getFiles : async (parent, { first, cursor, sort, desc }, context) => {
+    getFiles : async (parent, { page, pageSize, search, orderBy, orderDirection }, context) => {
       if(!context.req.userId){
         throw new AuthenticationError("You must be logged in to view files")
       } 
 
-      const currentUser = await User.findById(context.req.userId).populate({
-        path: 'files',
-        options: {
-          sort : {
-            [sort]: desc ? -1 : 1 
-          },
-        }
-      });
+      const currentUser = await User.findById(context.req.userId)
+      const files = (await File.find({ owner: currentUser, $or : [
+        { name: {$regex: new RegExp(search), $options: 'i'}},
+        { type: {$regex: new RegExp(search), $options: 'i'}}
+      ]}).sort({
+        [orderBy]: orderDirection == "asc" ? 1 : -1
+      })).slice(page * pageSize, (page + 1) * pageSize)
 
-      const files = await currentUser.files.slice(cursor, cursor + first).map( (file) => ({
-        id: file._id.toString(),
-        name: file.name,
-        type: file.type,
-        uploadDate: file.uploadDate
-      }))
-
-      return files
+      return files;
     },
 
     getFile : async (parent, { fileId }, context) => {
       const currentUser = await User.findById(context.req.userId);
-      const file = await File.findById(fileId);
+      const file =   await File.findById(fileId);
 
       if( !fileValidateUserAccess(file, currentUser) ){
         return null;
@@ -54,7 +46,11 @@ const resolvers = {
       }
       const url = s3.getSignedUrl('getObject', params)
       return url
-    }
+    },
+
+    getFileCount : async (parent, {}, context) => {
+      return (await User.findById(context.req.userId)).files.length
+    },
   },
   Mutation : {
     deleteFile : async (parent, { fileId }, context) => {

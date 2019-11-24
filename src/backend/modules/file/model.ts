@@ -9,8 +9,8 @@ export class IFile {
   @prop({ ref: "IUser", required: true })
   public owner!: Ref<IUser>;
 
-  @prop({ required : true })
-  public type!: String;
+  @prop({})
+  public type?: String;
 
   @prop({ required : true})
   public uploadDate!: Date;
