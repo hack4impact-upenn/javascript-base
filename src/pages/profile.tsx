@@ -3,16 +3,13 @@ import Navbar from "../components/Navbar";
 import {
   Typography,
   Paper,
+  Link,
   List,
   ListItem,
-  ListItemAvatar,
   ListItemText,
-  Avatar,
   Divider
 } from "@material-ui/core";
-import ImageIcon from "@material-ui/icons/Image";
-import WorkIcon from "@material-ui/icons/Work";
-import BeachAccessIcon from "@material-ui/icons/BeachAccess";
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 
 class Profile extends Component {
   render() {
@@ -20,37 +17,86 @@ class Profile extends Component {
       <div>
         <Navbar></Navbar>
         <Paper style={{ margin: "30px auto", width: "90vw", padding: "20px" }}>
-          <Typography variant="h4">My Profile</Typography>
-          <Typography component="p">
-            Paper can be used to build surface or other elements for your
-            application.
+          <Typography variant="h4">
+            <b>Profile</b>
           </Typography>
+          <div style={{ margin: "10px auto" }}>
+            <Typography component="p">
+              Some info may be visible to other people using Organization's
+              services. <Link href="#">Learn more</Link>
+            </Typography>
+          </div>
           <List>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <ImageIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Name" />
+            <ListItem
+              button
+              component="a"
+              href="#"
+              style={{ margin: "5px 0px" }}
+            >
+              <ListItemText secondary="NAME" />
+              <ListItemText
+                primary="John Smith"
+                style={{
+                  position: "absolute",
+                  left: "30%",
+                  margin: "0px auto"
+                }}
+              />
+              <ArrowForwardIosIcon />
             </ListItem>
-            <Divider variant="inset" component="li" />
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <WorkIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Email" />
+            <Divider component="li" />
+            <ListItem
+              button
+              component="a"
+              href="#"
+              style={{ margin: "5px 0px" }}
+            >
+              <ListItemText secondary="EMAIL" />
+              <ListItemText
+                primary="jsmith@gmail.com"
+                style={{
+                  position: "absolute",
+                  left: "30%",
+                  margin: "0px auto"
+                }}
+              />
+              <ArrowForwardIosIcon />
             </ListItem>
-            <Divider variant="inset" component="li" />
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar>
-                  <BeachAccessIcon />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary="Password" />
+            <Divider component="li" />
+            <ListItem
+              button
+              component="a"
+              href="#"
+              style={{ margin: "5px 0px" }}
+            >
+              <ListItemText secondary="PASSWORD" />
+              <ListItemText
+                primary="********"
+                style={{
+                  position: "absolute",
+                  left: "30%",
+                  margin: "0px auto"
+                }}
+              />
+              <ArrowForwardIosIcon />
+            </ListItem>
+            <Divider component="li" />
+            <ListItem
+              button
+              component="a"
+              href="#"
+              style={{ margin: "5px 0px" }}
+            >
+              <ListItemText secondary="ROLE" />
+              <ListItemText
+                primary="Admin"
+                style={{
+                  position: "absolute",
+                  left: "30%",
+                  margin: "0px auto"
+                }}
+              />
+              <ArrowForwardIosIcon />
             </ListItem>
           </List>
         </Paper>
