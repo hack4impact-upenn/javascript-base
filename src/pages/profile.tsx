@@ -13,6 +13,24 @@ import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import { gql } from "apollo-boost";
 import { Query, ApolloProvider } from "react-apollo";
 import client from "../components/config/Apollo";
+import NLink from "next/link";
+
+interface EditFieldLinkProps {
+  fieldType: string;
+}
+
+class EditFieldLink extends React.Component<EditFieldLinkProps, {}> {
+  public render = () => (
+    <li>
+      <NLink
+        href={`/edit_fields/[fieldType]`}
+        as={`/edit_fields/${this.props.fieldType}`}
+      >
+        {this.props.children}
+      </NLink>
+    </li>
+  );
+}
 
 class Profile extends Component {
   private CURRENT_USER_QUERY = gql`
@@ -74,7 +92,6 @@ class Profile extends Component {
                         <ListItem
                           button
                           component="a"
-                          href="/EditFields"
                           style={{ margin: "5px 0px" }}
                         >
                           <ListItemText secondary="NAME" />
@@ -92,7 +109,6 @@ class Profile extends Component {
                         <ListItem
                           button
                           component="a"
-                          href="#"
                           style={{ margin: "5px 0px" }}
                         >
                           <ListItemText secondary="EMAIL" />
@@ -110,7 +126,6 @@ class Profile extends Component {
                         <ListItem
                           button
                           component="a"
-                          href="#"
                           style={{ margin: "5px 0px" }}
                         >
                           <ListItemText secondary="PASSWORD" />
@@ -128,7 +143,6 @@ class Profile extends Component {
                         <ListItem
                           button
                           component="a"
-                          href="#"
                           style={{ margin: "5px 0px" }}
                         >
                           <ListItemText secondary="ROLE" />
@@ -158,77 +172,84 @@ class Profile extends Component {
                         </Typography>
                       </div>
                       <List>
-                        <ListItem
-                          button
-                          component="a"
-                          href="/EditFields"
-                          style={{ margin: "5px 0px" }}
-                        >
-                          <ListItemText secondary="NAME" />
-                          <ListItemText
-                            primary={data.me.firstName + " " + data.me.lastName}
-                            style={{
-                              position: "absolute",
-                              left: "30%",
-                              margin: "0px auto"
-                            }}
-                          />
-                          <ArrowForwardIosIcon />
-                        </ListItem>
+                        <EditFieldLink fieldType="name">
+                          <ListItem
+                            button
+                            component="a"
+                            style={{ margin: "5px 0px" }}
+                          >
+                            <ListItemText secondary="NAME" />
+                            <ListItemText
+                              primary={
+                                data.me.firstName + " " + data.me.lastName
+                              }
+                              style={{
+                                position: "absolute",
+                                left: "30%",
+                                margin: "0px auto"
+                              }}
+                            />
+                            <ArrowForwardIosIcon />
+                          </ListItem>
+                        </EditFieldLink>
                         <Divider component="li" />
-                        <ListItem
-                          button
-                          component="a"
-                          href="/EditFields"
-                          style={{ margin: "5px 0px" }}
-                        >
-                          <ListItemText secondary="EMAIL" />
-                          <ListItemText
-                            primary={data.me.email}
-                            style={{
-                              position: "absolute",
-                              left: "30%",
-                              margin: "0px auto"
-                            }}
-                          />
-                          <ArrowForwardIosIcon />
-                        </ListItem>
+                        <EditFieldLink fieldType="email">
+                          <ListItem
+                            button
+                            component="a"
+                            style={{ margin: "5px 0px" }}
+                          >
+                            <ListItemText secondary="EMAIL" />
+                            <ListItemText
+                              primary={data.me.email}
+                              style={{
+                                position: "absolute",
+                                left: "30%",
+                                margin: "0px auto"
+                              }}
+                            />
+                            <ArrowForwardIosIcon />
+                          </ListItem>
+                        </EditFieldLink>
                         <Divider component="li" />
-                        <ListItem
-                          button
-                          component="a"
-                          href="/EditFields"
-                          style={{ margin: "5px 0px" }}
-                        >
-                          <ListItemText secondary="PASSWORD" />
-                          <ListItemText
-                            primary="********"
-                            style={{
-                              position: "absolute",
-                              left: "30%",
-                              margin: "0px auto"
-                            }}
-                          />
-                          <ArrowForwardIosIcon />
-                        </ListItem>
+                        <EditFieldLink fieldType="password">
+                          <ListItem
+                            button
+                            component="a"
+                            style={{ margin: "5px 0px" }}
+                          >
+                            <ListItemText secondary="PASSWORD" />
+                            <ListItemText
+                              primary="********"
+                              style={{
+                                position: "absolute",
+                                left: "30%",
+                                margin: "0px auto"
+                              }}
+                            />
+                            <ArrowForwardIosIcon />
+                          </ListItem>
+                        </EditFieldLink>
                         <Divider component="li" />
-                        <ListItem
-                          button
-                          component="a"
-                          href="/EditFields"
-                          style={{ margin: "5px 0px" }}
-                        >
-                          <ListItemText secondary="ROLE" />
-                          <ListItemText
-                            primary={this.capitalize(data.me.role)}
-                            style={{
-                              position: "absolute",
-                              left: "30%",
-                              margin: "0px auto"
-                            }}
-                          />
-                          <ArrowForwardIosIcon />
-                        </ListItem>
+                        <EditFieldLink fieldType="role">
+                          <ListItem
+                            button
+                            component="a"
+                            href="/EditFields"
+                            style={{ margin: "5px 0px" }}
+                          >
+                            <ListItemText secondary="ROLE" />
+                            <ListItemText
+                              primary={this.capitalize(data.me.role)}
+                              style={{
+                                position: "absolute",
+                                left: "30%",
+                                margin: "0px auto"
+                              }}
+                            />
+                            <ArrowForwardIosIcon />
+                          </ListItem>
+                        </EditFieldLink>
                       </List>
                     </div>
                   )}

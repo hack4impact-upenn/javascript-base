@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/Navbar";
 import {
   AppBar,
   Toolbar,
   Dialog,
   DialogContent,
-  DialogContentText,
   DialogActions,
   DialogTitle,
   Button,
@@ -15,33 +14,31 @@ import {
   TextField
 } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
 import { gql } from "apollo-boost";
-import { Query, ApolloProvider } from "react-apollo";
-import client from "../components/config/Apollo";
+import { ApolloProvider } from "react-apollo";
+import client from "../../components/config/Apollo";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import EditIcon from "@material-ui/icons/Edit";
+import { useRouter } from "next/router";
+
+const EditFieldsWithRouter = (props: any) => {
+  const router = useRouter();
+  return <EditFields {...props} router={router} />;
+};
 
 class EditFields extends Component {
   state = {
-    open: false
+    open: false,
+    fieldType: ""
   };
 
-  private CURRENT_USER_QUERY = gql`
-    query me {
-      me {
-        firstName
-        lastName
-        email
-        role
-      }
-    }
-  `;
-
-  private capitalize = (s: string) => {
-    if (typeof s !== "string") return "";
-    return s.charAt(0).toUpperCase() + s.slice(1);
-  };
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      open: false,
+      fieldType: props.router.query.fieldType
+    };
+  }
 
   private toggleDialog = () => {
     this.setState({ ...this.state, open: !this.state.open });
@@ -49,6 +46,11 @@ class EditFields extends Component {
 
   private handleClose = () => {
     this.setState({ ...this.state, open: false });
+  };
+
+  capitalize = (s: string) => {
+    if (typeof s !== "string") return "";
+    return s.charAt(0).toUpperCase() + s.slice(1);
   };
 
   render() {
@@ -60,7 +62,7 @@ class EditFields extends Component {
               edge="start"
               color="inherit"
               aria-label="menu"
-              href="Profile"
+              href="/profile"
             >
               <ArrowBackIcon />
             </IconButton>
@@ -74,12 +76,12 @@ class EditFields extends Component {
           }}
         >
           <Typography variant="h4">
-            <b>Name</b>
+            <b>{this.capitalize(this.state.fieldType)}</b>
           </Typography>
           <div style={{ margin: "10px auto" }}>
             <Typography component="p">
-              Changes to your name will be reflected across your account.{" "}
-              <Link href="#">Learn more</Link>
+              Changes to your {this.state.fieldType} will be reflected across
+              your account. <Link href="#">Learn more</Link>
             </Typography>
           </div>
           <TextField
@@ -113,13 +115,15 @@ class EditFields extends Component {
             }}
             fullWidth={true}
           >
-            <DialogTitle>Change Name</DialogTitle>
+            <DialogTitle>
+              Change {this.capitalize(this.state.fieldType)}
+            </DialogTitle>
             <DialogContent style={{ margin: "0px" }}>
               <TextField
                 autoFocus
                 margin="dense"
-                id="name"
-                label="Name"
+                id={this.state.fieldType}
+                label={this.capitalize(this.state.fieldType)}
                 fullWidth
               />
             </DialogContent>
@@ -148,4 +152,4 @@ class EditFields extends Component {
   }
 }
 
-export default EditFields;
+export default EditFieldsWithRouter;
