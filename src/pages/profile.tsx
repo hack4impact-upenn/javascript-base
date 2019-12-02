@@ -58,7 +58,7 @@ class Profile extends Component {
                       </div>
                     </div>
                   )}
-                  {!loading && data.me != null && (
+                  {loading && (
                     <div>
                       <Typography variant="h4">
                         <b>Profile</b>
@@ -74,12 +74,12 @@ class Profile extends Component {
                         <ListItem
                           button
                           component="a"
-                          href="#"
+                          href="/EditFields"
                           style={{ margin: "5px 0px" }}
                         >
                           <ListItemText secondary="NAME" />
                           <ListItemText
-                            primary={data.me.firstName + " " + data.me.lastName}
+                            primary=""
                             style={{
                               position: "absolute",
                               left: "30%",
@@ -97,7 +97,7 @@ class Profile extends Component {
                         >
                           <ListItemText secondary="EMAIL" />
                           <ListItemText
-                            primary={data.me.email}
+                            primary=""
                             style={{
                               position: "absolute",
                               left: "30%",
@@ -115,7 +115,7 @@ class Profile extends Component {
                         >
                           <ListItemText secondary="PASSWORD" />
                           <ListItemText
-                            primary="********"
+                            primary=""
                             style={{
                               position: "absolute",
                               left: "30%",
@@ -129,6 +129,93 @@ class Profile extends Component {
                           button
                           component="a"
                           href="#"
+                          style={{ margin: "5px 0px" }}
+                        >
+                          <ListItemText secondary="ROLE" />
+                          <ListItemText
+                            primary={""}
+                            style={{
+                              position: "absolute",
+                              left: "30%",
+                              margin: "0px auto"
+                            }}
+                          />
+                          <ArrowForwardIosIcon />
+                        </ListItem>
+                      </List>
+                    </div>
+                  )}
+                  {!loading && data.me != null && (
+                    <div>
+                      <Typography variant="h4">
+                        <b>Profile</b>
+                      </Typography>
+                      <div style={{ margin: "10px auto" }}>
+                        <Typography component="p">
+                          Some info may be visible to other people using
+                          Organization's services.{" "}
+                          <Link href="#">Learn more</Link>
+                        </Typography>
+                      </div>
+                      <List>
+                        <ListItem
+                          button
+                          component="a"
+                          href="/EditFields"
+                          style={{ margin: "5px 0px" }}
+                        >
+                          <ListItemText secondary="NAME" />
+                          <ListItemText
+                            primary={data.me.firstName + " " + data.me.lastName}
+                            style={{
+                              position: "absolute",
+                              left: "30%",
+                              margin: "0px auto"
+                            }}
+                          />
+                          <ArrowForwardIosIcon />
+                        </ListItem>
+                        <Divider component="li" />
+                        <ListItem
+                          button
+                          component="a"
+                          href="/EditFields"
+                          style={{ margin: "5px 0px" }}
+                        >
+                          <ListItemText secondary="EMAIL" />
+                          <ListItemText
+                            primary={data.me.email}
+                            style={{
+                              position: "absolute",
+                              left: "30%",
+                              margin: "0px auto"
+                            }}
+                          />
+                          <ArrowForwardIosIcon />
+                        </ListItem>
+                        <Divider component="li" />
+                        <ListItem
+                          button
+                          component="a"
+                          href="/EditFields"
+                          style={{ margin: "5px 0px" }}
+                        >
+                          <ListItemText secondary="PASSWORD" />
+                          <ListItemText
+                            primary="********"
+                            style={{
+                              position: "absolute",
+                              left: "30%",
+                              margin: "0px auto"
+                            }}
+                          />
+                          <ArrowForwardIosIcon />
+                        </ListItem>
+                        <Divider component="li" />
+                        <ListItem
+                          button
+                          component="a"
+                          href="/EditFields"
                           style={{ margin: "5px 0px" }}
                         >
                           <ListItemText secondary="ROLE" />
