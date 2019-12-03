@@ -16,6 +16,13 @@ const typeDefs = gql`
       password: String!
       role: String!
     ): User
+    updateUser(
+      firstName: String!
+      lastName: String!
+      email: String!
+      password: String!
+      role: String!
+    ): Boolean
     invalidateTokens: Boolean
   }
   type User {

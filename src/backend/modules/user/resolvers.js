@@ -55,9 +55,9 @@ const resolvers = {
     // TODO : Once cookies working, make sure added user has user role if cookie is not set or user
     // Only admins should be able to add other admins
     createUser: async (
-      parent,
+      _,
       { firstName, lastName, email, password, role },
-      context
+      __
     ) => {
       const count = await User.countDocuments({ email: email });
       if (count != 0) {
@@ -76,6 +76,30 @@ const resolvers = {
         count: 0
       });
       newUser.save();
+
+      return newUser;
+    },
+    updateUser: async (
+      _,
+      { firstName, lastName, email, password, role },
+      context
+    ) => {
+      if (!context.req.userId) {
+        return false;
+      }
+
+      const user = await User.findById(context.req.userId);
+      if (!user) {
+        return false;
+      }
+
+      user.firstName = firstName;
+      user.lastName = lastName;
+      user.email = email;
+      user.password = password;
+      user.role = role;
+
+      await user.save();
 
       return true;
     },

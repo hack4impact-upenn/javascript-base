@@ -6,6 +6,7 @@ import {
   Toolbar,
   Typography,
   IconButton,
+  Link,
   Menu,
   MenuItem,
   Button
@@ -82,6 +83,7 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
                     <Typography variant="h6" className={classes.title}>
                       JavaScript-Base
                     </Typography>
+
                     <div style={{ textAlign: "right" }}>
                       {!loading && data.me == null && (
                         <React.Fragment>

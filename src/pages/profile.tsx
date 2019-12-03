@@ -235,7 +235,6 @@ class Profile extends Component {
                           <ListItem
                             button
                             component="a"
-                            href="/EditFields"
                             style={{ margin: "5px 0px" }}
                           >
                             <ListItemText secondary="ROLE" />
