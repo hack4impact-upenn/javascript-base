@@ -93,10 +93,13 @@ const resolvers = {
         return false;
       }
 
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+
       user.firstName = firstName;
       user.lastName = lastName;
+      user.password = hashedPassword;
       user.email = email;
-      user.password = password;
       user.role = role;
 
       await user.save();

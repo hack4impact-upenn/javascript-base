@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Navbar from "../../components/Navbar";
 import {
   AppBar,
   Toolbar,
@@ -32,6 +31,7 @@ class EditFields extends Component {
       me {
         firstName
         lastName
+        password
         email
         role
         id
@@ -47,7 +47,7 @@ class EditFields extends Component {
       $lastName: String!
       $role: String!
     ) {
-      createUser(
+      updateUser(
         email: $email
         password: $password
         firstName: $firstName
@@ -57,18 +57,35 @@ class EditFields extends Component {
     }
   `;
 
-  state = {
+  state: { [key: string]: any } = {
     open: false,
-    fieldType: ""
+    fieldType: "",
+    defaultValue: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    role: ""
   };
 
   constructor(props: any) {
     super(props);
     this.state = {
       open: false,
-      fieldType: props.router.query.fieldType
+      fieldType: props.router.query.fieldType,
+      defaultValue: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      role: ""
     };
+    this.setDefaultValue();
   }
+
+  private handleChange = (event: any) => {
+    this.setState({ ...this.state, [event.target.name]: event.target.value });
+  };
 
   private toggleDialog = () => {
     this.setState({ ...this.state, open: !this.state.open });
@@ -78,14 +95,90 @@ class EditFields extends Component {
     this.setState({ ...this.state, open: false });
   };
 
+  private handleSubmit = () => {
+    client.query({ query: this.CURRENT_USER_QUERY }).then((data: any) => {
+      const user = JSON.parse(JSON.stringify(data.data.me));
+      const ft = this.state.fieldType;
+      switch (ft) {
+        case "name":
+          user.firstName = this.state.firstName;
+          user.lastName = this.state.lastName;
+          break;
+        case "email":
+          user.email = this.state.email;
+          break;
+        case "password":
+          user.password = this.state.password;
+          break;
+        case "role":
+          user.role = this.state.role;
+          break;
+        default:
+          break;
+      }
+
+      client
+        .mutate({
+          mutation: this.UPDATE_MUTATION,
+          variables: {
+            email: user.email,
+            password: user.password,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role
+          },
+          fetchPolicy: "no-cache"
+        })
+        .then(() => {
+          this.setDefaultValue();
+          this.setState({ ...this.state, open: false });
+        })
+        .catch((error: any) => {
+          console.log(error);
+        });
+    });
+  };
+
   capitalize = (s: string) => {
     if (typeof s !== "string") return "";
     return s.charAt(0).toUpperCase() + s.slice(1);
   };
 
+  setDefaultValue = () => {
+    client
+      .query({ query: this.CURRENT_USER_QUERY, fetchPolicy: "network-only" })
+      .then((data: any) => {
+        console.log(data.data.me);
+        const ft = this.state.fieldType;
+        let defaultValue;
+        switch (ft) {
+          case "name":
+            defaultValue = data.data.me.firstName + " " + data.data.me.lastName;
+            break;
+          case "email":
+            defaultValue = data.data.me.email;
+            break;
+          case "password":
+            defaultValue = "********";
+            break;
+          case "role":
+            defaultValue = this.capitalize(data.data.me.role);
+            break;
+          default:
+            break;
+        }
+
+        this.setState({
+          ...this.state,
+          defaultValue: defaultValue
+        });
+      });
+  };
+
   render() {
+    const fieldType = this.state.fieldType;
     return (
-      <ApolloProvider client={client}>
+      <div>
         <AppBar position="static">
           <Toolbar>
             <IconButton
@@ -98,126 +191,113 @@ class EditFields extends Component {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <Query query={this.CURRENT_USER_QUERY}>
-          {({ data, loading }: { data: any; loading: boolean }) => {
-            return (
-              <div>
-                <Paper
-                  style={{
-                    margin: "30px auto",
-                    width: "90vw",
-                    padding: "20px"
+
+        <Paper
+          style={{
+            margin: "30px auto",
+            width: "90vw",
+            padding: "20px"
+          }}
+        >
+          <div>
+            <Typography variant="h4">
+              <b>{this.capitalize(fieldType)}</b>
+            </Typography>
+            <div style={{ margin: "10px auto" }}>
+              <Typography component="p">
+                Changes to your {fieldType} will be reflected across your
+                account. <Link href="#">Learn more</Link>
+              </Typography>
+            </div>
+            <TextField
+              id="outlined-required"
+              value={this.state.defaultValue}
+              variant="outlined"
+              style={{ margin: "20px auto", width: "100%" }}
+              InputProps={{
+                readOnly: true
+              }}
+            />
+            <IconButton
+              onClick={() => {
+                this.toggleDialog();
+              }}
+              style={{
+                position: "absolute",
+                zIndex: 1,
+                right: "10vw",
+                margin: "23px auto auto auto",
+                display: "inline-block"
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+
+            <Dialog
+              open={this.state.open}
+              onClose={() => {
+                this.handleClose();
+              }}
+              fullWidth={true}
+            >
+              <DialogTitle>Change {this.capitalize(fieldType)}</DialogTitle>
+              <DialogContent style={{ margin: "0px" }}>
+                {(fieldType == "name" && (
+                  <div>
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      name="firstName"
+                      label="First Name"
+                      value={this.state.firstName}
+                      onChange={this.handleChange}
+                      fullWidth
+                    />
+                    <TextField
+                      margin="dense"
+                      name="lastName"
+                      label="Last Name"
+                      value={this.state.lastName}
+                      onChange={this.handleChange}
+                      fullWidth
+                    />
+                  </div>
+                )) || (
+                  <div>
+                    <TextField
+                      autoFocus
+                      margin="dense"
+                      value={this.state[fieldType]}
+                      onChange={this.handleChange}
+                      name={fieldType}
+                      label={this.capitalize(fieldType)}
+                      fullWidth
+                    />
+                  </div>
+                )}
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    this.handleClose();
                   }}
                 >
-                  {!loading && data.me != null && (
-                    <div>
-                      <Typography variant="h4">
-                        <b>{this.capitalize(this.state.fieldType)}</b>
-                      </Typography>
-                      <div style={{ margin: "10px auto" }}>
-                        <Typography component="p">
-                          Changes to your {this.state.fieldType} will be
-                          reflected across your account.{" "}
-                          <Link href="#">Learn more</Link>
-                        </Typography>
-                      </div>
-                      <TextField
-                        id="outlined-required"
-                        defaultValue={
-                          (this.state.fieldType == "name" &&
-                            data.me.firstName + " " + data.me.lastName) ||
-                          (this.state.fieldType == "email" && data.me.email) ||
-                          (this.state.fieldType == "password" && "******") ||
-                          (this.state.fieldType == "role" &&
-                            this.capitalize(data.me.role))
-                        }
-                        variant="outlined"
-                        style={{ margin: "20px auto", width: "100%" }}
-                        InputProps={{
-                          readOnly: true
-                        }}
-                      />
-                      <IconButton
-                        onClick={() => {
-                          this.toggleDialog();
-                        }}
-                        style={{
-                          position: "absolute",
-                          zIndex: 1,
-                          right: "10vw",
-                          margin: "23px auto auto auto",
-                          display: "inline-block"
-                        }}
-                      >
-                        <EditIcon />
-                      </IconButton>
-
-                      <Dialog
-                        open={this.state.open}
-                        onClose={() => {
-                          this.handleClose();
-                        }}
-                        fullWidth={true}
-                      >
-                        <DialogTitle>
-                          Change {this.capitalize(this.state.fieldType)}
-                        </DialogTitle>
-                        <DialogContent style={{ margin: "0px" }}>
-                          {(this.state.fieldType == "name" && (
-                            <div>
-                              <TextField
-                                autoFocus
-                                margin="dense"
-                                id="firstName"
-                                label="First Name"
-                                fullWidth
-                              />
-                              <TextField
-                                margin="dense"
-                                id="lastName"
-                                label="Last Name"
-                                fullWidth
-                              />
-                            </div>
-                          )) || (
-                            <div>
-                              <TextField
-                                autoFocus
-                                margin="dense"
-                                id={this.state.fieldType}
-                                label={this.capitalize(this.state.fieldType)}
-                                fullWidth
-                              />
-                            </div>
-                          )}
-                        </DialogContent>
-                        <DialogActions>
-                          <Button
-                            color="primary"
-                            onClick={() => {
-                              this.handleClose();
-                            }}
-                          >
-                            Cancel
-                          </Button>
-                          <Button
-                            color="primary"
-                            onClick={() => {
-                              this.handleClose();
-                            }}
-                          >
-                            Done
-                          </Button>
-                        </DialogActions>
-                      </Dialog>
-                    </div>
-                  )}
-                </Paper>
-              </div>
-            );
-          }}
-        </Query>
-      </ApolloProvider>
+                  Cancel
+                </Button>
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    this.handleSubmit();
+                  }}
+                >
+                  Done
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+        </Paper>
+      </div>
     );
   }
 }
