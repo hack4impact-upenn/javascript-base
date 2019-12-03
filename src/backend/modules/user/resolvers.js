@@ -93,12 +93,18 @@ const resolvers = {
         return false;
       }
 
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
+      const valid = await comparePassword(user, password);
+      console.log(valid);
+      // // change password only if it's different
+      // if (!valid) {
+      //   const salt = await bcrypt.genSalt(10);
+      //   const hashedPassword = await bcrypt.hash(password, salt);
+      //   user.password = hashedPassword;
+      // }
 
       user.firstName = firstName;
       user.lastName = lastName;
-      user.password = hashedPassword;
+
       user.email = email;
       user.role = role;
 
