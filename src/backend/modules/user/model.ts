@@ -1,4 +1,4 @@
-import { prop, modelOptions, DocumentType, Typegoose } from '@typegoose/typegoose';
+import { pre, prop, modelOptions, DocumentType, Typegoose } from '@typegoose/typegoose';
 import faker from 'faker';
 import { randomChoice, titleCase } from '../../utils';
 import bcrypt from "bcrypt";
@@ -10,6 +10,21 @@ export enum Role {
 const ROLES = [Role.ADMIN, Role.USER];
 
 @modelOptions({ options: { customName: 'users' } })
+@pre<IUser>('save', function(next) {
+  if(!this.isModified('password')) {
+    return next();
+  } else {
+    const SALT = bcrypt.genSaltSync(10);
+    bcrypt.hash(this.password, SALT, function(err, encrypted: string) {
+      if (err) {
+        console.error(err);
+      } else {
+        this.password = encrypted;
+      }
+      next();
+    });
+  }
+})
 export class IUser {
   @prop({ required: true })
   public firstName!: string;

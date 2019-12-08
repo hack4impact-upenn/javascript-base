@@ -6,6 +6,7 @@ import {
   Toolbar,
   Typography,
   IconButton,
+  Link,
   Menu,
   MenuItem,
   Button
@@ -122,6 +123,9 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
                             <MenuItem
                               onClick={this.handleClose}
                             >{`${data.me.firstName} ${data.me.lastName}`}</MenuItem>
+                            <MenuItem onClick={this.handleClose}><Link href="/account" color="inherit">
+                           Account Settings 
+                          </Link></MenuItem> 
                             <MenuItem onClick={this.handleLogout}>
                               Logout
                             </MenuItem>
