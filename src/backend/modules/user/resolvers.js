@@ -65,8 +65,14 @@ const resolvers = {
         firstName: firstName,
         lastName: lastName,
         email: email,
+<<<<<<< HEAD
         password: password,
         role: role
+=======
+        password: password, 
+        role: role,
+        count: 0
+>>>>>>> 06693d2e900c7f8f96d69e5528cfd165d4021bf2
       });
       newUser.save();
       sendConfirmationEmail(newUser);
