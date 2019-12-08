@@ -14,11 +14,12 @@ const ROLES = [Role.ADMIN, Role.USER];
     return next();
   } else {
     const SALT = bcrypt.genSaltSync(10);
-    bcrypt.hash(this.password, SALT, function(err, encrypted: string) {
+    const user = this;
+    bcrypt.hash(user.password, SALT, function(err, encrypted: string) {
       if (err) {
         console.error(err);
       } else {
-        this.password = encrypted;
+        user.password = encrypted;
       }
       next();
     });
