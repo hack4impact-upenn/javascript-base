@@ -1,5 +1,4 @@
 import { UserInputError } from "apollo-server";
-import bcrypt from "bcrypt";
 import { config } from "dotenv";
 import path from "path";
 import { createTokens } from "../../middleware/auth";
@@ -9,13 +8,13 @@ import { comparePassword } from "./model";
 config({ path: path.resolve(__dirname, "../../../.env") });
 const resolvers = {
   Query: {
-    emailTaken: async (_, { email }, context) => {
+    emailTaken: async (_, { email }) => {
       return 0 == (await User.countDocuments({ email: email }));
     },
-    allUsers: (parent, args, context) => {
+    allUsers: () => {
       return User.find({});
     },
-    user: (parent, { id }, context) => {
+    user: (parent, { id }) => {
       return User.findById(id);
     },
     me: (_, __, context) => {
@@ -56,22 +55,17 @@ const resolvers = {
     // Only admins should be able to add other admins
     createUser: async (
       parent,
-      { firstName, lastName, email, password, role },
-      context
-    ) => {
+      { firstName, lastName, email, password, role }    ) => {
       const count = await User.countDocuments({ email: email });
       if (count != 0) {
         throw new UserInputError("Account already exists");
       }
 
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-
       const newUser = new User({
         firstName: firstName,
         lastName: lastName,
         email: email,
-        password: hashedPassword,
+        password: password, 
         role: role,
         count: 0
       });
@@ -95,6 +89,27 @@ const resolvers = {
       context.res.clearCookie("refresh-token");
 
       return true;
+    },
+    changePassword: async (
+      parent,
+      { oldPassword, newPassword }, 
+      context
+    ) => {
+      const currUser = await User.findById(context.req.userId);
+
+      if (currUser == null) {
+        throw new UserInputError("No user found");
+      } else {
+        const valid = await comparePassword(currUser, oldPassword);
+        
+        if (!valid) {
+          throw new UserInputError("Current password is incorrect");
+        } else {
+          currUser.password = newPassword;
+          currUser.save();
+          return true;
+        }
+      }
     }
   }
 };

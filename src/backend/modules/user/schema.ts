@@ -17,6 +17,10 @@ const typeDefs = gql`
       role: String!
     ): Boolean
     invalidateTokens: Boolean!
+    changePassword(
+      oldPassword: String!
+      newPassword: String!
+    ): Boolean
   }
   type User {
     id: ID!
