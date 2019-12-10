@@ -25,6 +25,9 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true
   },
+  "node": {
+    "fs": "empty"
+  },
   "include": [
     "**/*.ts",
     "**/*.tsx",

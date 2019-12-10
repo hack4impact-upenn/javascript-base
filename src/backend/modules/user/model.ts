@@ -1,6 +1,6 @@
-import { prop, getModelForClass, DocumentType, Ref, arrayProp } from "@typegoose/typegoose";
-import faker from "faker";
-import { randomChoice, titleCase } from "../../utils";
+import { prop, modelOptions, DocumentType, Ref, Typegoose, arrayProp } from '@typegoose/typegoose';
+import faker from 'faker';
+import { randomChoice, titleCase } from '../../utils';
 import bcrypt from "bcrypt";
 
 import { IFile } from "../file/model"
@@ -11,6 +11,7 @@ export enum Role {
 }
 const ROLES = [Role.ADMIN, Role.USER];
 
+@modelOptions({ options: { customName: 'users' } })
 export class IUser {
   @prop({ required: true })
   public firstName!: string;
@@ -27,7 +28,10 @@ export class IUser {
   @prop({ enum: ROLES })
   public role?: string;
 
-  @prop({ required: true })
+  @prop({ required: true, default: false })
+  public isVerified?: boolean;
+
+  @prop({ required: true, default: 0 })
   public count!: number;
 
   @arrayProp({itemsRef: IFile, default : []})
