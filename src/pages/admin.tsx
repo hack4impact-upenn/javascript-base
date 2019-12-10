@@ -1,9 +1,10 @@
-import React, { Component } from "react";
-import Layout from "../components/admin/Layout";
-import Usertable from "../components/admin/Usertable";
+import React from "react";
 import { Grid } from "@material-ui/core";
 
-class Admin extends Component {
+import Layout from "../components/admin/Layout";
+import Usertable from "../components/admin/Usertable";
+
+export default class Admin extends React.Component {
   render() {
     return (
       <Layout>
@@ -14,5 +15,3 @@ class Admin extends Component {
     );
   }
 }
-
-export default Admin;
