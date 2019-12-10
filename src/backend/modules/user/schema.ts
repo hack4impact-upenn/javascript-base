@@ -8,6 +8,7 @@ const typeDefs = gql`
     emailTaken(email: String): Boolean!
     me: User
     attemptSendForgotPasswordEmail(email: String!): Boolean!
+    decodeForgotPasswordLink(token: String!): String!
   }
   type Mutation {
     createUser(

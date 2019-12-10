@@ -4,7 +4,6 @@ import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { useRouter } from "next/router";
 import client from "../../components/config/Apollo";
 import { gql } from "apollo-boost";
-import { decodeResetPasswordLink } from "../../services/decode-link";
 
 // TODO: add a reset password button somewhere
 
@@ -15,37 +14,45 @@ const RESET_PASSWORD_MUTATION = gql`
     resetPassword(userId: $userId, newPassword: $newPassword)
   }
 `;
+const DECODE_LINK_QUERY = gql`
+  query decodeForgotPasswordLink($token: String!) {
+    decodeForgotPasswordLink(token: $token)
+  }
+`;
 
 const ForgotPasswordForm = () => {
+  const router = useRouter();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [linkValidationInProgress, setLinkValidationInProgress] = useState(true);
 
-  const router = useRouter();
+  ValidatorForm.addValidationRule('isPasswordMatch', (value: string) => {
+    console.log(value);
+    console.log(password);
+    return value === password;
+  });
 
   // Execute once on initial page load
   useEffect(() => {
     // Check that URL is a proper URL for resetting a password 
     const token: any = router.query.token;
-    console.log('token is: ' + token);
 
-    // Store userId
-    try {
-      const userId: string = decodeResetPasswordLink(token);
-      setUserId(userId);
-      console.log('> URL is valid');
-      setLinkValidationInProgress(false);
+    if (token) {
+      //  Store userId
+      client.query({
+        query: DECODE_LINK_QUERY,
+        variables: {
+          token: token
+        }
+      }).then((data: any) => {
+        console.log(data.data);
+        console.log('> URL is valid')
+        setUserId(data.data.decodeForgotPasswordLink);
+        setLinkValidationInProgress(false);
+      })
     }
-    catch(error) {
-      setError("URL is not valid");
-      setLinkValidationInProgress(false);
-    }
-
-    ValidatorForm.addValidationRule('isPasswordMatch', (value: string) => {
-      return value === password;
-    });
   }, []); // This arg is an empty array in order to only execute this effect once
 
 
@@ -55,8 +62,10 @@ const ForgotPasswordForm = () => {
     return (e: FormUpdate) => {
       if (field === "password") {
         setPassword(e.target.value);
+        console.log("set password to: " + password);
       }
       else if (field === "confirmPassword") {
+        console.log("set confirm password to: " + e.target.value);
         setConfirmPassword(e.target.value);
       }
     }

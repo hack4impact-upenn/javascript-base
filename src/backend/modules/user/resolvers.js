@@ -8,7 +8,8 @@ import { comparePassword } from "./model";
 
 import { sendConfirmationEmail, 
          attemptConfirmation } from "../../../services/confirm-email";
-import { sendForgotPasswordEmail } from "../../../services/forgot-password";
+import { sendForgotPasswordEmail, 
+         decodeResetPasswordLink } from "../../../services/forgot-password";
 
 config({ path: path.resolve(__dirname, "../../../.env") });
 const resolvers = {
@@ -54,10 +55,16 @@ const resolvers = {
       }
     },
     attemptSendForgotPasswordEmail: async (_, { email }, context) => {
-      const currUser = User.findOne({email: email});
+      const currUser = await User.findOne({email: email});
+      console.log('inside attemptSendForgotPasswordEmail');
+      console.log('user email: ' + currUser.email);
       sendForgotPasswordEmail(currUser);
       return true;
     },
+    decodeForgotPasswordLink: async (_, { token }, context) => {
+      console.log('inside decodeForgotPasswordLink query');
+      return decodeResetPasswordLink(token);
+    }
   },
   Mutation: {
     // TODO : Once cookies working, make sure added user has user role if cookie is not set or user
