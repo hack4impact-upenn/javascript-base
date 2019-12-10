@@ -1,11 +1,14 @@
 import { UserInputError } from "apollo-server";
-import { sendConfirmationEmail, attemptConfirmation } from "../../../services/confirm-email";
 import bcrypt from "bcrypt";
 import { config } from "dotenv";
 import path from "path";
 import { createTokens } from "../../middleware/auth";
 import { User } from "../../models";
 import { comparePassword } from "./model";
+
+import { sendConfirmationEmail, 
+         attemptConfirmation } from "../../../services/confirm-email";
+import { sendForgotPasswordEmail } from "../../../services/forgot-password";
 
 config({ path: path.resolve(__dirname, "../../../.env") });
 const resolvers = {
@@ -49,7 +52,12 @@ const resolvers = {
           throw new UserInputError("Username or Password is incorrect");
         }
       }
-    }
+    },
+    attemptSendForgotPasswordEmail: async (_, { email }, context) => {
+      const currUser = User.findOne({email: email});
+      sendForgotPasswordEmail(currUser);
+      return true;
+    },
   },
   Mutation: {
     // TODO : Once cookies working, make sure added user has user role if cookie is not set or user
@@ -96,6 +104,12 @@ const resolvers = {
     },
     confirmEmail: async (parent, { token }, context) => {
       attemptConfirmation(token);
+      return true;
+    },
+    resetPassword: async (parent, { userId, newPassword }, context) => {
+      const currUser = await User.findById(userId);
+      currUser.password = newPassword;
+      currUser.save();
       return true;
     }
   }

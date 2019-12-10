@@ -43,6 +43,8 @@ const sendConfirmationEmail = (user: DocumentType<IUser>) => {
 const attemptConfirmation = (token: string) => {
   const decoded: any = jwt.verify(token, process.env.SECRET_KEY!);
 
+  // TODO: Verify that the type of decoded corresponds to "confirmation"
+
   User.findById(decoded.id, function (err: Error, user: DocumentType<IUser>) {
     if (err) {
       console.log(err);

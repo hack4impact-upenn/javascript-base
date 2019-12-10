@@ -7,6 +7,7 @@ const typeDefs = gql`
     login(email: String!, password: String!): Boolean
     emailTaken(email: String): Boolean!
     me: User
+    attemptSendForgotPasswordEmail(email: String!): Boolean!
   }
   type Mutation {
     createUser(
@@ -19,7 +20,11 @@ const typeDefs = gql`
     invalidateTokens: Boolean!
     confirmEmail(
       token: String!
-    ): Boolean
+    ): Boolean!
+    resetPassword(
+      userId: String!
+      newPassword: String!
+    ): Boolean!
   }
   type User {
     id: ID!
