@@ -79,6 +79,22 @@ const resolvers = {
 
       return true;
     },
+    changeName: async (
+      parent,
+      { newFirstName, newLastName }, 
+      context
+    ) => {
+      const currUser = await User.findById(context.req.userId);
+
+      if (currUser == null) {
+        throw new UserInputError("No user found");
+      } else {
+        currUser.firstName = newFirstName;
+        currUser.lastName = newLastName;
+        currUser.save();
+        return true;
+      }
+    },
     invalidateTokens: async (_, __, context) => {
       if (!context.req.userId) {
         return false;
