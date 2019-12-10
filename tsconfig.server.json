@@ -14,4 +14,7 @@
     "./src/backend/**/*.jsx",
     "./src/ssr-server.js"
   ],
+  "node": {
+    "fs": "empty"
+  }
 }
