@@ -1,6 +1,6 @@
 import React from "react";
 import NextLink from "next/link";
-import { makeStyles, WithStyles, withStyles } from "@material-ui/core/styles";
+import { WithStyles, withStyles } from "@material-ui/core/styles";
 
 import {
   AppBar,
@@ -50,16 +50,16 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
 
   public renderLoginRegisterButtons = () => (
     <React.Fragment>
-      <Link href="/login">
+      <NextLink href="/login">
         <Button color="inherit">
           Login
         </Button>
-      </Link>
-      <Link href="/register">
+      </NextLink>
+      <NextLink href="/register">
         <Button color="inherit">
           Register
         </Button>
-      </Link>
+      </NextLink>
     </React.Fragment>
   )
 
@@ -94,9 +94,11 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
           open={Boolean(this.state.anchor)}
           onClose={this.handleClose}
         >
-          <MenuItem
-            onClick={this.handleClose}
-          >{`${user.firstName} ${user.lastName}`}</MenuItem>
+          <NextLink href="/profile">
+            <MenuItem onClick={this.handleClose}>
+              {`${user.firstName} ${user.lastName}`}
+            </MenuItem>
+          </NextLink>
           <MenuItem onClick={this.handleLogout}>
             Logout
           </MenuItem>
