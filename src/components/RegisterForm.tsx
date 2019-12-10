@@ -36,7 +36,7 @@ class RegisterForm extends React.Component<{}, RegisterPageState> {
   private EMAIL_QUERY = gql`
     query emailTaken($email: String!){
       emailTaken(email: $email)
-    }/
+    }
   `;
 
   // Takes a field name and returns a function that changes that name to event value
