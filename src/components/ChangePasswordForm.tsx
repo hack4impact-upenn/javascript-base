@@ -9,7 +9,6 @@ import { gql } from "apollo-boost";
 type FormUpdate = React.ChangeEvent<HTMLInputElement>;
 
 interface ChangePasswordPageState {
-  currUser: string;
   oldPassword: string;
   newPassword: string;
   confirmPassword: string;
@@ -18,23 +17,11 @@ interface ChangePasswordPageState {
 
 class ChangePasswordForm extends React.Component<{}, ChangePasswordPageState> {
   state: ChangePasswordPageState = {
-    currUser: "",
     oldPassword: "",
     newPassword: "",
     confirmPassword: "",
     error: ""
   }
-
-  private CURRENT_USER_QUERY = gql`
-     query me {
-       me {
-         firstName
-         lastName
-         email
-         role
-       }
-     }
-   `;
 
   private PASSWORD_MUTATION = gql`
      mutation changePassword($oldPassword: String!, $newPassword: String!) {
