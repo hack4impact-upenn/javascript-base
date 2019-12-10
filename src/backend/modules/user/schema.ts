@@ -17,6 +17,10 @@ const typeDefs = gql`
       role: String!
     ): User
     invalidateTokens: Boolean!
+    changeName(
+      newFirstName: String!
+      newLastName: String!
+    ): Boolean
     confirmEmail(
       token: String!
     ): Boolean
