@@ -227,7 +227,7 @@ export default function Usertable() {
       <Paper style={style.Paper}>
         <Grid container>
           <Grid item sm>
-            <Typography variant="h4">User Management</Typography>
+            <Typography variant="h5">Manage Users</Typography>
           </Grid>
           <Grid item sm>
             <div style={{ textAlign: "right" }}>
