@@ -134,6 +134,11 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
                         JavaScript-Base
                       </Typography>
                     </NextLink>
+                    <NextLink href="/api">
+                      <Button color="inherit">
+                        GraphQL
+                      </Button>
+                    </NextLink>
                     {!loading && this.renderRightMenu(data.me)}
                   </Toolbar>
                 </AppBar>
