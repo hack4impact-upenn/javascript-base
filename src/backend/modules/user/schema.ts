@@ -24,6 +24,10 @@ const typeDefs = gql`
     confirmEmail(
       token: String!
     ): Boolean
+    changePassword(
+      oldPassword: String!
+      newPassword: String!
+    ): Boolean
   }
   type User {
     id: ID!
