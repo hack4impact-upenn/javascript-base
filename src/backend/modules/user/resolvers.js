@@ -1,4 +1,5 @@
 import { UserInputError } from "apollo-server";
+import { sendConfirmationEmail, attemptConfirmation } from "../../../services/confirm-email";
 import bcrypt from "bcrypt";
 import { config } from "dotenv";
 import path from "path";
@@ -22,7 +23,6 @@ const resolvers = {
       if (!context.req.userId) {
         return;
       }
-
       return User.findById(context.req.userId);
     },
     login: async (_, { email, password }, context) => {
@@ -63,7 +63,6 @@ const resolvers = {
       if (count != 0) {
         throw new UserInputError("Account already exists");
       }
-
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -72,12 +71,11 @@ const resolvers = {
         lastName: lastName,
         email: email,
         password: hashedPassword,
-        role: role,
-        count: 0
+        role: role
       });
       newUser.save();
-
-      return true;
+      sendConfirmationEmail(newUser);
+      return newUser;
     },
     changeName: async (
       parent,
@@ -110,6 +108,10 @@ const resolvers = {
       context.res.clearCookie("access-token");
       context.res.clearCookie("refresh-token");
 
+      return true;
+    },
+    confirmEmail: async (parent, { token }, context) => {
+      attemptConfirmation(token);
       return true;
     }
   }
