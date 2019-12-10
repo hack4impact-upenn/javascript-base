@@ -1,43 +1,19 @@
 import React from "react";
-import Link from "next/link";
+import NextLink from "next/link";
 
 import Navbar from "../components/Navbar";
 
-interface PostLinkProps {
-  title: string;
-}
-
-class PostLink extends React.Component<PostLinkProps, {}> {
-  public render = () => (
-    <li>
-      <Link href={`/p/[id]`} as={`/p/${this.props.title}`}>
-        <a>{this.props.title}</a>
-      </Link>
-    </li>
-  );
-}
-
 const Index = () => (
-  <div>
-    <Navbar></Navbar>
+  <React.Fragment>
+    <Navbar />
     <ul>
-      <li>
-        <a href="/api">GraphQL</a>
-      </li>
-      <li>
-        <a href="/login">Login</a>
-      </li>
-      <li>
-        <a href="/profile">Profile</a>
-      </li>
-      <li>
-        <a href="/admin">Admin</a>
-      </li>
-      <PostLink title="hello world"></PostLink>
-      <PostLink title="title1"></PostLink>
-      <PostLink title="title2"></PostLink>
+      <li><NextLink href="/api">GraphQL</NextLink></li>
+      <li><NextLink href="/files">My Files</NextLink></li>
+      <li><NextLink href="/upload">Upload</NextLink></li>
+      <li><NextLink href="/profile">Profile</NextLink></li>
+      <li><NextLink href="/admin">Admin</NextLink></li>
     </ul>
-  </div>
+  </React.Fragment>
 );
 
 export default Index;

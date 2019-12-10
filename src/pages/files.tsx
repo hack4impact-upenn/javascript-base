@@ -1,16 +1,10 @@
 import React from "react"
-import client, { CURRENT_USER_QUERY } from "../components/config/Apollo"
-import { Query, ApolloProvider } from "react-apollo";
+
+import { Grid } from '@material-ui/core'
 
 import Navbar from "../components/Navbar"
 import FileTable from "../components/FileTable"
 
-import { Grid } from '@material-ui/core'
-import { gql } from "apollo-boost";
-
-interface FilePageInterface {
-
-}
 
 class FilePage extends React.Component {
   public render = () => {

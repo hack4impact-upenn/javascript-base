@@ -1,12 +1,12 @@
 import React from "react";
-import { makeStyles, WithStyles, withStyles } from "@material-ui/core/styles";
+import NextLink from "next/link";
+import { WithStyles, withStyles } from "@material-ui/core/styles";
 
 import {
   AppBar,
   Toolbar,
   Typography,
   IconButton,
-  Link,
   Menu,
   MenuItem,
   Theme,
@@ -48,6 +48,65 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
     });
   };
 
+  public renderLoginRegisterButtons = () => (
+    <React.Fragment>
+      <NextLink href="/login">
+        <Button color="inherit">
+          Login
+        </Button>
+      </NextLink>
+      <NextLink href="/register">
+        <Button color="inherit">
+          Register
+        </Button>
+      </NextLink>
+    </React.Fragment>
+  )
+
+  public renderRightMenu(user: any) {
+    if (!user) {
+      return this.renderLoginRegisterButtons();
+    }
+    
+    return (
+      <React.Fragment>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="menu-appbar"
+          aria-haspopup="true"
+          onClick={this.handleMenu}
+          color="inherit"
+        >
+          <AccountCircle />
+        </IconButton>
+        <Menu
+          id="menu-appbar"
+          anchorEl={this.state.anchor}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          keepMounted
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right"
+          }}
+          open={Boolean(this.state.anchor)}
+          onClose={this.handleClose}
+        >
+          <NextLink href="/profile">
+            <MenuItem onClick={this.handleClose}>
+              {`${user.firstName} ${user.lastName}`}
+            </MenuItem>
+          </NextLink>
+          <MenuItem onClick={this.handleLogout}>
+            Logout
+          </MenuItem>
+        </Menu>
+      </React.Fragment>
+    );
+  }
+
   public render = () => {
     const { classes } = this.props;
     return (
@@ -58,62 +117,13 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
               return (
                 <AppBar position="static">
                   <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
-                      JavaScript-Base
-                    </Typography>
-
+                    <NextLink href="/">
+                      <Typography variant="h6" className={classes.title}>
+                        JavaScript-Base
+                      </Typography>
+                    </NextLink>
                     <div style={{ textAlign: "right" }}>
-                      {!loading && data.me == null && (
-                        <React.Fragment>
-                          <Button href="/login" color="inherit">
-                            Login
-                          </Button>
-                          <Button href="/register" color="inherit">
-                            Register
-                          </Button>
-                        </React.Fragment>
-                      )}
-                      {!loading && data.me != null && (
-                        <React.Fragment>
-                          <Button href="/files" color="inherit">
-                            My Files
-                          </Button>
-                          <Button href="/upload" color="inherit">
-                            Upload
-                          </Button>
-                          <IconButton
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={this.handleMenu}
-                            color="inherit"
-                          >
-                            <AccountCircle />
-                          </IconButton>
-                          <Menu
-                            id="menu-appbar"
-                            anchorEl={this.state.anchor}
-                            anchorOrigin={{
-                              vertical: "top",
-                              horizontal: "right"
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                              vertical: "top",
-                              horizontal: "right"
-                            }}
-                            open={Boolean(this.state.anchor)}
-                            onClose={this.handleClose}
-                          >
-                            <MenuItem
-                              onClick={this.handleClose}
-                            >{`${data.me.firstName} ${data.me.lastName}`}</MenuItem>
-                            <MenuItem onClick={this.handleLogout}>
-                              Logout
-                            </MenuItem>
-                          </Menu>
-                        </React.Fragment>
-                      )}
+                      {!loading && this.renderRightMenu(data.me)}
                     </div>
                   </Toolbar>
                 </AppBar>
@@ -134,7 +144,10 @@ const styles = (theme: Theme) => ({
     marginRight: theme.spacing(2)
   },
   title: {
-    flexGrow: 1
+    flexGrow: 1,
+    '&:hover': {
+      cursor: 'pointer'
+    }
   }
 });
 
