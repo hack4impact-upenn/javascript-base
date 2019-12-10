@@ -55,9 +55,9 @@ const resolvers = {
     // TODO : Once cookies working, make sure added user has user role if cookie is not set or user
     // Only admins should be able to add other admins
     createUser: async (
-      parent,
+      _,
       { firstName, lastName, email, password, role },
-      context
+      __
     ) => {
       const count = await User.countDocuments({ email: email });
       if (count != 0) {
@@ -83,7 +83,6 @@ const resolvers = {
       context
     ) => {
       const currUser = await User.findById(context.req.userId);
-
       if (currUser == null) {
         throw new UserInputError("No user found");
       } else {
@@ -92,6 +91,39 @@ const resolvers = {
         currUser.save();
         return true;
       }
+    },
+    updateUser: async (
+      _,
+      { firstName, lastName, email, password, role },
+      context
+    ) => {
+      if (!context.req.userId) {
+        return false;
+      }
+
+      const user = await User.findById(context.req.userId);
+      if (!user) {
+        return false;
+      }
+
+      const valid = await comparePassword(user, password);
+      // console.log(valid);
+      // // change password only if it's different
+      // if (!valid) {
+      //   const salt = await bcrypt.genSalt(10);
+      //   const hashedPassword = await bcrypt.hash(password, salt);
+      //   user.password = hashedPassword;
+      // }
+
+      user.firstName = firstName;
+      user.lastName = lastName;
+
+      user.email = email;
+      user.role = role;
+
+      await user.save();
+
+      return true;
     },
     invalidateTokens: async (_, __, context) => {
       if (!context.req.userId) {

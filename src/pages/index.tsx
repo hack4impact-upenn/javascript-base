@@ -21,8 +21,18 @@ const Index = () => (
   <div>
     <Navbar></Navbar>
     <ul>
-      <li><a href="/api">GraphQL</a></li>
-      <li><a href="/login">Login</a></li>
+      <li>
+        <a href="/api">GraphQL</a>
+      </li>
+      <li>
+        <a href="/login">Login</a>
+      </li>
+      <li>
+        <a href="/profile">Profile</a>
+      </li>
+      <li>
+        <a href="/admin">Admin</a>
+      </li>
       <PostLink title="hello world"></PostLink>
       <PostLink title="title1"></PostLink>
       <PostLink title="title2"></PostLink>
