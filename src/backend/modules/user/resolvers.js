@@ -76,7 +76,7 @@ const resolvers = {
       newUser.save();
       sendConfirmationEmail(newUser);
 
-      const { refreshToken, accessToken } = createTokens(u);
+      const { refreshToken, accessToken } = createTokens(newUser);
 
       context.res.cookie("refresh-token", refreshToken, {
         maxAge: 1000 * 3600 * 24 * 7,
