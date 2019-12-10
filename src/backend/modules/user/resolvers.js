@@ -63,14 +63,12 @@ const resolvers = {
       if (count != 0) {
         throw new UserInputError("Account already exists");
       }
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
 
       const newUser = new User({
         firstName: firstName,
         lastName: lastName,
         email: email,
-        password: hashedPassword,
+        password: password,
         role: role
       });
       newUser.save();
@@ -92,6 +90,28 @@ const resolvers = {
         return true;
       }
     },
+    changePassword: async (
+      parent,
+      { oldPassword, newPassword }, 
+      context
+    ) => {
+      console.log("changing password");
+      const currUser = await User.findById(context.req.userId);
+
+      if (currUser == null) {
+        throw new UserInputError("No user found");
+      } else {
+        const valid = await comparePassword(currUser, oldPassword);
+
+         if (!valid) {
+          throw new UserInputError("Current password is incorrect");
+        } else {
+          currUser.password = newPassword;
+          currUser.save();
+          return true;
+        }
+      }
+    },
     updateUser: async (
       _,
       { firstName, lastName, email, password, role },
@@ -106,14 +126,6 @@ const resolvers = {
         return false;
       }
 
-      const valid = await comparePassword(user, password);
-      // console.log(valid);
-      // // change password only if it's different
-      // if (!valid) {
-      //   const salt = await bcrypt.genSalt(10);
-      //   const hashedPassword = await bcrypt.hash(password, salt);
-      //   user.password = hashedPassword;
-      // }
 
       user.firstName = firstName;
       user.lastName = lastName;
