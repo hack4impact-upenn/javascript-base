@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Typography } from '@material-ui/core';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { useRouter } from "next/router";
@@ -11,40 +11,62 @@ import { decodeResetPasswordLink } from "../../services/decode-link";
 
 type FormUpdate = React.ChangeEvent<HTMLInputElement>;
 
-interface ForgotPasswordPageState {
-  userId: string;
-  password: string;
-  confirmPassword: string;
-  error: string;
-}
-
-class ForgotPasswordForm extends React.Component<{}, ForgotPasswordPageState> {
-  state: ForgotPasswordPageState = {
-    userId: "",
-    password: "",
-    confirmPassword: "",
-    error: ""
+const RESET_PASSWORD_MUTATION = gql`
+  mutation resetPassword($userId: String!, $newPassword: String!) {
+    resetPassword(userId: $userId, newPassword: $newPassword)
   }
+`;
 
-  private RESET_PASSWORD_MUTATION = gql`
-    mutation resetPassword($userId: String!, $newPassword: String!) {
-      resetPassword(userId: $userId, newPassword: $newPassword)
+const ForgotPasswordForm = () => {
+  const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const router = useRouter();
+
+  // Execute once on initial page load
+  useEffect(() => {
+    // Check that URL is a proper URL for resetting a password 
+    const token: any = router.query.token;
+    console.log('token is: ' + token);
+
+    // Store userId
+    try {
+      const userId: string = decodeResetPasswordLink(token);
     }
-  `;
+    catch(error) {
+      setError("URL is not valid");
+    }
 
-  // Takes a field name and returns a function that changes that name to event value
-  private handleFieldChange = (field: string): ((e: FormUpdate) => void) => {
+    setUserId(userId);
+    console.log('> URL is valid');
+
+    ValidatorForm.addValidationRule('isPasswordMatch', (value: string) => {
+      return value === password;
+    });
+  }, []); // This arg is an empty array in order to only execute this effect once
+
+
+  // Takes a field name and returns a function that changes that field to
+  // the event value and stores it in the state
+  function handleFieldChange(field: string): ((e: FormUpdate) => void) {
     return (e: FormUpdate) => {
-      this.setState({ ...this.state, [field]: e.target.value })
+      if (field === "password") {
+        setPassword(e.target.value);
+      }
+      else if (field === "confirmPassword") {
+        setConfirmPassword(e.target.value);
+      }
     }
   }
 
-  private handleSubmitForgotPassword = (e: React.FormEvent<Element>): void => {
+  function handleSubmitForgotPassword() {
     client.mutate({
-      mutation: this.RESET_PASSWORD_MUTATION,
+      mutation: RESET_PASSWORD_MUTATION,
       variables: {
-        userId: this.state.userId,
-        newPassword: this.state.password,
+        userId: userId,
+        newPassword: password,
       }
     }).then(() => {
       // TODO : Redirect to different page
@@ -54,26 +76,13 @@ class ForgotPasswordForm extends React.Component<{}, ForgotPasswordPageState> {
     })
   }
 
-  public componentDidMount = (): void => {
-    // Check that URL is a proper URL for resetting a password 
-    const router = useRouter();
-    const token: any = router.query.token;
-
-    // Store userId
-    const userId: string = decodeResetPasswordLink(token);
-    this.setState({
-      userId: userId
-    });
-    console.log('> URL is valid');
-
-    ValidatorForm.addValidationRule('isPasswordMatch', (value: string) => {
-      return value === this.state.password;
-    });
-  }
-
-  public render = () => {
-    return (
-      <ValidatorForm onSubmit={this.handleSubmitForgotPassword} style={{
+  function divToRender(): any {
+    // TODO: redirect to an actual 404 component
+    if (error) {
+      return <div>404 Page Not Found</div>
+    }
+    else {
+      return <ValidatorForm onSubmit={handleSubmitForgotPassword} style={{
         padding: "20px",
         marginTop: "40px",
         backgroundColor: "white",
@@ -86,13 +95,13 @@ class ForgotPasswordForm extends React.Component<{}, ForgotPasswordPageState> {
           placeholder="Enter your Password" 
           label="Password" 
           name="password"
-          onChange={this.handleFieldChange("password")}
+          onChange={handleFieldChange("password")}
           validators={['required', 'matchRegexp:.{8,}']}
           errorMessages={['Required', 'Password must be longer than 8 characters']}
-          value={this.state.password}
+          value={password}
           style={{ margin: "10px 0" }}
-          error={this.state.error != ""}
-          helperText={this.state.error == "" ? "" : this.state.error}
+          error={error != ""}
+          helperText={error == "" ? "" : error}
           fullWidth />
         <br />
         <TextValidator 
@@ -100,10 +109,10 @@ class ForgotPasswordForm extends React.Component<{}, ForgotPasswordPageState> {
           placeholder="Confirm Password" 
           label="Confirm Password" 
           name="confirm_password"
-          onChange={this.handleFieldChange("confirmPassword")}
+          onChange={handleFieldChange("confirmPassword")}
           validators={['required', 'isPasswordMatch']}
           errorMessages={['Required', 'Passwords don\'t match']}
-          value={this.state.confirmPassword}
+          value={confirmPassword}
           style={{ margin: "10px 0" }}
           fullWidth />
         <br />
@@ -113,8 +122,56 @@ class ForgotPasswordForm extends React.Component<{}, ForgotPasswordPageState> {
           color="primary" 
           type="submit">Reset password</Button>
       </ValidatorForm>
-    )
+      
+    }
   }
+
+  if (error) {
+    return(<div>404 Page Not Found</div>);
+  }
+
+  return (
+    <ValidatorForm onSubmit={handleSubmitForgotPassword} style={{
+      padding: "20px",
+      marginTop: "40px",
+      backgroundColor: "white",
+      borderBottom: "1px solid rgba(0, 0, 0, 0.2)",
+      boxShadow: "0 1px 5px rgba(0, 0, 0, 0.15)"
+    }}>
+      <Typography variant="h5">Forgot your password? Reset it here!</Typography>
+      <TextValidator 
+        type="password" 
+        placeholder="Enter your Password" 
+        label="Password" 
+        name="password"
+        onChange={handleFieldChange("password")}
+        validators={['required', 'matchRegexp:.{8,}']}
+        errorMessages={['Required', 'Password must be longer than 8 characters']}
+        value={password}
+        style={{ margin: "10px 0" }}
+        error={error != ""}
+        helperText={error == "" ? "" : error}
+        fullWidth />
+      <br />
+      <TextValidator 
+        type="password" 
+        placeholder="Confirm Password" 
+        label="Confirm Password" 
+        name="confirm_password"
+        onChange={handleFieldChange("confirmPassword")}
+        validators={['required', 'isPasswordMatch']}
+        errorMessages={['Required', 'Passwords don\'t match']}
+        value={confirmPassword}
+        style={{ margin: "10px 0" }}
+        fullWidth />
+      <br />
+      <Button 
+        style={{ margin: "10px 0" }} 
+        variant="contained" 
+        color="primary" 
+        type="submit">Reset password</Button>
+    </ValidatorForm>
+  );
 }
 
 export default ForgotPasswordForm
