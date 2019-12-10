@@ -70,39 +70,51 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
     
     return (
       <React.Fragment>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          onClick={this.handleMenu}
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <Menu
-          id="menu-appbar"
-          anchorEl={this.state.anchor}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right"
-          }}
-          open={Boolean(this.state.anchor)}
-          onClose={this.handleClose}
-        >
-          <NextLink href="/profile">
-            <MenuItem onClick={this.handleClose}>
-              {`${user.firstName} ${user.lastName}`}
+        <NextLink href="/admin">
+          <Button color="inherit">
+            Admin Dashboard
+          </Button>
+        </NextLink>
+        <NextLink href="/files">
+          <Button color="inherit">
+            Files
+          </Button>
+        </NextLink>
+        <div style={{ textAlign: "right" }}>
+          <IconButton
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            onClick={this.handleMenu}
+            color="inherit"
+          >
+            <AccountCircle />
+          </IconButton>
+          <Menu
+            id="menu-appbar"
+            anchorEl={this.state.anchor}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right"
+            }}
+            open={Boolean(this.state.anchor)}
+            onClose={this.handleClose}
+          >
+            <NextLink href="/profile">
+              <MenuItem onClick={this.handleClose}>
+                {`${user.firstName} ${user.lastName}`}
+              </MenuItem>
+            </NextLink>
+            <MenuItem onClick={this.handleLogout}>
+              Logout
             </MenuItem>
-          </NextLink>
-          <MenuItem onClick={this.handleLogout}>
-            Logout
-          </MenuItem>
-        </Menu>
+          </Menu>
+        </div>
       </React.Fragment>
     );
   }
@@ -122,9 +134,12 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
                         JavaScript-Base
                       </Typography>
                     </NextLink>
-                    <div style={{ textAlign: "right" }}>
-                      {!loading && this.renderRightMenu(data.me)}
-                    </div>
+                    <NextLink href="/api">
+                      <Button color="inherit">
+                        GraphQL
+                      </Button>
+                    </NextLink>
+                    {!loading && this.renderRightMenu(data.me)}
                   </Toolbar>
                 </AppBar>
               );

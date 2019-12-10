@@ -1,6 +1,7 @@
 import React from "react"
+import NextLink from "next/link";
 
-import { Grid } from '@material-ui/core'
+import { Button, Grid, Paper, Typography } from '@material-ui/core'
 
 import Navbar from "../components/Navbar"
 import FileTable from "../components/FileTable"
@@ -10,12 +11,28 @@ class FilePage extends React.Component {
   public render = () => {
     return (
       <React.Fragment> 
-        <Navbar></Navbar>
-        <Grid container justify="center">
-          <Grid style = {{ paddingTop: "30px", paddingBottom: "30px"}} item xs = {12} sm = {10} md = {10} lg = {10}>
-            <FileTable></FileTable>
+        <Navbar />
+        <Paper style={{ padding: 20, margin: 20 }}>
+          <Grid container justify="center">
+            <Grid item sm>
+              <Typography variant="h5">Files</Typography>
+            </Grid>
+            <Grid item sm style={{ textAlign: "right" }}>
+              <NextLink href="/upload">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="medium"
+                >
+                  Upload File
+                </Button>
+              </NextLink>
+            </Grid>
           </Grid>
-        </Grid>
+        </Paper>
+        <div style={{ margin: 20 }}>
+          <FileTable />
+        </div>
       </React.Fragment>
     )
   }
