@@ -29,7 +29,9 @@ class RegisterForm extends React.Component<{}, RegisterPageState> {
 
   private SIGNUP_MUTATION = gql`
     mutation createUser($email: String!, $password: String!, $firstName: String!, $lastName: String!, $role: String!){
-      createUser(email: $email, password: $password, firstName: $firstName, lastName: $lastName, role: $role)
+      createUser(email: $email, password: $password, firstName: $firstName, lastName: $lastName, role: $role){
+        email
+      }
     }
   `;
 
@@ -57,7 +59,7 @@ class RegisterForm extends React.Component<{}, RegisterPageState> {
         role: "user"
       }
     }).then((data: any) => {
-      // TODO : Redirect to different page
+      window.location.replace("/");
     }).catch((error: any) => {
       console.log(error)
     })
