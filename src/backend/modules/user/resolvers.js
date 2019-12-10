@@ -57,7 +57,7 @@ const resolvers = {
     createUser: async (
       _,
       { firstName, lastName, email, password, role },
-      __
+      context 
     ) => {
       const count = await User.countDocuments({ email: email });
       if (count != 0) {
@@ -73,6 +73,18 @@ const resolvers = {
       });
       newUser.save();
       sendConfirmationEmail(newUser);
+
+      const { refreshToken, accessToken } = createTokens(newUser);
+
+      context.res.cookie("refresh-token", refreshToken, {
+        maxAge: 1000 * 3600 * 24 * 7,
+        httpOnly: true
+      });
+      context.res.cookie("access-token", accessToken, {
+        maxAge: 1000 * 60 * 15,
+        httpOnly: true
+      });
+
       return newUser;
     },
     changeName: async (

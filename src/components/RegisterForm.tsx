@@ -41,7 +41,9 @@ class RegisterForm extends React.Component<{}, RegisterPageState> {
         firstName: $firstName
         lastName: $lastName
         role: $role
-      )
+      ) {
+        email
+      }
     }
   `;
 
@@ -69,7 +71,7 @@ class RegisterForm extends React.Component<{}, RegisterPageState> {
         role: "user"
       }
     }).then((data: any) => {
-      // TODO : Redirect to different page
+      window.location.replace("/");
     }).catch((error: any) => {
       console.log(error)
     })
