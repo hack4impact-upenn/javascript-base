@@ -17,9 +17,12 @@ const typeDefs = gql`
       role: String!
     ): User
     invalidateTokens: Boolean!
+<<<<<<< HEAD
     confirmEmail(
       token: String!
     ): Boolean
+=======
+>>>>>>> be3eced8f3b249dfd169d99ccc4e72a0da432a17
     changePassword(
       oldPassword: String!
       newPassword: String!
