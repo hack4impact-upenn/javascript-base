@@ -1,5 +1,5 @@
 import React from "react";
-import { AppBar,Grid,  } from '@material-ui/core';
+import { AppBar, Button, Grid, TextField, FormControlLabel, Checkbox, Typography } from '@material-ui/core';
 
 import RegisterForm from "../components/RegisterForm"
 

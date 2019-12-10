@@ -24,6 +24,13 @@ const typeDefs = gql`
       role: String!
     ): Boolean
     invalidateTokens: Boolean
+    changeName(
+      newFirstName: String!
+      newLastName: String!
+    ): Boolean
+    confirmEmail(
+      token: String!
+    ): Boolean
   }
   type User {
     id: ID!
@@ -32,6 +39,8 @@ const typeDefs = gql`
     email: String!
     password: String!
     role: String!
+    isVerified: Boolean!
+    count: Int!
   }
 `;
 

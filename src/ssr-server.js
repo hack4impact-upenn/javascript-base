@@ -9,13 +9,15 @@ const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 import path from "path";
+import jwt from "jsonwebtoken";
+import { User } from "../src/backend/models";
 
 // Connect to mongodb using mongoose
 import { config } from "dotenv";
 config({ path: path.resolve(__dirname, "../.env") });
 
 import mongoose from "mongoose";
-import { authenticate } from "./backend/middleware/auth";
+import { createTokens, authenticate } from "./backend/middleware/auth";
 
 mongoose.connect(process.env.MONGODB_URI, {
   useUnifiedTopology: true,
@@ -27,7 +29,7 @@ const db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "Connection error:"));
 db.once("open", async function() {
-  console.log("Connected to database");
+  console.log("> Connected to database");
 });
 
 const apolloServer = new ApolloServer({

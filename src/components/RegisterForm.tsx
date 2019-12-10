@@ -9,12 +9,12 @@ import { gql } from "apollo-boost";
 type FormUpdate = React.ChangeEvent<HTMLInputElement>;
 
 interface RegisterPageState {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  error: string;
+  firstName: string,
+  lastName: string,
+  email: string,
+  password: string,
+  confirmPassword: string,
+  error: string,
 }
 
 class RegisterForm extends React.Component<{}, RegisterPageState> {
@@ -59,24 +59,21 @@ class RegisterForm extends React.Component<{}, RegisterPageState> {
   };
 
   private handleRegister = (e: React.FormEvent<Element>): void => {
-    client
-      .mutate({
-        mutation: this.SIGNUP_MUTATION,
-        variables: {
-          email: this.state.email,
-          password: this.state.password,
-          firstName: this.state.firstName,
-          lastName: this.state.lastName,
-          role: "user"
-        }
-      })
-      .then(() => {
-        // TODO : Redirect to different page
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
-  };
+    client.mutate({
+      mutation: this.SIGNUP_MUTATION,
+      variables: {
+        email: this.state.email,
+        password: this.state.password,
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        role: "user"
+      }
+    }).then((data: any) => {
+      // TODO : Redirect to different page
+    }).catch((error: any) => {
+      console.log(error)
+    })
+  }
 
   public componentDidMount = (): void => {
     ValidatorForm.addValidationRule("isPasswordMatch", (value: string) => {
