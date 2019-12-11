@@ -70,11 +70,13 @@ class Navbar extends React.Component<WithStyles<typeof styles>, NavbarState> {
     
     return (
       <React.Fragment>
-        <NextLink href="/admin">
-          <Button color="inherit">
-            Admin Dashboard
-          </Button>
-        </NextLink>
+        { user.role == "admin" &&
+          <NextLink href="/admin">
+            <Button color="inherit">
+              Admin Dashboard
+            </Button>
+          </NextLink>
+        }
         <NextLink href="/files">
           <Button color="inherit">
             Files
